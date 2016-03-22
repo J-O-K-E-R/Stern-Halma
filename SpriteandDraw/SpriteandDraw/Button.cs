@@ -10,61 +10,30 @@ using Microsoft.Xna.Framework.Input;
 namespace SpriteandDraw {
     public class Button {
 
-        static Texture2D button;
+        static Texture2D blank;
+        static Texture2D gear;
+        Vector2 position;
+        String texture_name;
 
-        //inputstate input;
-        //inputhelper inputhelper;
-
-        //public event eventhandler click;
-        //public bool ispressed = false;
-        //public string text { get; set; }
-        //public vector2 position { get; set; }
-        //public rectangle bounds { get; set; }
-
-        //private bool intersectwith(vector2 position) {
-        //    rectangle touchtap = new rectangle((int)position.x - 1, (int)position.y - 1, 2, 2);
-        //    return bounds.intersects(touchtap);
-        //}
-
-        //private void handleinput(mousestate mousestate) {
-        //    bool pressed = false;
-        //    vector2 position = vector2.zero;
-        //    if (mousestate.leftbutton == buttonstate.pressed)
-        //    {
-        //        pressed = true;
-        //        position = new vector2(mousestate.x, mousestate.y);
-        //    }
-        //    else if (inputhelper.ispressed)
-        //    {
-        //        pressed = true;
-        //        position = inputhelper.pointposition;
-        //    }
-        //    else
-        //    {
-        //        if (ispressed)
-        //        {
-        //            if (intersectwith(new vector2(mousestate.x, mousestate.y)) ||
-        //                intersectwith(inputhelper.pointposition))
-        //            {
-        //                put something here
-        //                ispressed = false;
-        //            }
-        //            else
-        //            {
-
-        //                ispressed = false;
-        //            }
-        //        }
-
-        //        iskeydown = false;
-        //    }
-
+        public Button(Vector2 position, String texture_name) {
+            this.position = position;
+            this.texture_name = texture_name;
+        }
         public static void LoadContent(ContentManager content) {
+            blank = content.Load<Texture2D>("blank_button");
+            gear = content.Load<Texture2D>("gear_icon");
 
-            button = content.Load<Texture2D>("blank_button");
         }
         public void Draw(SpriteBatch spriteBatch) {
-            //spriteBatch.Draw(button, position, Color.White);
+            switch (texture_name)
+            {
+                case "blank":
+                    spriteBatch.Draw(blank, position, null, Color.White, 0f, Vector2.Zero, 0.25f, SpriteEffects.None, 0f);
+                    break;
+                case "gear":
+                    spriteBatch.Draw(gear, position, null, Color.White, 0f, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
+                    break;
+            }            
         }
 
     }

@@ -42,6 +42,9 @@
     <Compile Include="Circle.cs" />
     <Compile Include="Button.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="Host.cs" />
+    <Compile Include="InputText.cs" />
+    <Compile Include="Join.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

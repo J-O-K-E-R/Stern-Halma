@@ -14,7 +14,7 @@ namespace SpriteandDraw {
     public class Game1 : Game {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Screen currentScreen;
+        public static Screen currentScreen;
         public static SpriteFont font;
         //private double score = 0;
 
@@ -24,6 +24,7 @@ namespace SpriteandDraw {
             graphics.PreferredBackBufferHeight = 900;   // set this value to the desired height of your window
             graphics.ApplyChanges();
             Content.RootDirectory = "Content";
+
         }
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
@@ -34,7 +35,7 @@ namespace SpriteandDraw {
         protected override void Initialize() {
             // TODO: Add your initialization logic here
             this.IsMouseVisible = true;
-            currentScreen = new Board();
+            currentScreen = new Menu();
             base.Initialize();
         }
 
@@ -76,6 +77,7 @@ namespace SpriteandDraw {
                     currentScreen = new Board();
                     break;
             }
+            currentScreen.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -89,7 +91,7 @@ namespace SpriteandDraw {
             // TODO: Add your drawing code here
             spriteBatch.Begin();
             currentScreen.Draw(spriteBatch);
-            //spriteBatch.DrawString(font, "Chung what the hell are you doing: " + score, new Vector2(100, 100), Color.Black);
+            //spriteBatch.DrawString(font, "Menu", new Vector2(735, 100), Color.Black);
             spriteBatch.End();
 
             base.Draw(gameTime);

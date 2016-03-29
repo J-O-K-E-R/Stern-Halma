@@ -26,30 +26,8 @@ namespace SpriteandDraw {
             //middle row
             height = 130;
 
-            int circnum = 7;
-            int leftpos = 714;
-            int rightpos = 756;
-            for(i = 0; i < 73; i += j)
-            {
-                for(j = 0; j < circnum+j; j++)
-                {
-                    x[j] = leftpos;
-                    y[j] = height;
-                }
-                for (int k = j; j < circnum + j; j++, k++)
-                {
-                    x[k] = rightpos;
-                    y[k] = height;
-                }
-            }
-
-            for (i = 0; i <= 8; i++)
-            {
-                x[i] = 735;
-                y[i] = height;
-                height += 80;
-            }
-           /* //left 1
+           
+            //left 1
             height = 170;
             for (i = 9; i <= 16; i++)
             {

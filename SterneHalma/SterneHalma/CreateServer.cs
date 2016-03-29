@@ -32,6 +32,7 @@ namespace SterneHalma
 
             //Gets the hosts DNS and endpoint for socket
             IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
+            //Writes out the ip address in pgp form
             IPAddress ipAddress = ipHostInfo.AddressList[0];
             IPEndPoint localEndPoint = new IPEndPoint(ipAddress, 11000);
             //Have to write out the IP Address onto the host screen 

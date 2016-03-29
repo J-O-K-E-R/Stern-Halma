@@ -32,6 +32,7 @@ namespace SterneHalma
 
             //Gets the hosts DNS and endpoint for socket
             IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
+            //outputs ip address in pgp form. Need to change back to ip form so users can share.
             IPAddress ipAddress = ipHostInfo.AddressList[0];
             IPEndPoint localEndPoint = new IPEndPoint(ipAddress, 11000);
             //Have to write out the IP Address onto the host screen 
@@ -60,6 +61,10 @@ namespace SterneHalma
             Console.Read();
         }
 
+        /// <summary>
+        /// Continues the thread and accepts client calls, then creates a state object
+        /// </summary>
+        /// <param name="ar"></param>
         public static void AcceptCallback(IAsyncResult ar)
         {
             allDone.Set();
@@ -73,6 +78,10 @@ namespace SterneHalma
                 0, new AsyncCallback(ReadCallback), state);
         }
 
+        /// <summary>
+        /// Retrieves data and uses it. Currently prints to console
+        /// </summary>
+        /// <param name="ar"></param>
         public static void ReadCallback(IAsyncResult ar)
         {
             String content = String.Empty;
@@ -99,12 +108,23 @@ namespace SterneHalma
             }
         }
 
+        /// <summary>
+        /// Converts a string to byte data
+        /// Will need to change to send data we want to send
+        /// </summary>
+        /// <param name="handler"></param>
+        /// <param name="data"></param>
         private static void Send(Socket handler, String data)
         {
             byte[] byteData = Encoding.ASCII.GetBytes(data);
             handler.BeginSend(byteData, 0, byteData.Length, 0, new AsyncCallback(SendCallback), handler);
         }
 
+        /// <summary>
+        /// Retrieves the socket from stateobject and completes sending data to
+        /// the remote device
+        /// </summary>
+        /// <param name="ar"></param>
         private static void SendCallback(IAsyncResult ar)
         {
             try

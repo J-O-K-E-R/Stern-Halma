@@ -12,7 +12,7 @@ namespace SpriteandDraw {
     /// This is the main type for your game.
     /// </summary>
     public class Game1 : Game {
-        GraphicsDeviceManager graphics;
+        public static GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         public static Screen currentScreen;
         public static SpriteFont font;
@@ -73,8 +73,11 @@ namespace SpriteandDraw {
                 case "Menu":
                     currentScreen = new Menu();
                     break;
-                case "Board":
+                case "Host":
                     currentScreen = new Board();
+                    break;
+                case "Join":
+                    currentScreen = new Join();
                     break;
             }
             currentScreen.Update(gameTime);

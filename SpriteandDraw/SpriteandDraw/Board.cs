@@ -143,7 +143,7 @@ namespace SpriteandDraw {
             }*/
         }
         public override void LoadContent() {
-            Type = "Board";
+            Type = "Host";
         }
 
         public override void Update(GameTime gameTime) {

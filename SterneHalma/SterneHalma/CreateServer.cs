@@ -32,7 +32,7 @@ namespace SterneHalma
 
             //Gets the hosts DNS and endpoint for socket
             IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
-            //outputs ip address in pgp form. Need to change back to ip form so users can share.
+            //Writes out the ip address in pgp form
             IPAddress ipAddress = ipHostInfo.AddressList[0];
             IPEndPoint localEndPoint = new IPEndPoint(ipAddress, 11000);
             //Have to write out the IP Address onto the host screen 
@@ -44,7 +44,7 @@ namespace SterneHalma
                 listener.Bind(localEndPoint);
                 listener.Listen(100);
 
-                while (true)
+                while(true)
                 {
                     allDone.Reset();
 
@@ -53,7 +53,7 @@ namespace SterneHalma
                     allDone.WaitOne();
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 Console.WriteLine(e.ToString());
             }
@@ -61,10 +61,6 @@ namespace SterneHalma
             Console.Read();
         }
 
-        /// <summary>
-        /// Continues the thread and accepts client calls, then creates a state object
-        /// </summary>
-        /// <param name="ar"></param>
         public static void AcceptCallback(IAsyncResult ar)
         {
             allDone.Set();
@@ -78,25 +74,21 @@ namespace SterneHalma
                 0, new AsyncCallback(ReadCallback), state);
         }
 
-        /// <summary>
-        /// Retrieves data and uses it. Currently prints to console
-        /// </summary>
-        /// <param name="ar"></param>
         public static void ReadCallback(IAsyncResult ar)
         {
             String content = String.Empty;
 
-            StateObject state = (StateObject)ar.AsyncState;
+            StateObject state = (StateObject) ar.AsyncState;
             Socket handler = state.workSocket;
 
             int bytesRead = handler.EndReceive(ar);
 
-            if (bytesRead > 0)
+            if(bytesRead > 0)
             {
                 state.sb.Append(Encoding.ASCII.GetString(state.buffer, 0, bytesRead));
 
                 content = state.sb.ToString();
-                if (content.IndexOf("EOF") > -1)
+                if(content.IndexOf("EOF") > -1)
                 {
                     Console.WriteLine("Read {0} bytes from socket. \n Data : {1}", content.Length, content);
                     Send(handler, content);
@@ -108,23 +100,12 @@ namespace SterneHalma
             }
         }
 
-        /// <summary>
-        /// Converts a string to byte data
-        /// Will need to change to send data we want to send
-        /// </summary>
-        /// <param name="handler"></param>
-        /// <param name="data"></param>
         private static void Send(Socket handler, String data)
         {
             byte[] byteData = Encoding.ASCII.GetBytes(data);
             handler.BeginSend(byteData, 0, byteData.Length, 0, new AsyncCallback(SendCallback), handler);
         }
 
-        /// <summary>
-        /// Retrieves the socket from stateobject and completes sending data to
-        /// the remote device
-        /// </summary>
-        /// <param name="ar"></param>
         private static void SendCallback(IAsyncResult ar)
         {
             try
@@ -136,7 +117,7 @@ namespace SterneHalma
                 handler.Shutdown(SocketShutdown.Both);
                 handler.Close();
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 Console.WriteLine(e.ToString());
             }

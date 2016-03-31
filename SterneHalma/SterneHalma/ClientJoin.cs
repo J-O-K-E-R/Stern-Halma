@@ -2,29 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-<<<<<<< HEAD
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using ProjectName;
-
-namespace SpriteandDraw {
-    class Join : Screen {
-        InputText test;
-        public Join() {
-            test = new InputText(50, 50);
-        }
-        public override void LoadContent() {
-            Type = "Join";
-        }
-
-        public override void Update(GameTime gameTime) {
-        }
-
-        public override void Draw(SpriteBatch spriteBatch) {
-            test.Draw(spriteBatch);
-            spriteBatch.DrawString(Game1.font, "Join", new Vector2(790, 390), Color.Black);
-=======
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
@@ -196,7 +173,6 @@ namespace SterneHalma
             {
                 Console.WriteLine(e.ToString());
             }
->>>>>>> ed04bfb2fde58953bb40ae6dddf06573e1ad921b
         }
     }
 }

@@ -13,6 +13,8 @@ namespace SterneHalma {
         public Game1() {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            CreateServer server = new CreateServer();
+            server.Create();
         }
 
         /// <summary>

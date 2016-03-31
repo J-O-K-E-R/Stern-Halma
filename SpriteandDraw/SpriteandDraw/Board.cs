@@ -20,17 +20,13 @@ namespace SpriteandDraw {
             back = new Button(backb, "gear");
         }
         public void CreateBoard() {
-            int i, height;
+            int i, height, j;
             int[] x = new int[100];
             int[] y = new int[100];
             //middle row
             height = 130;
-            for (i = 0; i <= 8; i++)
-            {
-                x[i] = 735;
-                y[i] = height;
-                height += 80;
-            }
+
+           
             //left 1
             height = 170;
             for (i = 9; i <= 16; i++)

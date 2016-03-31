@@ -4,6 +4,9 @@ using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using MonoGame.Extended;
+using MonoGame.Extended.BitmapFonts;
+using MonoGame.Extended.InputListeners;
 using ProjectName;
 
 namespace SpriteandDraw { 
@@ -15,7 +18,9 @@ namespace SpriteandDraw {
         public static GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         public static Screen currentScreen;
-        public static SpriteFont font;
+        public static BitmapFont font;
+        public static InputListenerManager inputManager;
+
         //private double score = 0;
 
         public Game1() {
@@ -34,6 +39,7 @@ namespace SpriteandDraw {
         /// </summary>
         protected override void Initialize() {
             // TODO: Add your initialization logic here
+            inputManager = new InputListenerManager();
             this.IsMouseVisible = true;
             currentScreen = new Menu();
             base.Initialize();
@@ -48,7 +54,7 @@ namespace SpriteandDraw {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             Circle.LoadContent(Content);
             Button.LoadContent(Content);
-            font = Content.Load<SpriteFont>("alphabet");
+            font = Content.Load<BitmapFont>("alphabet");
         }
 
         /// <summary>
@@ -76,8 +82,8 @@ namespace SpriteandDraw {
                 case "Host":
                     currentScreen = new Board();
                     break;
-                case "Join":
-                    currentScreen = new Join();
+                case "Setup":
+                    currentScreen = new Setup();
                     break;
             }
             currentScreen.Update(gameTime);

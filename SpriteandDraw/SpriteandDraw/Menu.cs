@@ -5,6 +5,8 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGame.Extended;
+using MonoGame.Extended.BitmapFonts;
 using ProjectName;
 
 namespace SpriteandDraw {
@@ -47,7 +49,7 @@ namespace SpriteandDraw {
             credit.Draw(spriteBatch);
             spriteBatch.DrawString(Game1.font, "Menu", new Vector2(785, 250), Color.Black);
             spriteBatch.DrawString(Game1.font, "Host", new Vector2(790, 315), Color.Black);
-            spriteBatch.DrawString(Game1.font, "Join", new Vector2(790, 390), Color.Black);
+            spriteBatch.DrawString(Game1.font, "Setup", new Vector2(790, 390), Color.Black);
             spriteBatch.DrawString(Game1.font, "Credits", new Vector2(780, 465), Color.Black);
 
         }
@@ -63,7 +65,7 @@ namespace SpriteandDraw {
 
             if (mouseRect.Intersects(joinRect))
             { //player clicked play button
-                Game1.currentScreen.Type = "Join";
+                Game1.currentScreen.Type = "Setup";
                 System.Diagnostics.Debug.WriteLine("Pressed on button");
             }
         }

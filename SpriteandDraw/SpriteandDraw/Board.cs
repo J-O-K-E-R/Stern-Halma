@@ -20,7 +20,7 @@ namespace SpriteandDraw {
             back = new Button(backb, "gear");
         }
         public void CreateBoard() {
-            int i, height, j;
+            int i, height;
             int[] x = new int[100];
             int[] y = new int[100];
             //middle row
@@ -156,6 +156,7 @@ namespace SpriteandDraw {
             previousMouseState = state;
         }
         public override void Draw(SpriteBatch spriteBatch) {
+            
             back.Draw(spriteBatch);
             foreach (Circle circle in board)
                 circle.Draw(spriteBatch);

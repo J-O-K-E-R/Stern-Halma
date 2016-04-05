@@ -9,15 +9,15 @@ using Microsoft.Xna.Framework.Graphics;
 using ProjectName;
 
 namespace SpriteandDraw {
-    class Checkers : GameType {
-        Texture2D rectr, rectb;
+    class Chess : GameType {
+        Texture2D rectw, rectb;
         SpriteBatch spriteBatch;
-        public Checkers() {
+        public Chess() {
             CreateBoard();
         }
 
         public override void LoadContent() {
-            Type = "Checkers";
+            Type = "Chess";
         }
         public override void Update(GameTime gameTime) {
 
@@ -29,19 +29,19 @@ namespace SpriteandDraw {
             for (int i = 1; i <= 8; i++) {
                 for (int j = 1; j <= 8; j++) {
                     if ((i + j) % 2 == 0)
-                        spriteBatch.Draw(rectr, new Vector2(300 + (100 * i),(100 * j) - 50), Color.White);
+                        spriteBatch.Draw(rectw, new Vector2(300 + (100 * i), (100 * j) - 50), Color.White);
                     else
-                        spriteBatch.Draw(rectb, new Vector2(300 + (100 * i),(100 * j) - 50), Color.White);
+                        spriteBatch.Draw(rectb, new Vector2(300 + (100 * i), (100 * j) - 50), Color.White);
                 }
             }
 
         }
         public void CreateBoard() {
-            Color[] red = new Color[100 * 100];
-            rectr = new Texture2D(Game1.graphics.GraphicsDevice, 100, 100);
-            for (int i = 0; i < red.Length; i++)
-                red[i] = Color.DarkRed;
-            rectr.SetData(red);
+            Color[] white = new Color[100 * 100];
+            rectw = new Texture2D(Game1.graphics.GraphicsDevice, 100, 100);
+            for (int i = 0; i < white.Length; i++)
+                white[i] = Color.White;
+            rectw.SetData(white);
 
             Color[] black = new Color[100 * 100];
             rectb = new Texture2D(Game1.graphics.GraphicsDevice, 100, 100);

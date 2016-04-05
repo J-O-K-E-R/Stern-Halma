@@ -59,6 +59,7 @@
   <ItemGroup>
     <Compile Include="Board.cs" />
     <Compile Include="Checkers.cs" />
+    <Compile Include="Chess.cs" />
     <Compile Include="ChineseCheckers.cs" />
     <Compile Include="ChinesePeice.cs" />
     <Compile Include="Circle.cs" />

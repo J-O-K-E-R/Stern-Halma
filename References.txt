@@ -1,3 +1,9 @@
 http://stackoverflow.com/questions/23305631/how-to-create-an-input-textbox-for-a-monogame-metro-app
 
 http://stackoverflow.com/questions/13893959/how-to-draw-the-border-of-a-square
+
+
+
+//images
+http://www.clker.com/cliparts/P/5/H/r/V/s/red-circle-hi.png
+http://www.clker.com/cliparts/N/V/c/R/f/z/glossy-black-circle-button-hi.png

@@ -17,6 +17,8 @@ namespace SpriteandDraw {
         GamePiece current = new ChinesePeice();
         MouseState previousMouseState;
         Vector2 mposition;//mouse position
+        int pieceno, xpos, ypos;
+        bool changed = false;
 
         public ChineseCheckers() {
             CreateBoard();
@@ -34,6 +36,14 @@ namespace SpriteandDraw {
         }
 
         public override void Update(GameTime gameTime) {
+            if(changed == true)
+            {
+                current = pieces[pieceno];
+                current.position.X = xpos;
+                current.position.Y = ypos;
+                changed = false;
+            }
+
             MouseState state = Mouse.GetState();
             mposition.X = state.X;
             mposition.Y = state.Y;
@@ -42,7 +52,7 @@ namespace SpriteandDraw {
 
                 current.position.X = mposition.X - 20;
                 current.position.Y = mposition.Y - 20;
-                string sending = "" + Board.currentGame + " " + current.position.X + " " + current.position.Y;
+                string sending = "" + Board.currentGame + " " + current.pieceNo + " " + current.position.X + " " + current.position.Y;
                 if (Game1.hosting == true)
                     Host.Send(sending);
                 else
@@ -86,9 +96,16 @@ namespace SpriteandDraw {
 
         public override void UpdateBoardServer(int pieceno, int xpos, int ypos)
         {
-            current = pieces[pieceno];
-            current.position.X = xpos;
-            current.position.Y = ypos;
+            this.pieceno = pieceno;
+            this.xpos = xpos;
+            this.ypos = ypos;
+            changed = true;
+            
+            Console.WriteLine(current.ToString());
+            Console.WriteLine(current.position.X.ToString());
+            Console.WriteLine(current.position.Y.ToString());
+
+
         }
 
         public void CreateBoard() {

@@ -72,6 +72,7 @@ namespace SpriteandDraw {
             currentGame.Type = split[0];
             currentGame.UpdateBoardServer(Int32.Parse(split[1]), Int32.Parse(split[2]), Int32.Parse(split[3]));
         }
+
         public void MouseClicked(int x, int y) {
             Rectangle mouseRect = new Rectangle(x, y, 1, 1);
             Rectangle backRect = new Rectangle((int)backb.X, (int)backb.Y, 50, 50);

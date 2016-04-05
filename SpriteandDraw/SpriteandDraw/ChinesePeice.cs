@@ -11,12 +11,7 @@ using ProjectName;
 namespace SpriteandDraw {
     public class ChinesePeice : GamePiece {
         // Some variables for this object class, i.e. Attributes
-        static Texture2D circlered;
-        static Texture2D circleblue;
-        static Texture2D circlegreen;
-        static Texture2D circleyellow;
-        static Texture2D circleblack;
-        static Texture2D circlewhite;
+        static Texture2D circlered, circleblue, circlegreen, circleyellow, circleblack, circlewhite;
         private char _type;
 
         public ChinesePeice() {

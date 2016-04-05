@@ -61,6 +61,7 @@
     <Compile Include="Checkers.cs" />
     <Compile Include="CheckersPiece.cs" />
     <Compile Include="Chess.cs" />
+    <Compile Include="ChessPiece.cs" />
     <Compile Include="ChineseCheckers.cs" />
     <Compile Include="ChinesePeice.cs" />
     <Compile Include="Circle.cs" />

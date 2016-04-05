@@ -6,9 +6,9 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 
-namespace SterneHalma
+namespace SpriteandDraw
 {
-    class ClientJoin
+    class Join
     {
         private const int port = 11000;
 
@@ -22,13 +22,13 @@ namespace SterneHalma
         /// <summary>
         /// Empty constructor for now. May fill if needed
         /// </summary>
-        public ClientJoin()
+        public Join()
         {
 
         }
 
 
-        public void Join(String ipaddress)
+        public void ClientJoin(String ipaddress)
         {
             try
             {

@@ -8,9 +8,9 @@ using System.Threading;
 using System.IO;
 
 
-namespace SterneHalma
+namespace SpriteandDraw
 {
-    class CreateServer
+    class Host
     {
 
         private static Socket _serverSocket;
@@ -18,13 +18,28 @@ namespace SterneHalma
         private const int _BUFFER_SIZE = 2048;
         private const int _PORT = 100;
         private static byte[] _buffer = new byte[_BUFFER_SIZE];
+        public static IPAddress hostAddress { get; set; }
 
-
-        private static void Create()
+        public Host()
         {
+            hostAddress = null;
+        }
+
+        public void Create()
+        {
+            IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
+            //Writes out the ip address in ipv6 form
+            for (int i = 0; i < ipHostInfo.AddressList.Length; i++)
+            {
+                if (ipHostInfo.AddressList[i].AddressFamily == AddressFamily.InterNetwork)
+                {
+                    hostAddress = ipHostInfo.AddressList[i];
+                    break;
+                }
+            }
             Console.WriteLine("Setting up server...");
-            _serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            _serverSocket.Bind(new IPEndPoint(IPAddress.Any, _PORT));
+            _serverSocket = new Socket(hostAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+            _serverSocket.Bind(new IPEndPoint(hostAddress, _PORT));
             _serverSocket.Listen(5);
             _serverSocket.BeginAccept(AcceptCallback, null);
             Console.WriteLine("Server setup complete");
@@ -34,7 +49,7 @@ namespace SterneHalma
         /// Close all connected client (we do not need to shutdown the server socket as its connections
         /// are already closed with the clients)
         /// </summary>
-        private static void CloseAllSockets()
+        private void CloseAllSockets()
         {
             foreach (Socket socket in _clientSockets)
             {
@@ -45,7 +60,7 @@ namespace SterneHalma
             _serverSocket.Close();
         }
 
-        private static void AcceptCallback(IAsyncResult AR)
+        private void AcceptCallback(IAsyncResult AR)
         {
             Socket socket;
 
@@ -64,7 +79,7 @@ namespace SterneHalma
             _serverSocket.BeginAccept(AcceptCallback, null);
         }
 
-        private static void ReceiveCallback(IAsyncResult AR)
+        private void ReceiveCallback(IAsyncResult AR)
         {
             Socket current = (Socket)AR.AsyncState;
             int received;

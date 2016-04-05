@@ -14,10 +14,10 @@ namespace SterneHalma
     {
 
         private static Socket _serverSocket;
-        private static readonly List<Socket> _clientSockets = new List<Socket>();
+        private static List<Socket> _clientSockets = new List<Socket>();
         private const int _BUFFER_SIZE = 2048;
         private const int _PORT = 100;
-        private static readonly byte[] _buffer = new byte[_BUFFER_SIZE];
+        private static byte[] _buffer = new byte[_BUFFER_SIZE];
 
 
         private static void Create()

@@ -1,0 +1,3 @@
+http://stackoverflow.com/questions/23305631/how-to-create-an-input-textbox-for-a-monogame-metro-app
+
+http://stackoverflow.com/questions/13893959/how-to-draw-the-border-of-a-square

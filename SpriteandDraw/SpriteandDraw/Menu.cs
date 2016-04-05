@@ -44,12 +44,13 @@ namespace SpriteandDraw {
             base.Update(gameTime);
         }
         public override void Draw(SpriteBatch spriteBatch) {
+            spriteBatch.Draw(Game1._backgroundTexture, new Rectangle(0, 0, Game1.graphics.GraphicsDevice.Viewport.Width, Game1.graphics.GraphicsDevice.Viewport.Height), Color.DarkSlateGray);
             host.Draw(spriteBatch);
             join.Draw(spriteBatch);
             credit.Draw(spriteBatch);
             spriteBatch.DrawString(Game1.font, "Menu", new Vector2(785, 250), Color.Black);
             spriteBatch.DrawString(Game1.font, "Host", new Vector2(790, 315), Color.Black);
-            spriteBatch.DrawString(Game1.font, "Setup", new Vector2(790, 390), Color.Black);
+            spriteBatch.DrawString(Game1.font, "Join", new Vector2(790, 390), Color.Black);
             spriteBatch.DrawString(Game1.font, "Credits", new Vector2(780, 465), Color.Black);
 
         }

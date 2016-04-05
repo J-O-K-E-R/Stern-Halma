@@ -58,6 +58,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Board.cs" />
+    <Compile Include="ChinesePeice.cs" />
     <Compile Include="Circle.cs" />
     <Compile Include="Button.cs" />
     <Compile Include="Game1.cs" />

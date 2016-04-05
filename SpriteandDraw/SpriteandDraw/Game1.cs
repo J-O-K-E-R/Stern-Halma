@@ -9,7 +9,7 @@ using MonoGame.Extended.BitmapFonts;
 using MonoGame.Extended.InputListeners;
 using ProjectName;
 
-namespace SpriteandDraw { 
+namespace SpriteandDraw {
 
     /// <summary>
     /// This is the main type for your game.
@@ -17,6 +17,7 @@ namespace SpriteandDraw {
     public class Game1 : Game {
         public static GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        public static Texture2D _backgroundTexture;
         public static Screen currentScreen;
         public static BitmapFont font;
         public static InputListenerManager inputManager;
@@ -54,6 +55,8 @@ namespace SpriteandDraw {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             Circle.LoadContent(Content);
             Button.LoadContent(Content);
+            ChinesePeice.LoadContent(Content);
+            _backgroundTexture = Content.Load<Texture2D>("vignette");
             font = Content.Load<BitmapFont>("alphabet");
         }
 
@@ -75,7 +78,7 @@ namespace SpriteandDraw {
                 Exit();
 
             // TODO: Add your update logic here
-            switch(currentScreen.Type) {
+            switch (currentScreen.Type) {
                 case "Menu":
                     currentScreen = new Menu();
                     break;

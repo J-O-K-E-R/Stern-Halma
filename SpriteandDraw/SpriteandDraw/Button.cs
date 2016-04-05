@@ -28,7 +28,7 @@ namespace SpriteandDraw {
             switch (texture_name)
             {
                 case "blank":
-                    spriteBatch.Draw(blank, position, null, Color.White, 0f, Vector2.Zero, 0.25f, SpriteEffects.None, 0f);
+                    spriteBatch.Draw(blank, position, null, Color.MediumSeaGreen, 0f, Vector2.Zero, 0.25f, SpriteEffects.None, 0f);
                     break;
                 case "gear":
                     spriteBatch.Draw(gear, position, null, Color.White, 0f, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);

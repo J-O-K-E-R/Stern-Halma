@@ -12,10 +12,7 @@ namespace ProjectName {
         // Some variables for this object class, i.e. Attributes
         static Texture2D circle;
         Vector2 position;
-        // The 'constructor' method
-        public Circle() {
 
-        }
         public Circle(Vector2 position) {
             this.position = position;
         }

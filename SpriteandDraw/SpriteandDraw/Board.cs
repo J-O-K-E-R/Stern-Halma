@@ -69,8 +69,8 @@ namespace SpriteandDraw {
             string splitter = text;
             string[] separator = { " " };
             string[] split = splitter.Split(separator, StringSplitOptions.RemoveEmptyEntries);
-
-            currentGame.Type = split[0];
+            
+                currentGame.Type = split[0];
             System.Diagnostics.Debug.WriteLine("param1 " + Int32.Parse(split[1]) + "param2 " + Int32.Parse(split[2]) + "param3 " + Int32.Parse(split[3]));
             currentGame.UpdateBoardServer(Int32.Parse(split[1]), Int32.Parse(split[2]), Int32.Parse(split[3]));
         }

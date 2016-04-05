@@ -22,6 +22,10 @@ namespace SpriteandDraw {
         }
         public override void Draw(SpriteBatch spriteBatch) {
             spriteBatch.Draw(Game1._backgroundTexture, new Rectangle(0, 0, Game1.graphics.GraphicsDevice.Viewport.Width, Game1.graphics.GraphicsDevice.Viewport.Height), Color.DarkSlateGray);
+
+
+
+
         }
     }
 }

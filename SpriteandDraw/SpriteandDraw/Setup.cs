@@ -17,11 +17,15 @@ namespace SpriteandDraw {
         MouseState previousMouseState;
         Button Connect;
         Vector2 joinb;
-        
+        Vector2 backb;
+        Button back;
+
         public Setup() {
             joinb = new Vector2(Game1.ScreenWidth / 2 - 75, Game1.ScreenHeight/2 - 55);
             Connect = new Button(joinb, "blank", "Connect");
             test = new InputText(Game1.ScreenWidth/2 - 90, Game1.ScreenHeight/2 - 100, 200, 25);
+            backb = new Vector2(0, Game1.ScreenHeight - 50);
+            back = new Button(backb, "back", "");
             var mouseListener = Game1.inputManager.AddListener(new MouseListenerSettings());
 
         }
@@ -46,6 +50,7 @@ namespace SpriteandDraw {
             spriteBatch.Draw(Game1._backgroundTexture, new Rectangle(0, 0, Game1.graphics.GraphicsDevice.Viewport.Width, Game1.graphics.GraphicsDevice.Viewport.Height), Color.DarkSlateGray);
             test.Draw(spriteBatch);
             Connect.Draw(spriteBatch);
+            back.Draw(spriteBatch);
             spriteBatch.DrawString(Game1.font, "IP: ", new Vector2(Game1.ScreenWidth/2 - 125, Game1.ScreenHeight/2 - 98), Color.Black);
         }
 
@@ -54,6 +59,11 @@ namespace SpriteandDraw {
             Rectangle mouseRect = new Rectangle(x, y, 1, 1);
             Rectangle IP = new Rectangle((int)test.coor.X, (int)test.coor.Y, test.width, test.height);
             Rectangle joinRect = new Rectangle((int)joinb.X, (int)joinb.Y, 150, 50);
+            Rectangle backRect = new Rectangle((int)backb.X, (int)backb.Y, 50, 50);
+
+            if (mouseRect.Intersects(backRect)) { //player clicked back button
+                Game1.currentScreen.Type = "Menu";
+            }
 
             if (mouseRect.Intersects(IP)) { //player clicked play button
                 test._cursor = true;

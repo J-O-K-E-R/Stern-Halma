@@ -16,7 +16,7 @@ namespace SpriteandDraw {
         Button back;
 
         public Board() {
-            backb = new Vector2(0, Game1.ScreenHeight - 30);
+            backb = new Vector2(0, Game1.ScreenHeight - 50);
             back = new Button(backb, "back", "");
             currentGame = new ChineseCheckers();
         }
@@ -52,7 +52,7 @@ namespace SpriteandDraw {
 
         public void MouseClicked(int x, int y) {
             Rectangle mouseRect = new Rectangle(x, y, 1, 1);
-            Rectangle backRect = new Rectangle((int)backb.X, (int)backb.Y, 30, 30);
+            Rectangle backRect = new Rectangle((int)backb.X, (int)backb.Y, 50, 50);
             if (mouseRect.Intersects(backRect)) { //player clicked back button
                 Game1.currentScreen.Type = "Menu";
             }

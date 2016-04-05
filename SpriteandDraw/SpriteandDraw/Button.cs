@@ -37,7 +37,7 @@ namespace SpriteandDraw {
                     spriteBatch.DrawString(Game1.font, text, new Vector2(position.X+75-(stringRectangle.Width/2), position.Y + 13), Color.Black);
                     break;
                 case "back":
-                    spriteBatch.Draw(back, position, null, Color.White, 0f, Vector2.Zero, 0.03f, SpriteEffects.None, 0f);
+                    spriteBatch.Draw(back, position, null, Color.White, 0f, Vector2.Zero, 0.048f, SpriteEffects.None, 0f);
                     break;
             }            
         }

@@ -40,11 +40,6 @@ namespace SpriteandDraw {
 
         public override void Draw(SpriteBatch spriteBatch) {
 
-            System.Diagnostics.Debug.WriteLine(Game1.graphics.GraphicsDevice.Viewport.Width);
-            System.Diagnostics.Debug.WriteLine(Game1.graphics.GraphicsDevice.Viewport.Height);
-            //790, 390
-            //spriteBatch.DrawString(Game1.font, "Setup", new Vector2(450, 390), Color.Black);
-
             spriteBatch.Draw(Game1._backgroundTexture, new Rectangle(0, 0, Game1.graphics.GraphicsDevice.Viewport.Width, Game1.graphics.GraphicsDevice.Viewport.Height), Color.DarkSlateGray);
             test.Draw(spriteBatch);
             spriteBatch.DrawString(Game1.font, "IP: ", new Vector2(690, 453), Color.Black);

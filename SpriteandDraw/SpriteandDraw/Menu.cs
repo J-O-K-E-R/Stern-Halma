@@ -30,6 +30,7 @@ namespace SpriteandDraw {
         }
         public override void LoadContent() {
             Type = "Menu";
+            
         }
         public override void Update(GameTime gameTime) {
 
@@ -51,8 +52,7 @@ namespace SpriteandDraw {
             host.Draw(spriteBatch);
             join.Draw(spriteBatch);
             credit.Draw(spriteBatch);
-            Rectangle stringRectangle = Game1.font.GetStringRectangle("Menu", new Vector2(Game1.ScreenWidth/2, 250));
-            spriteBatch.DrawString(Game1.font, "Menu", new Vector2(Game1.ScreenWidth/2 - (stringRectangle.Width / 2), 250), Color.Black);
+            spriteBatch.Draw(Game1.logo, new Vector2(Game1.ScreenWidth / 2 - 248, 175), null, Color.LightSeaGreen, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
 
         }
         public void MouseClicked(int x, int y) {

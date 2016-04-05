@@ -13,8 +13,7 @@ namespace SpriteandDraw {
     public class Button {
 
         static Texture2D blank;
-        static Texture2D gear;
-        private Rectangle stringRectangle;
+        static Texture2D back;
         Vector2 position;
         string texture_name;
         string text;
@@ -26,19 +25,20 @@ namespace SpriteandDraw {
         }
         public static void LoadContent(ContentManager content) {
             blank = content.Load<Texture2D>("blank_button");
-            gear = content.Load<Texture2D>("gear_icon");
+            back = content.Load<Texture2D>("BackButton");
 
         }
-        public void Draw(SpriteBatch spriteBatch) {
-            stringRectangle = Game1.font.GetStringRectangle(text, position);
+        public void Draw(SpriteBatch spriteBatch) { 
             switch (texture_name)
             {
                 case "blank":
+                    Rectangle stringRectangle = Game1.font.GetStringRectangle(text, position);
                     spriteBatch.Draw(blank, position, null, Color.MediumSeaGreen, 0f, Vector2.Zero, 0.25f, SpriteEffects.None, 0f);
                     spriteBatch.DrawString(Game1.font, text, new Vector2(position.X+75-(stringRectangle.Width/2), position.Y + 13), Color.Black);
                     break;
                 case "gear":
-                    spriteBatch.Draw(gear, position, null, Color.White, 0f, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
+                    System.Diagnostics.Debug.WriteLine("gear createad");
+                    spriteBatch.Draw(back, position, null, Color.White, 0f, Vector2.Zero, 0.03f, SpriteEffects.None, 0f);
                     break;
             }            
         }

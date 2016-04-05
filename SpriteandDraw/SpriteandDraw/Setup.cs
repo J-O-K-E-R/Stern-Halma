@@ -15,10 +15,13 @@ namespace SpriteandDraw {
         InputText test;
         Vector2 mposition;//mouse position
         MouseState previousMouseState;
-
-
+        Button Connect;
+        Vector2 joinb;
+        
         public Setup() {
-            test = new InputText(725, 450, 200, 25);
+            joinb = new Vector2(Game1.ScreenWidth / 2 - 75, Game1.ScreenHeight/2 - 55);
+            Connect = new Button(joinb, "blank", "Connect");
+            test = new InputText(Game1.ScreenWidth/2 - 90, Game1.ScreenHeight/2 - 100, 200, 25);
             var mouseListener = Game1.inputManager.AddListener(new MouseListenerSettings());
 
         }
@@ -40,26 +43,31 @@ namespace SpriteandDraw {
 
         public override void Draw(SpriteBatch spriteBatch) {
 
-            System.Diagnostics.Debug.WriteLine(Game1.graphics.GraphicsDevice.Viewport.Width);
-            System.Diagnostics.Debug.WriteLine(Game1.graphics.GraphicsDevice.Viewport.Height);
-            //790, 390
-            //spriteBatch.DrawString(Game1.font, "Setup", new Vector2(450, 390), Color.Black);
-
             spriteBatch.Draw(Game1._backgroundTexture, new Rectangle(0, 0, Game1.graphics.GraphicsDevice.Viewport.Width, Game1.graphics.GraphicsDevice.Viewport.Height), Color.DarkSlateGray);
             test.Draw(spriteBatch);
-            spriteBatch.DrawString(Game1.font, "IP: ", new Vector2(690, 453), Color.Black);
+            Connect.Draw(spriteBatch);
+            spriteBatch.DrawString(Game1.font, "IP: ", new Vector2(Game1.ScreenWidth/2 - 125, Game1.ScreenHeight/2 - 98), Color.Black);
         }
 
         public void MouseClicked(int x, int y) {
 
             Rectangle mouseRect = new Rectangle(x, y, 1, 1);
             Rectangle IP = new Rectangle((int)test.coor.X, (int)test.coor.Y, test.width, test.height);
+            Rectangle joinRect = new Rectangle((int)joinb.X, (int)joinb.Y, 150, 50);
 
             if (mouseRect.Intersects(IP)) { //player clicked play button
                 test._cursor = true;
             }
             else {
                 test._cursor = false;
+            }
+            if (mouseRect.Intersects(joinRect)) { //player clicked play button
+                //this gets the ip intered when connect is hit
+                string ta = test.tempstring;
+                //this is where you connect it
+                //this will switch the screen to the board if successful
+                //test for string for ip
+                System.Diagnostics.Debug.WriteLine(ta);
             }
         }
     }

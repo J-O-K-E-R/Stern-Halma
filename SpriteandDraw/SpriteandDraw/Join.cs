@@ -9,34 +9,26 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace SpriteandDraw
-{
-    class Join
-    {
+namespace SpriteandDraw {
+    class Join {
         public static Socket _clientSocket = new Socket
             (AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
         private const int _PORT = 100;
         public static Board board = new Board();
 
-        public Join()
-        {
-            Menu.isHost = false;
-    }
-        private static void ConnectToServer()
-        {
+        public Join() {
+        }
+        private static void ConnectToServer() {
             int attempts = 0;
 
-            while (!_clientSocket.Connected)
-            {
-                try
-                {
+            while (!_clientSocket.Connected) {
+                try {
                     attempts++;
                     Console.WriteLine("Connection attempt " + attempts);
                     _clientSocket.Connect(IPAddress.Loopback, _PORT);
                 }
-                catch (SocketException)
-                {
+                catch (SocketException) {
                     Console.Clear();
                 }
             }
@@ -45,11 +37,9 @@ namespace SpriteandDraw
             Console.WriteLine("Connected");
         }
 
-        private static void RequestLoop()
-        {
+        private static void RequestLoop() {
 
-            while (true)
-            {
+            while (true) {
                 ReceiveResponse();
             }
         }
@@ -57,16 +47,14 @@ namespace SpriteandDraw
         /// <summary>
         /// Close socket and exit app
         /// </summary>
-        private static void Exit()
-        {
+        private static void Exit() {
             SendString("exit"); // Tell the server we re exiting
             _clientSocket.Shutdown(SocketShutdown.Both);
             _clientSocket.Close();
             Environment.Exit(0);
         }
 
-        public static void Send(string data)
-        {
+        public static void Send(string data) {
             Console.Write("Send a request: ");
             string request = data;
             SendString(request);
@@ -75,14 +63,12 @@ namespace SpriteandDraw
         /// <summary>
         /// Sends a string to the server with ASCII encoding
         /// </summary>
-        private static void SendString(string text)
-        {
+        private static void SendString(string text) {
             byte[] buffer = Encoding.ASCII.GetBytes(text);
             _clientSocket.Send(buffer, 0, buffer.Length, SocketFlags.None);
         }
 
-        private static void ReceiveResponse()
-        {
+        private static void ReceiveResponse() {
             var buffer = new byte[2048];
             int received = _clientSocket.Receive(buffer, SocketFlags.None);
             if (received == 0) return;

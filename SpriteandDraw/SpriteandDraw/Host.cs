@@ -11,36 +11,29 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 
-namespace SterneHalma
+namespace SpriteandDraw
 {
-    class CreateServer
+    class Host
     {
 
-        public static ManualResetEvent allDone = new ManualResetEvent(false);
-        //private variable for the host IPAddress with getters and setters.
-        private static IPAddress hostAddress { get; set; }
-        public static int count { get; set; }
+        private static Socket _serverSocket;
+        private static List<Socket> _clientSockets = new List<Socket>();
+        private const int _BUFFER_SIZE = 2048;
+        private const int _PORT = 100;
+        private static byte[] _buffer = new byte[_BUFFER_SIZE];
+        public static IPAddress hostAddress { get; set; }
+        public Board board = new Board();
+        public int playerCount = 0;
+        
 
-
-        /// <summary>
-        /// Empty Constructor for now. May fill it later if needed.
-        /// </summary>
-        public CreateServer()
+        public Host()
         {
             hostAddress = null;
-            Create();
-            count = 0;
+            Menu.isHost = true;
         }
 
-        /// <summary>
-        /// Creates the Server and begins listeneing
-        /// </summary>
         public void Create()
         {
-            //buffer for incoming data
-            byte[] bytes = new Byte[1024];
-
-            //Gets the hosts DNS and endpoint for socket
             IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
             //Writes out the ip address in ipv6 form
             for (int i = 0; i < ipHostInfo.AddressList.Length; i++)
@@ -51,91 +44,119 @@ namespace SterneHalma
                     break;
                 }
             }
-            Console.WriteLine(hostAddress.ToString());
-            IPEndPoint localEndPoint = new IPEndPoint(hostAddress, 11000);
-            //Have to write out the IP Address onto the host screen 
+            Console.WriteLine("Setting up server...");
+            _serverSocket = new Socket(hostAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+            if (!_serverSocket.IsBound)
+            {
+                try
+                {
+                    _serverSocket.Bind(new IPEndPoint(hostAddress, _PORT));
+                    _serverSocket.Listen(5);
+                    _serverSocket.BeginAccept(AcceptCallback, null);
+                    Console.WriteLine("Server setup complete");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.ToString());
+                }
+            } 
+        }
 
-            Socket listener = new Socket(hostAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+        /// <summary>
+        /// Close all connected client (we do not need to shutdown the server socket as its connections
+        /// are already closed with the clients)
+        /// </summary>
+        private void CloseAllSockets()
+        {
+            foreach (Socket socket in _clientSockets)
+            {
+                socket.Shutdown(SocketShutdown.Both);
+                socket.Close();
+            }
+
+            _serverSocket.Close();
+        }
+
+        private void AcceptCallback(IAsyncResult AR)
+        {
+            Socket socket;
 
             try
             {
-                listener.Bind(localEndPoint);
-                listener.Listen(100);
-
-                while (true)
-                {
-                    allDone.Reset();
-
-                    Console.WriteLine("Waiting for Connection");     //change to output on the screen
-                    listener.BeginAccept(new AsyncCallback(AcceptCallback), listener);
-                    allDone.WaitOne();
-                }
+                socket = _serverSocket.EndAccept(AR);
             }
-            catch (Exception e)
+            catch (ObjectDisposedException) // I cannot seem to avoid this (on exit when properly closing sockets)
             {
-                Console.WriteLine(e.ToString());
+                return;
             }
-            Console.WriteLine("Press Enter to continue...");
-            Console.Read();
+
+            _clientSockets.Add(socket);
+            playerCount++;
+            socket.BeginReceive(_buffer, 0, _BUFFER_SIZE, SocketFlags.None, ReceiveCallback, socket);
+            Console.WriteLine("Client connected, waiting for request...");
+            _serverSocket.BeginAccept(AcceptCallback, null);
         }
 
-        public static void AcceptCallback(IAsyncResult ar)
+        private void ReceiveCallback(IAsyncResult AR)
         {
-            allDone.Set();
+            Socket current = (Socket)AR.AsyncState;
+            int received;
 
-            Socket listener = (Socket)ar.AsyncState;
-            Socket handler = listener.EndAccept(ar);
-
-            StateObject state = new StateObject();
-            state.workSocket = handler;
-            handler.BeginReceive(state.buffer, 0, StateObject.BufferSize,
-                0, new AsyncCallback(ReadCallback), state);
-            count++;
-        }
-
-        public static void ReadCallback(IAsyncResult ar)
-        {
-            String content = String.Empty;
-
-            StateObject state = (StateObject)ar.AsyncState;
-            Socket handler = state.workSocket;
-
-            int bytesRead = handler.EndReceive(ar);
-
-            if (bytesRead > 0)
+            try
             {
-                state.sb.Append(Encoding.ASCII.GetString(state.buffer, 0, bytesRead));
-
-                content = state.sb.ToString();
-                if (content.IndexOf("EOF") > -1)
-                {
-                    Console.WriteLine("Read {0} bytes from socket. \n Data : {1}", content.Length, content);
-                    Send(handler, content);
-                }
-                else
-                {
-                    handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0, new AsyncCallback(ReadCallback), state);
-                }
+                received = current.EndReceive(AR);
+            }
+            catch (SocketException)
+            {
+                Console.WriteLine("Client forcefully disconnected");
+                current.Close(); // Dont shutdown because the socket may be disposed and its disconnected anyway
+                _clientSockets.Remove(current);
+                playerCount--;
+                return;
             }
 
+            //read in data
+            byte[] recBuf = new byte[received];
+            Array.Copy(_buffer, recBuf, received);
+            string text = Encoding.ASCII.GetString(recBuf);
+
+            Console.WriteLine("Received Text: " + text);
+            
+            byte[] data = Encoding.ASCII.GetBytes(DateTime.Now.ToLongTimeString());
+
+            board.UpdateBoard(text);
+            Console.WriteLine(text);
+
+            //echo data back to other clients
+            Send(text);
+
+
+            current.BeginReceive(_buffer, 0, _BUFFER_SIZE, SocketFlags.None, ReceiveCallback, current);
         }
 
-        private static void Send(Socket handler, String data)
+        public static void Send(string data)
         {
-            byte[] byteData = Encoding.ASCII.GetBytes(data);
-            handler.BeginSend(byteData, 0, byteData.Length, 0, new AsyncCallback(SendCallback), handler);
+            // Convert the string data to byte data using ASCII encoding.
+            foreach (Socket current in _clientSockets)
+            {
+                byte[] byteData = Encoding.ASCII.GetBytes(data);
+
+                // Begin sending the data to the remote device.
+
+                current.BeginSend(byteData, 0, byteData.Length, 0, new AsyncCallback(SendCallback), current);
+            }
         }
 
         private static void SendCallback(IAsyncResult ar)
         {
             try
             {
+                // Retrieve the socket from the state object.
                 Socket handler = (Socket)ar.AsyncState;
-                int bytesSend = handler.EndSend(ar);
-                Console.WriteLine("Sent {0} bytes to client.", bytesSend);
 
-                handler.Shutdown(SocketShutdown.Both);
-                handler.Close();
+                // Complete sending the data to the remote device.
+                int bytesSent = handler.EndSend(ar);
+                Console.WriteLine("Sent {0} bytes to client.", bytesSent);
             }
             catch (Exception e)
             {

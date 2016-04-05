@@ -60,6 +60,7 @@ namespace SpriteandDraw {
             rectb.SetData(black);
         }
 
+
         public void AddPiece() {
             int count = 0;
             for (int i = 1; i <= 8; i++) {

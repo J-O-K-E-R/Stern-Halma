@@ -13,19 +13,30 @@ namespace SpriteandDraw {
     class Join {
         public static Socket _clientSocket = new Socket
             (AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+        private static IPAddress searchAddress = null;
 
         private const int _PORT = 100;
         static Board board = new Board();
         public Join() {
         }
         private static void ConnectToServer() {
+            IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
+            //Writes out the ip address in ipv6 form
+            for (int i = 0; i < ipHostInfo.AddressList.Length; i++)
+            {
+                if (ipHostInfo.AddressList[i].AddressFamily == AddressFamily.InterNetwork)
+                {
+                    searchAddress = ipHostInfo.AddressList[i];
+                    break;
+                }
+            }
             int attempts = 0;
 
             while (!_clientSocket.Connected) {
                 try {
                     attempts++;
                     Console.WriteLine("Connection attempt " + attempts);
-                    _clientSocket.Connect(IPAddress.Loopback, _PORT);
+                    _clientSocket.Connect(searchAddress, _PORT);
                 }
                 catch (SocketException) {
                     Console.Clear();
@@ -47,24 +58,43 @@ namespace SpriteandDraw {
         /// Close socket and exit app
         /// </summary>
         private static void Exit() {
-            SendString("exit"); // Tell the server we re exiting
+            Send("exit"); // Tell the server we re exiting
             _clientSocket.Shutdown(SocketShutdown.Both);
             _clientSocket.Close();
             Environment.Exit(0);
         }
 
-        public static void Send(string data) {
-            Console.Write("Send a request: ");
-            string request = data;
-            SendString(request);
-        }
-
         /// <summary>
         /// Sends a string to the server with ASCII encoding
         /// </summary>
-        private static void SendString(string text) {
-            byte[] buffer = Encoding.ASCII.GetBytes(text);
-            _clientSocket.Send(buffer, 0, buffer.Length, SocketFlags.None);
+        public static void Send(string text) {
+            try
+            {
+                byte[] buffer = Encoding.ASCII.GetBytes(text);
+                _clientSocket.BeginSend(buffer, 0, buffer.Length, 0, new AsyncCallback(SendCallback), _clientSocket);
+
+            }
+            catch(SocketException e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+        }
+
+        private static void SendCallback(IAsyncResult ar)
+        {
+            try
+            {
+                // Retrieve the socket from the state object.
+                Socket handler = (Socket)ar.AsyncState;
+
+                // Complete sending the data to the remote device.
+                int bytesSent = handler.EndSend(ar);
+                Console.WriteLine("Sent {0} bytes to client.", bytesSent);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
         }
 
         private static void ReceiveResponse() {

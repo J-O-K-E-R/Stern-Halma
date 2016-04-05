@@ -50,7 +50,7 @@ namespace SpriteandDraw
                 try
                 {
                     _serverSocket.Bind(new IPEndPoint(hostAddress, _PORT));
-                    _serverSocket.Listen(5);
+                    _serverSocket.Listen(5000);
                     _serverSocket.BeginAccept(AcceptCallback, null);
                     Console.WriteLine("Server setup complete");
                 }

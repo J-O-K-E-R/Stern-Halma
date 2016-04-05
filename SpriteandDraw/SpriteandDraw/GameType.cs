@@ -13,5 +13,6 @@ namespace SpriteandDraw {
         public virtual void LoadContent() { }
         public virtual void Update(GameTime gameTime) { }
         public virtual void Draw(SpriteBatch spriteBatch) { }
+        public abstract void UpdateBoardServer(int pieceno, int xpos, int ypos);
     }
 }

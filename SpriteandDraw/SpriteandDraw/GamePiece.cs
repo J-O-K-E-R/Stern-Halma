@@ -10,6 +10,7 @@ using ProjectName;
 
 namespace SpriteandDraw {
     abstract public class GamePiece {
+        public int pieceNo;
         public bool _isPressed;
         public Vector2 position;
         public virtual void Draw(SpriteBatch spriteBatch) { }

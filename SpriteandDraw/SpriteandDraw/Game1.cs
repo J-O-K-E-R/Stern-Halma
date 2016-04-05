@@ -61,6 +61,7 @@ namespace SpriteandDraw {
             Circle.LoadContent(Content);
             Button.LoadContent(Content);
             ChinesePeice.LoadContent(Content);
+            CheckersPiece.LoadContent(Content);
             logo = Content.Load<Texture2D>("Logo");
             _backgroundTexture = Content.Load<Texture2D>("vignette");
             font = Content.Load<BitmapFont>("alphabet");

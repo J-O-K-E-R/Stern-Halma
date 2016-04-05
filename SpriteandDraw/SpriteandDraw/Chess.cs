@@ -14,6 +14,7 @@ namespace SpriteandDraw {
         SpriteBatch spriteBatch;
         public Chess() {
             CreateBoard();
+            AddPiece();
         }
 
         public override void LoadContent() {
@@ -49,6 +50,12 @@ namespace SpriteandDraw {
                 black[i] = Color.Black;
             rectb.SetData(black);
 
+
+        }
+        public void AddPiece() {
+
+        }
+        public override void UpdateBoardServer(int pieceno, int xpos, int ypos) {
 
         }
     }

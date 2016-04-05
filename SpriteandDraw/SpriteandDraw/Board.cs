@@ -9,7 +9,7 @@ using ProjectName;
 
 namespace SpriteandDraw {
     public class Board : Screen {
-        GameType currentGame;
+        public static GameType currentGame;
         MouseState previousMouseState;
         Vector2 mposition;//mouse position
         Vector2 backb, chessb, checkersb, chineseb;

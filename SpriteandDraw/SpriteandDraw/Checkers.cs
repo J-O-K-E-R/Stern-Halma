@@ -13,9 +13,9 @@ namespace SpriteandDraw {
     class Checkers : GameType {
         Texture2D rectr, rectb;
         SpriteBatch spriteBatch;
-        CheckersPiece[] pieces = new CheckersPiece[24];
-        Rectangle[] list = new Rectangle[24];
-        GamePiece current = new CheckersPiece();
+        static CheckersPiece[] pieces = new CheckersPiece[24];
+        static Rectangle[] list = new Rectangle[24];
+        static GamePiece current = new CheckersPiece();
         MouseState previousMouseState;
         Vector2 mposition;//mouse position
 
@@ -36,20 +36,18 @@ namespace SpriteandDraw {
 
                 current.position.X = mposition.X - 50;
                 current.position.Y = mposition.Y - 50;
-                string sending = "Checkers" + " " + current.pieceNo + " " + current.position.X + " " + current.position.Y;
-                if (Game1.hosting == true) {
-                    //System.Diagnostics.Debug.WriteLine("Host sending");
+                string sending = " " + "Checkers" + " " + current.pieceNo + " " + current.position.X + " " + current.position.Y;
+                if (Game1.hosting == true)
                     Host.Send(sending);
-                }
-                else {
-                    //System.Diagnostics.Debug.WriteLine("Client sending");
+                else
                     Join.Send(sending);
-                }
+                
 
             }
             if (state.LeftButton == ButtonState.Pressed && !current._isPressed) {
                 MousePressed((int)mposition.X, (int)mposition.Y);
             }
+
             if (previousMouseState.LeftButton == ButtonState.Pressed && state.LeftButton == ButtonState.Released) {
                 current._isPressed = false;
                 current = new CheckersPiece();
@@ -75,11 +73,9 @@ namespace SpriteandDraw {
 
         public override void UpdateBoardServer(int pieceno, int xpos, int ypos)
         {
-            while (pieces[pieceno].position.X != xpos && pieces[pieceno].position.Y != ypos)
-            {
-                pieces[pieceno].position.X = xpos;
-                pieces[pieceno].position.Y = ypos;
-            }
+            pieces[pieceno].position.X = xpos;
+            pieces[pieceno].position.Y = ypos;
+            //current = pieces[pieceno];
         }
 
         public void CreateBoard() {
@@ -94,11 +90,8 @@ namespace SpriteandDraw {
             for (int i = 0; i < black.Length; i++)
                 black[i] = Color.Black;
             rectb.SetData(black);
-
-
         }
         public void AddPiece() {
-            System.Diagnostics.Debug.WriteLine("Created Pieces");
             int count = 0;
             for (int i = 1; i <= 8; i++) {
                 for (int j = 1; j < 4; j++) {
@@ -116,10 +109,8 @@ namespace SpriteandDraw {
                         pieces[count].pieceNo = count;
                         count++;
                     }
-
                 }
             }
-            System.Diagnostics.Debug.WriteLine(count);
         }
         public void MousePressed(int x, int y) {
             Rectangle mouseRect = new Rectangle(x, y, 1, 1);
@@ -129,7 +120,6 @@ namespace SpriteandDraw {
 
             for (int i = 0; i < list.Length; i++) {
                 if (mouseRect.Intersects(list[i])) {
-                    System.Diagnostics.Debug.WriteLine("pressed peice: " + i);
                     current = pieces[i];
                     current._isPressed = true;
                     break;

@@ -12,9 +12,9 @@ namespace SpriteandDraw {
     class ChineseCheckers : GameType {
 
         private List<Circle> board = new List<Circle>();
-        static ChinesePeice[] pieces = new ChinesePeice[60];
+        ChinesePeice[] pieces = new ChinesePeice[60];
         Rectangle[] list = new Rectangle[60];
-        static GamePiece current = new ChinesePeice();
+        GamePiece current = new ChinesePeice();
         MouseState previousMouseState;
         Vector2 mposition;//mouse position
 
@@ -42,12 +42,14 @@ namespace SpriteandDraw {
 
                 current.position.X = mposition.X - 20;
                 current.position.Y = mposition.Y - 20;
-                string sending = "ChineseCheckers" + " " + current.pieceNo + " " + current.position.X + " " + current.position.Y;
+                
                 if (Game1.hosting == true) {
+                    string sending = "ChineseCheckers" + " " + current.pieceNo + " " + current.position.X + " " + current.position.Y;
                     //System.Diagnostics.Debug.WriteLine("Host sending");
                     Host.Send(sending);
                 }
                 else {
+                    string sending = "ChineseCheckers" + " " + current.pieceNo + " " + current.position.X + " " + current.position.Y;
                     //System.Diagnostics.Debug.WriteLine("Client sending");
                     Join.Send(sending);
                 }

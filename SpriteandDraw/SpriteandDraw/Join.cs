@@ -14,9 +14,12 @@ namespace SpriteandDraw {
         public static Socket _clientSocket = new Socket
             (AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         private static IPAddress searchAddress = null;
-
+        private const int _BUFFER_SIZE = 2048;
+        private static byte[] _buffer = new byte[_BUFFER_SIZE];
+        private static ManualResetEvent receiveDone = new ManualResetEvent(false);
         private const int _PORT = 100;
         static Board board = new Board();
+
         public Join() {
         }
         public void ConnectToServer(string ipAddress) {
@@ -29,17 +32,12 @@ namespace SpriteandDraw {
                     attempts++;
                     Console.WriteLine("Connection attempt " + attempts);
                     _clientSocket.Connect(searchAddress, _PORT);
+                    _clientSocket.Listen(5000);
+                    _clientSocket.BeginAccept(AcceptCallback, null);
                 }
                 catch (SocketException) {
                     Console.Clear();
                 }
-            }
-        }
-
-        private static void RequestLoop() {
-
-            while (true) {
-                ReceiveResponse();
             }
         }
 
@@ -61,7 +59,7 @@ namespace SpriteandDraw {
             {
                 byte[] buffer = Encoding.ASCII.GetBytes(text);
                 _clientSocket.BeginSend(buffer, 0, buffer.Length, 0, new AsyncCallback(SendCallback), _clientSocket);
-
+                System.Diagnostics.Debug.WriteLine("Send to host ");
             }
             catch(SocketException e)
             {
@@ -71,29 +69,68 @@ namespace SpriteandDraw {
 
         private static void SendCallback(IAsyncResult ar)
         {
-            try
-            {
                 // Retrieve the socket from the state object.
                 Socket handler = (Socket)ar.AsyncState;
 
                 // Complete sending the data to the remote device.
                 int bytesSent = handler.EndSend(ar);
-                Console.WriteLine("Sent {0} bytes to client.", bytesSent);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
-            }
+                Console.WriteLine("Sent {0} bytes to host.", bytesSent);
         }
 
-        private static void ReceiveResponse() {
-            var buffer = new byte[2048];
-            int received = _clientSocket.Receive(buffer, SocketFlags.None);
-            if (received == 0) return;
-            byte[] data = new byte[received];
-            Array.Copy(buffer, data, received);
-            string text = Encoding.ASCII.GetString(data);
-            board.UpdateBoard(text);
+
+        private void AcceptCallback(IAsyncResult AR) {
+            Socket socket;
+
+            try {
+                socket = _clientSocket.EndAccept(AR);
+            }
+            catch (ObjectDisposedException) // I cannot seem to avoid this (on exit when properly closing sockets)
+            {
+                return;
+            }
+
+            socket.BeginReceive(_buffer, 0, _BUFFER_SIZE, SocketFlags.None, ReceiveCallback, socket);
+            _clientSocket.BeginAccept(AcceptCallback, null);
         }
+
+        private void ReceiveCallback(IAsyncResult AR) {
+            Socket current = (Socket)AR.AsyncState;
+            int received;
+
+            received = current.EndReceive(AR);
+
+            //read in data
+            byte[] recBuf = new byte[received];
+            Array.Copy(_buffer, recBuf, received);
+            string text = Encoding.ASCII.GetString(recBuf);
+
+            Console.WriteLine("Received Text Host: " + text);
+
+            byte[] data = Encoding.ASCII.GetBytes(DateTime.Now.ToLongTimeString());
+
+            board.UpdateBoard(text);
+            //Console.WriteLine(text);
+        }
+
+
+
+
+
+        //private static void RequestLoop() {
+
+        //    while (true) {
+        //        ReceiveResponse();
+        //    }
+        //}
+        //private static void ReceiveResponse() {
+        //    var buffer = new byte[2048];
+        //    int received = _clientSocket.Receive(buffer, SocketFlags.None);
+        //    if (received == 0) return;
+        //    byte[] data = new byte[received];
+        //    Array.Copy(buffer, data, received);
+        //    string text = Encoding.ASCII.GetString(data);
+        //    System.Diagnostics.Debug.WriteLine("Client Update ");
+        //    board.UpdateBoard(text);
+        //}
     }
 }

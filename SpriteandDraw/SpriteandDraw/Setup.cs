@@ -81,7 +81,7 @@ namespace SpriteandDraw {
                 //test for string for ip
                 joining.ConnectToServer(ta);
                 Game1.currentScreen.Type = "Board";
-                System.Diagnostics.Debug.WriteLine(ta.Length);
+                System.Diagnostics.Debug.WriteLine(ta);
             }
         }
     }

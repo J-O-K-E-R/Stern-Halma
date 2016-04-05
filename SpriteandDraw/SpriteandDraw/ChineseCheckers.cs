@@ -59,6 +59,7 @@ namespace SpriteandDraw {
                         Join.Send(sending);
                 }
                 current._isPressed = false;
+                current = new ChinesePeice();
                 Console.WriteLine();
                 Console.WriteLine("Blank");
             }

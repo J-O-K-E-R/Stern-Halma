@@ -57,28 +57,36 @@ namespace SpriteandDraw {
             spriteBatch.Draw(Game1._backgroundTexture, new Rectangle(0, 0, Game1.ScreenWidth, Game1.ScreenHeight), Color.DarkSlateGray);
             currentGame.Draw(spriteBatch);
             back.Draw(spriteBatch);
-            chess.Draw(spriteBatch);
-            checkers.Draw(spriteBatch);
-            chinese.Draw(spriteBatch);
+            if (Game1.hosting) {
+                chess.Draw(spriteBatch);
+                checkers.Draw(spriteBatch);
+                chinese.Draw(spriteBatch);
+            }
+            
         }
 
         public void MouseClicked(int x, int y) {
             Rectangle mouseRect = new Rectangle(x, y, 1, 1);
             Rectangle backRect = new Rectangle((int)backb.X, (int)backb.Y, 50, 50);
-            Rectangle chessRect = new Rectangle((int)chessb.X, (int)chessb.Y, 150, 50);
-            Rectangle checkersRect = new Rectangle((int)checkersb.X, (int)checkersb.Y, 150, 50);
-            Rectangle chineseRect = new Rectangle((int)chineseb.X, (int)chineseb.Y, 150, 50);
+            if (Game1.hosting) {
+                Rectangle chessRect = new Rectangle((int)chessb.X, (int)chessb.Y, 150, 50);
+                Rectangle checkersRect = new Rectangle((int)checkersb.X, (int)checkersb.Y, 150, 50);
+                Rectangle chineseRect = new Rectangle((int)chineseb.X, (int)chineseb.Y, 150, 50);
+
+                if (mouseRect.Intersects(chessRect)) { //player clicked back button
+                    currentGame.Type = "Chess";
+                }
+                if (mouseRect.Intersects(checkersRect)) { //player clicked back button
+                    currentGame.Type = "Checkers";
+                }
+                if (mouseRect.Intersects(chineseRect)) { //player clicked back button
+                    currentGame.Type = "ChineseCheckers";
+                }
+            }
             if (mouseRect.Intersects(backRect)) { //player clicked back button
+                Game1.hosting = false;
                 Game1.currentScreen.Type = "Menu";
-            }
-            if (mouseRect.Intersects(chessRect)) { //player clicked back button
-                currentGame.Type = "Chess";
-            }
-            if (mouseRect.Intersects(checkersRect)) { //player clicked back button
-                currentGame.Type = "Checkers";
-            }
-            if (mouseRect.Intersects(chineseRect)) { //player clicked back button
-                currentGame.Type = "ChineseCheckers";
+
             }
         }        
     }

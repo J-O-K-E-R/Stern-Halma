@@ -15,6 +15,7 @@ namespace SpriteandDraw {
     /// This is the main type for your game.
     /// </summary>
     public class Game1 : Game {
+        public static bool hosting = false;
         public static GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         public static Texture2D logo;

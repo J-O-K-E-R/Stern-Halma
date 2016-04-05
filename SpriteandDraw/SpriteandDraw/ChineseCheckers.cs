@@ -42,6 +42,11 @@ namespace SpriteandDraw {
 
                 current.position.X = mposition.X - 20;
                 current.position.Y = mposition.Y - 20;
+                string sending = "" + Board.currentGame + " " + current.position.X + " " + current.position.Y;
+                if (Game1.hosting == true)
+                    Host.Send(sending);
+                else
+                    Join.Send(sending);
 
             }
             if (state.LeftButton == ButtonState.Pressed && !current._isPressed) {
@@ -49,15 +54,6 @@ namespace SpriteandDraw {
             }
             if (previousMouseState.LeftButton == ButtonState.Pressed && state.LeftButton == ButtonState.Released) {
                 MouseClicked((int)mposition.X, (int)mposition.Y);
-                if(current._isPressed == true)
-                {
-
-                    string sending = "" + Type + " " + current.position.X + " " + current.position.Y;
-                    if (Menu.isHost == true)
-                        Host.Send(sending);
-                    else
-                        Join.Send(sending);
-                }
                 current._isPressed = false;
                 current = new ChinesePeice();
                 Console.WriteLine();

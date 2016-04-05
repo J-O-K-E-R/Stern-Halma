@@ -18,7 +18,6 @@ namespace SpriteandDraw {
         Vector2 joinb;
         Vector2 creditb;
         Button credit, host, join;
-        public static bool isHost = true;
 
         public Menu() {
             hostb = new Vector2(butmid, 300);

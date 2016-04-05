@@ -20,12 +20,15 @@ namespace SpriteandDraw {
         Vector2 backb;
         Button back;
         //Chun this needs to fetch the computer ip instead of the default i put
-        private string ip = "192.168.0.1";
+        private string ip;
 
         public PreGame() {
             backb = new Vector2(0, Game1.ScreenHeight - 50);
             back = new Button(backb, "back", "");
             start = new Button(startb, "blank", "Start");
+            Host host = new Host();
+            host.Create();
+            ip = Host.hostAddress.ToString();
         }
 
         public override void LoadContent() {

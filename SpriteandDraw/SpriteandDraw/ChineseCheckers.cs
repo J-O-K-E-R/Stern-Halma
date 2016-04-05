@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using ProjectName;
@@ -50,14 +49,26 @@ namespace SpriteandDraw {
             }
             if (previousMouseState.LeftButton == ButtonState.Pressed && state.LeftButton == ButtonState.Released) {
                 MouseClicked((int)mposition.X, (int)mposition.Y);
+                if(current._isPressed == true)
+                {
+
+                    string sending = "" + Type + " " + current.position.X + " " + current.position.Y;
+                    if (Menu.isHost == true)
+                        Host.Send(sending);
+                    else
+                        Join.Send(sending);
+                }
                 current._isPressed = false;
-                current = new ChinesePeice();
+                Console.WriteLine();
+                Console.WriteLine("Blank");
             }
             previousMouseState = state;
         }
 
         public void MouseClicked(int x, int y) {
             Rectangle mouseRect = new Rectangle(x, y, 1, 1);
+            
+
 
         }
         public void MousePressed(int x, int y) {
@@ -75,9 +86,14 @@ namespace SpriteandDraw {
                 }
             }
         }
-        public override void UpdateBoardServer(int pieceno, int xpos, int ypos) {
 
+        public override void UpdateBoardServer(int pieceno, int xpos, int ypos)
+        {
+            current = pieces[pieceno];
+            current.position.X = xpos;
+            current.position.Y = ypos;
         }
+
         public void CreateBoard() {
             int i, height;
             int[] x = new int[121];
@@ -292,11 +308,8 @@ namespace SpriteandDraw {
             }
             x[9] = 546;
             y[9] = 410;
-            for (i = 0; i < 10; i++) {
+            for (i = 0; i < 10; i++)
                 pieces[i] = (new ChinesePeice(new Vector2(x[i], y[i]), 'y'));
-                pieces[i].pieceNo = i;
-            }
-                
             //adding the bottom left peices
             width = 483;
             for (i = 10; i <= 13; i++) {
@@ -318,10 +331,8 @@ namespace SpriteandDraw {
             }
             x[19] = 546;
             y[19] = 490;
-            for (i = 10; i < 20; i++) {
+            for (i = 10; i < 20; i++)
                 pieces[i] = (new ChinesePeice(new Vector2(x[i], y[i]), 'g'));
-                pieces[i].pieceNo = i;
-            }
             //add the top right
             width = 987;
             for (i = 20; i <= 23; i++) {
@@ -343,10 +354,8 @@ namespace SpriteandDraw {
             }
             x[29] = 924;
             y[29] = 410;
-            for (i = 20; i < 30; i++) {
+            for (i = 20; i < 30; i++)
                 pieces[i] = (new ChinesePeice(new Vector2(x[i], y[i]), 'v'));
-                pieces[i].pieceNo = i;
-            }
             //add the bottom right
             width = 987;
             for (i = 30; i <= 33; i++) {
@@ -368,10 +377,8 @@ namespace SpriteandDraw {
             }
             x[39] = 924;
             y[39] = 490;
-            for (i = 30; i < 40; i++) {
+            for (i = 30; i < 40; i++)
                 pieces[i] = (new ChinesePeice(new Vector2(x[i], y[i]), 'w'));
-                pieces[i].pieceNo = i;
-            }
             //add the top middle
             width = 672;
             for (i = 40; i <= 43; i++) {
@@ -416,10 +423,8 @@ namespace SpriteandDraw {
             }
             x[59] = 735;
             y[59] = 770;
-            for (i = 50; i < 60; i++) {
+            for (i = 50; i < 60; i++)
                 pieces[i] = (new ChinesePeice(new Vector2(x[i], y[i]), 'r'));
-                pieces[i].pieceNo = i;
-            }
         }
     }
 }

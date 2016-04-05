@@ -50,7 +50,7 @@ namespace SpriteandDraw {
             }
             if (previousMouseState.LeftButton == ButtonState.Pressed && state.LeftButton == ButtonState.Released) {
                 MouseClicked((int)mposition.X, (int)mposition.Y);
-                string sending = "" + "ChineseCheckers" + " " + current.pieceNo + " " + current.position.X + " " + current.position.Y;
+                string sending = "ChineseCheckers" + " " + current.pieceNo + " " + current.position.X + " " + current.position.Y;
                 if (Game1.hosting == true)
                 {
                     //System.Diagnostics.Debug.WriteLine("Host sending");

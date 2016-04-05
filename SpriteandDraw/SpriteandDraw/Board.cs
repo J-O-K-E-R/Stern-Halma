@@ -70,13 +70,16 @@ namespace SpriteandDraw {
             string splitter = text;
             string[] separator = { " " };
             string[] split = splitter.Split(separator, StringSplitOptions.RemoveEmptyEntries);
+            
             if (split[0] != _type) {
                 System.Diagnostics.Debug.WriteLine("Board gametype changed");
                 currentGame.Type = split[0];
                 _type = split[0];
+                Console.WriteLine(split[0]);
             }
-            //System.Diagnostics.Debug.WriteLine("param1 " + Int32.Parse(split[1]) + "param2 " + Int32.Parse(split[2]) + "param3 " + Int32.Parse(split[3]));
-            currentGame.UpdateBoardServer(Int32.Parse(split[1]), Int32.Parse(split[2]), Int32.Parse(split[3]));
+            if(split.Length == 4)
+                currentGame.UpdateBoardServer(Int32.Parse(split[1]), Int32.Parse(split[2]), Int32.Parse(split[3]));
+                
         }
 
         public void MouseClicked(int x, int y) {
@@ -90,14 +93,17 @@ namespace SpriteandDraw {
                 if (mouseRect.Intersects(chessRect)) { //player clicked back button
                     currentGame.Type = "Chess";
                     _type = "Chess";
+                    Host.Send("Chess");
                 }
                 if (mouseRect.Intersects(checkersRect)) { //player clicked back button
                     currentGame.Type = "Checkers";
                     _type = "Checkers";
+                    Host.Send("Checkers");
                 }
                 if (mouseRect.Intersects(chineseRect)) { //player clicked back button
                     currentGame.Type = "ChineseCheckers";
                     _type = "ChineseCheckers";
+                    Host.Send("ChineseCheckers");
                 }
             }
             if (mouseRect.Intersects(backRect)) { //player clicked back button

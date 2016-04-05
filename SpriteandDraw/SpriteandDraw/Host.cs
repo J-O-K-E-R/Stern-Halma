@@ -120,6 +120,7 @@ namespace SpriteandDraw
             byte[] data = Encoding.ASCII.GetBytes(DateTime.Now.ToLongTimeString());
 
             board.UpdateBoard(text);
+            Console.WriteLine(text);
 
             //echo data back to other clients
             foreach(Socket clients in _clientSockets)

@@ -17,7 +17,7 @@ namespace SpriteandDraw
             (AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
         private const int _PORT = 100;
-        public Board board = new Board();
+        public static Board board = new Board();
 
         private static void ConnectToServer()
         {
@@ -43,7 +43,6 @@ namespace SpriteandDraw
 
         private static void RequestLoop()
         {
-            Console.WriteLine(@"<Type ""exit"" to properly disconnect client>");
 
             while (true)
             {

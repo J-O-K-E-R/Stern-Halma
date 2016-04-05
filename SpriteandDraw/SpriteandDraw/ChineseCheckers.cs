@@ -50,6 +50,8 @@ namespace SpriteandDraw {
             if (previousMouseState.LeftButton == ButtonState.Pressed && state.LeftButton == ButtonState.Released) {
                 MouseClicked((int)mposition.X, (int)mposition.Y);
                 current._isPressed = false;
+                Console.WriteLine();
+                Console.WriteLine("Blank");
             }
             previousMouseState = state;
         }
@@ -71,7 +73,7 @@ namespace SpriteandDraw {
                     System.Diagnostics.Debug.WriteLine("pressed peice: " + i);
                     current = pieces[i];
                     current._isPressed = true;
-                    
+                    string sending = "" + Type + " ";
                     break;
                 }
             }
@@ -82,6 +84,10 @@ namespace SpriteandDraw {
             current = pieces[pieceno];
             current.position.X = xpos;
             current.position.Y = ypos;
+            Console.WriteLine(current);
+            Console.WriteLine(pieceno);
+            Console.WriteLine(xpos);
+            Console.WriteLine(ypos);
         }
 
         public void CreateBoard() {

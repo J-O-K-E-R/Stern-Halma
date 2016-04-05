@@ -29,7 +29,6 @@ namespace SpriteandDraw
         public Host()
         {
             hostAddress = null;
-            Menu.isHost = true;
         }
 
         public void Create()

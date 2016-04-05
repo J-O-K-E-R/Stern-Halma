@@ -43,7 +43,7 @@ namespace SpriteandDraw {
                 MousePressed((int)mposition.X, (int)mposition.Y);
             }
             if (previousMouseState.LeftButton == ButtonState.Pressed && state.LeftButton == ButtonState.Released) {
-                string sending = "Checkers" + " " + current.pieceNo + " " + current.position.X + " " + current.position.Y;
+                string sending = "" + "Checkers" + " " + current.pieceNo + " " + current.position.X + " " + current.position.Y;
                 if (Game1.hosting == true)
                 {
                     //System.Diagnostics.Debug.WriteLine("Host sending");
@@ -80,11 +80,8 @@ namespace SpriteandDraw {
             System.Diagnostics.Debug.WriteLine("updateboardserver called");
             System.Diagnostics.Debug.WriteLine("xpos: " + xpos);
             System.Diagnostics.Debug.WriteLine("ypos: " + ypos);
-            while (pieces[pieceno].position.X != xpos && pieces[pieceno].position.Y != ypos)
-            {
-                pieces[pieceno].position.X = xpos;
-                pieces[pieceno].position.Y = ypos;
-            }
+            pieces[pieceno].position.X = xpos;
+            pieces[pieceno].position.Y = ypos;
             System.Diagnostics.Debug.WriteLine("x: " + current.position.X);
             System.Diagnostics.Debug.WriteLine("Y: " + current.position.Y);
         }

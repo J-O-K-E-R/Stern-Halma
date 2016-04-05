@@ -75,6 +75,13 @@ namespace SpriteandDraw {
                 }
             }
         }
+
+        public void ServerUpdateMove(GamePiece moved)
+        {
+            current.position.X = moved.position.X;
+            current.position.Y = moved.position.Y;
+        }
+
         public void CreateBoard() {
             int i, height;
             int[] x = new int[121];

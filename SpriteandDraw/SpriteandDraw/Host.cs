@@ -6,6 +6,9 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.IO;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 
 
 namespace SterneHalma

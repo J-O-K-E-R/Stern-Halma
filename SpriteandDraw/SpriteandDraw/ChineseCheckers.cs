@@ -37,6 +37,16 @@ namespace SpriteandDraw {
             MouseState state = Mouse.GetState();
             mposition.X = state.X;
             mposition.Y = state.Y;
+            if (current._isPressed == true)
+            {
+
+                string sending = "" + Type + " " + current.position.X + " " + current.position.Y;
+                if (Menu.isHost == true)
+                    Host.Send(sending);
+                else
+                    Join.Send(sending);
+            }
+            base.Update(gameTime);
 
             if (previousMouseState.LeftButton == ButtonState.Pressed && state.LeftButton == ButtonState.Pressed) {
 
@@ -49,15 +59,7 @@ namespace SpriteandDraw {
             }
             if (previousMouseState.LeftButton == ButtonState.Pressed && state.LeftButton == ButtonState.Released) {
                 MouseClicked((int)mposition.X, (int)mposition.Y);
-                if(current._isPressed == true)
-                {
-
-                    string sending = "" + Type + " " + current.position.X + " " + current.position.Y;
-                    if (Menu.isHost == true)
-                        Host.Send(sending);
-                    else
-                        Join.Send(sending);
-                }
+                
                 current._isPressed = false;
                 Console.WriteLine();
                 Console.WriteLine("Blank");
@@ -67,9 +69,6 @@ namespace SpriteandDraw {
 
         public void MouseClicked(int x, int y) {
             Rectangle mouseRect = new Rectangle(x, y, 1, 1);
-            
-
-
         }
         public void MousePressed(int x, int y) {
             Rectangle mouseRect = new Rectangle(x, y, 1, 1);

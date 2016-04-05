@@ -83,11 +83,23 @@ namespace SpriteandDraw {
                     currentGame.Type = "ChineseCheckers";
                 }
             }
-            if (mouseRect.Intersects(backRect)) { //player clicked back button
+            if (mouseRect.Intersects(backRect))
+            { //player clicked back button
                 Game1.hosting = false;
                 Game1.currentScreen.Type = "Menu";
+            }
 
             }
-        }        
+
+            public void UpdateBoard(string text)
+            {
+                string splitter = text;
+                string[] separator = { " " };
+                string[] split = splitter.Split(separator, StringSplitOptions.RemoveEmptyEntries);
+
+                currentGame.Type = split[0];
+                currentGame.UpdateBoardServer(Int32.Parse(split[1]), Int32.Parse(split[2]), Int32.Parse(split[3]));
+            }
+        
     }
 }

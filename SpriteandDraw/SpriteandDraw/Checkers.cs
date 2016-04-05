@@ -36,16 +36,8 @@ namespace SpriteandDraw {
 
                 current.position.X = mposition.X - 50;
                 current.position.Y = mposition.Y - 50;
-                
-
-            }
-            if (state.LeftButton == ButtonState.Pressed && !current._isPressed) {
-                MousePressed((int)mposition.X, (int)mposition.Y);
-            }
-            if (previousMouseState.LeftButton == ButtonState.Pressed && state.LeftButton == ButtonState.Released) {
                 string sending = "Checkers" + " " + current.pieceNo + " " + current.position.X + " " + current.position.Y;
-                if (Game1.hosting == true)
-                {
+                if (Game1.hosting == true) {
                     //System.Diagnostics.Debug.WriteLine("Host sending");
                     Host.Send(sending);
                 }
@@ -53,6 +45,12 @@ namespace SpriteandDraw {
                     //System.Diagnostics.Debug.WriteLine("Client sending");
                     Join.Send(sending);
                 }
+
+            }
+            if (state.LeftButton == ButtonState.Pressed && !current._isPressed) {
+                MousePressed((int)mposition.X, (int)mposition.Y);
+            }
+            if (previousMouseState.LeftButton == ButtonState.Pressed && state.LeftButton == ButtonState.Released) {
                 current._isPressed = false;
                 current = new CheckersPiece();
             }
@@ -77,16 +75,11 @@ namespace SpriteandDraw {
 
         public override void UpdateBoardServer(int pieceno, int xpos, int ypos)
         {
-            System.Diagnostics.Debug.WriteLine("updateboardserver called");
-            System.Diagnostics.Debug.WriteLine("xpos: " + xpos);
-            System.Diagnostics.Debug.WriteLine("ypos: " + ypos);
             while (pieces[pieceno].position.X != xpos && pieces[pieceno].position.Y != ypos)
             {
                 pieces[pieceno].position.X = xpos;
                 pieces[pieceno].position.Y = ypos;
             }
-            System.Diagnostics.Debug.WriteLine("x: " + current.position.X);
-            System.Diagnostics.Debug.WriteLine("Y: " + current.position.Y);
         }
 
         public void CreateBoard() {

@@ -19,17 +19,9 @@ namespace SpriteandDraw {
         static Board board = new Board();
         public Join() {
         }
-        private static void ConnectToServer() {
-            IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
-            //Writes out the ip address in ipv6 form
-            for (int i = 0; i < ipHostInfo.AddressList.Length; i++)
-            {
-                if (ipHostInfo.AddressList[i].AddressFamily == AddressFamily.InterNetwork)
-                {
-                    searchAddress = ipHostInfo.AddressList[i];
-                    break;
-                }
-            }
+        public void ConnectToServer(string ipAddress) {
+
+            searchAddress = IPAddress.Parse(ipAddress);
             int attempts = 0;
 
             while (!_clientSocket.Connected) {
@@ -42,9 +34,6 @@ namespace SpriteandDraw {
                     Console.Clear();
                 }
             }
-
-            Console.Clear();
-            Console.WriteLine("Connected");
         }
 
         private static void RequestLoop() {

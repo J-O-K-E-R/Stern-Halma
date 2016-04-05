@@ -15,6 +15,7 @@ namespace SpriteandDraw {
         InputText test;
         Vector2 mposition;//mouse position
         MouseState previousMouseState;
+        Join joining = new Join();
         Button Connect;
         Vector2 joinb;
         Vector2 backb;
@@ -74,11 +75,13 @@ namespace SpriteandDraw {
             if (mouseRect.Intersects(joinRect)) { //player clicked play button
                 //this gets the ip intered when connect is hit
                 string ta = test.tempstring;
+
                 //this is where you connect it
                 //this will switch the screen to the board if successful
                 //test for string for ip
+                joining.ConnectToServer(ta);
                 Game1.currentScreen.Type = "Board";
-                System.Diagnostics.Debug.WriteLine(ta);
+                System.Diagnostics.Debug.WriteLine(ta.Length);
             }
         }
     }

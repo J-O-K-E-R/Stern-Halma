@@ -42,17 +42,8 @@ namespace SpriteandDraw {
 
                 current.position.X = mposition.X - 20;
                 current.position.Y = mposition.Y - 20;
-                
-
-            }
-            if (state.LeftButton == ButtonState.Pressed && !current._isPressed) {
-                MousePressed((int)mposition.X, (int)mposition.Y);
-            }
-            if (previousMouseState.LeftButton == ButtonState.Pressed && state.LeftButton == ButtonState.Released) {
-                MouseClicked((int)mposition.X, (int)mposition.Y);
                 string sending = "ChineseCheckers" + " " + current.pieceNo + " " + current.position.X + " " + current.position.Y;
-                if (Game1.hosting == true)
-                {
+                if (Game1.hosting == true) {
                     //System.Diagnostics.Debug.WriteLine("Host sending");
                     Host.Send(sending);
                 }
@@ -60,6 +51,14 @@ namespace SpriteandDraw {
                     //System.Diagnostics.Debug.WriteLine("Client sending");
                     Join.Send(sending);
                 }
+
+            }
+            if (state.LeftButton == ButtonState.Pressed && !current._isPressed) {
+                MousePressed((int)mposition.X, (int)mposition.Y);
+            }
+            if (previousMouseState.LeftButton == ButtonState.Pressed && state.LeftButton == ButtonState.Released) {
+                MouseClicked((int)mposition.X, (int)mposition.Y);
+                
                 current._isPressed = false;
                 current = new ChinesePeice();
                 Console.WriteLine();

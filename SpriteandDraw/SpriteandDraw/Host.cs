@@ -13,131 +13,104 @@ namespace SterneHalma
     class CreateServer
     {
 
-        public static ManualResetEvent allDone = new ManualResetEvent(false);
-        //private variable for the host IPAddress with getters and setters.
-        private static IPAddress hostAddress { get; set; }
-        public static int count { get; set; }
+        private static Socket _serverSocket;
+        private static readonly List<Socket> _clientSockets = new List<Socket>();
+        private const int _BUFFER_SIZE = 2048;
+        private const int _PORT = 100;
+        private static readonly byte[] _buffer = new byte[_BUFFER_SIZE];
 
 
-        /// <summary>
-        /// Empty Constructor for now. May fill it later if needed.
-        /// </summary>
-        public CreateServer()
+        private static void Create()
         {
-            hostAddress = null;
-            Create();
-            count = 0;
+            Console.WriteLine("Setting up server...");
+            _serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            _serverSocket.Bind(new IPEndPoint(IPAddress.Any, _PORT));
+            _serverSocket.Listen(5);
+            _serverSocket.BeginAccept(AcceptCallback, null);
+            Console.WriteLine("Server setup complete");
         }
 
         /// <summary>
-        /// Creates the Server and begins listeneing
+        /// Close all connected client (we do not need to shutdown the server socket as its connections
+        /// are already closed with the clients)
         /// </summary>
-        public void Create()
+        private static void CloseAllSockets()
         {
-            //buffer for incoming data
-            byte[] bytes = new Byte[1024];
-
-            //Gets the hosts DNS and endpoint for socket
-            IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
-            //Writes out the ip address in ipv6 form
-            for (int i = 0; i < ipHostInfo.AddressList.Length; i++)
+            foreach (Socket socket in _clientSockets)
             {
-                if (ipHostInfo.AddressList[i].AddressFamily == AddressFamily.InterNetwork)
-                {
-                    hostAddress = ipHostInfo.AddressList[i];
-                    break;
-                }
+                socket.Shutdown(SocketShutdown.Both);
+                socket.Close();
             }
-            Console.WriteLine(hostAddress.ToString());
-            IPEndPoint localEndPoint = new IPEndPoint(hostAddress, 11000);
-            //Have to write out the IP Address onto the host screen 
 
-            Socket listener = new Socket(hostAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+            _serverSocket.Close();
+        }
+
+        private static void AcceptCallback(IAsyncResult AR)
+        {
+            Socket socket;
 
             try
             {
-                listener.Bind(localEndPoint);
-                listener.Listen(100);
-
-                while (true)
-                {
-                    allDone.Reset();
-
-                    Console.WriteLine("Waiting for Connection");     //change to output on the screen
-                    listener.BeginAccept(new AsyncCallback(AcceptCallback), listener);
-                    allDone.WaitOne();
-                }
+                socket = _serverSocket.EndAccept(AR);
             }
-            catch (Exception e)
+            catch (ObjectDisposedException) // I cannot seem to avoid this (on exit when properly closing sockets)
             {
-                Console.WriteLine(e.ToString());
-            }
-            Console.WriteLine("Press Enter to continue...");
-            Console.Read();
-        }
-
-        public static void AcceptCallback(IAsyncResult ar)
-        {
-            allDone.Set();
-
-            Socket listener = (Socket)ar.AsyncState;
-            Socket handler = listener.EndAccept(ar);
-
-            StateObject state = new StateObject();
-            state.workSocket = handler;
-            handler.BeginReceive(state.buffer, 0, StateObject.BufferSize,
-                0, new AsyncCallback(ReadCallback), state);
-            count++;
-        }
-
-        public static void ReadCallback(IAsyncResult ar)
-        {
-            String content = String.Empty;
-
-            StateObject state = (StateObject)ar.AsyncState;
-            Socket handler = state.workSocket;
-
-            int bytesRead = handler.EndReceive(ar);
-
-            if (bytesRead > 0)
-            {
-                state.sb.Append(Encoding.ASCII.GetString(state.buffer, 0, bytesRead));
-
-                content = state.sb.ToString();
-                if (content.IndexOf("EOF") > -1)
-                {
-                    Console.WriteLine("Read {0} bytes from socket. \n Data : {1}", content.Length, content);
-                    Send(handler, content);
-                }
-                else
-                {
-                    handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0, new AsyncCallback(ReadCallback), state);
-                }
+                return;
             }
 
+            _clientSockets.Add(socket);
+            socket.BeginReceive(_buffer, 0, _BUFFER_SIZE, SocketFlags.None, ReceiveCallback, socket);
+            Console.WriteLine("Client connected, waiting for request...");
+            _serverSocket.BeginAccept(AcceptCallback, null);
         }
 
-        private static void Send(Socket handler, String data)
+        private static void ReceiveCallback(IAsyncResult AR)
         {
-            byte[] byteData = Encoding.ASCII.GetBytes(data);
-            handler.BeginSend(byteData, 0, byteData.Length, 0, new AsyncCallback(SendCallback), handler);
-        }
+            Socket current = (Socket)AR.AsyncState;
+            int received;
 
-        private static void SendCallback(IAsyncResult ar)
-        {
             try
             {
-                Socket handler = (Socket)ar.AsyncState;
-                int bytesSend = handler.EndSend(ar);
-                Console.WriteLine("Sent {0} bytes to client.", bytesSend);
-
-                handler.Shutdown(SocketShutdown.Both);
-                handler.Close();
+                received = current.EndReceive(AR);
             }
-            catch (Exception e)
+            catch (SocketException)
             {
-                Console.WriteLine(e.ToString());
+                Console.WriteLine("Client forcefully disconnected");
+                current.Close(); // Dont shutdown because the socket may be disposed and its disconnected anyway
+                _clientSockets.Remove(current);
+                return;
             }
+
+            byte[] recBuf = new byte[received];
+            Array.Copy(_buffer, recBuf, received);
+            string text = Encoding.ASCII.GetString(recBuf);
+            Console.WriteLine("Received Text: " + text);
+
+            if (text.ToLower() == "get time") // Client requested time
+            {
+                Console.WriteLine("Text is a get time request");
+                byte[] data = Encoding.ASCII.GetBytes(DateTime.Now.ToLongTimeString());
+                current.Send(data);
+                Console.WriteLine("Time sent to client");
+            }
+            else if (text.ToLower() == "exit") // Client wants to exit gracefully
+            {
+                // Always Shutdown before closing
+                current.Shutdown(SocketShutdown.Both);
+                current.Close();
+                _clientSockets.Remove(current);
+                Console.WriteLine("Client disconnected");
+                return;
+            }
+            else
+            {
+                Console.WriteLine("Text is an invalid request");
+                byte[] data = Encoding.ASCII.GetBytes("Invalid request");
+                current.Send(data);
+                Console.WriteLine("Warning Sent");
+            }
+
+            current.BeginReceive(_buffer, 0, _BUFFER_SIZE, SocketFlags.None, ReceiveCallback, current);
         }
     }
 }

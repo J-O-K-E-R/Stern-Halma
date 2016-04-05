@@ -12,14 +12,21 @@ namespace SterneHalma
 {
     class CreateServer
     {
+
         public static ManualResetEvent allDone = new ManualResetEvent(false);
+        //private variable for the host IPAddress with getters and setters.
+        private static IPAddress hostAddress { get; set; }
+        public static int count { get; set; }
+
 
         /// <summary>
         /// Empty Constructor for now. May fill it later if needed.
         /// </summary>
         public CreateServer()
         {
-
+            hostAddress = null;
+            Create();
+            count = 0;
         }
 
         /// <summary>
@@ -32,12 +39,20 @@ namespace SterneHalma
 
             //Gets the hosts DNS and endpoint for socket
             IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
-            //outputs ip address in pgp form. Need to change back to ip form so users can share.
-            IPAddress ipAddress = ipHostInfo.AddressList[0];
-            IPEndPoint localEndPoint = new IPEndPoint(ipAddress, 11000);
+            //Writes out the ip address in ipv6 form
+            for (int i = 0; i < ipHostInfo.AddressList.Length; i++)
+            {
+                if (ipHostInfo.AddressList[i].AddressFamily == AddressFamily.InterNetwork)
+                {
+                    hostAddress = ipHostInfo.AddressList[i];
+                    break;
+                }
+            }
+            Console.WriteLine(hostAddress.ToString());
+            IPEndPoint localEndPoint = new IPEndPoint(hostAddress, 11000);
             //Have to write out the IP Address onto the host screen 
 
-            Socket listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            Socket listener = new Socket(hostAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
             try
             {
@@ -48,7 +63,7 @@ namespace SterneHalma
                 {
                     allDone.Reset();
 
-                    Console.WriteLine("Waiting for Connection");     //change to outpu on the screen
+                    Console.WriteLine("Waiting for Connection");     //change to output on the screen
                     listener.BeginAccept(new AsyncCallback(AcceptCallback), listener);
                     allDone.WaitOne();
                 }
@@ -61,10 +76,6 @@ namespace SterneHalma
             Console.Read();
         }
 
-        /// <summary>
-        /// Continues the thread and accepts client calls, then creates a state object
-        /// </summary>
-        /// <param name="ar"></param>
         public static void AcceptCallback(IAsyncResult ar)
         {
             allDone.Set();
@@ -76,12 +87,9 @@ namespace SterneHalma
             state.workSocket = handler;
             handler.BeginReceive(state.buffer, 0, StateObject.BufferSize,
                 0, new AsyncCallback(ReadCallback), state);
+            count++;
         }
 
-        /// <summary>
-        /// Retrieves data and uses it. Currently prints to console
-        /// </summary>
-        /// <param name="ar"></param>
         public static void ReadCallback(IAsyncResult ar)
         {
             String content = String.Empty;
@@ -106,25 +114,15 @@ namespace SterneHalma
                     handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0, new AsyncCallback(ReadCallback), state);
                 }
             }
+
         }
 
-        /// <summary>
-        /// Converts a string to byte data
-        /// Will need to change to send data we want to send
-        /// </summary>
-        /// <param name="handler"></param>
-        /// <param name="data"></param>
         private static void Send(Socket handler, String data)
         {
             byte[] byteData = Encoding.ASCII.GetBytes(data);
             handler.BeginSend(byteData, 0, byteData.Length, 0, new AsyncCallback(SendCallback), handler);
         }
 
-        /// <summary>
-        /// Retrieves the socket from stateobject and completes sending data to
-        /// the remote device
-        /// </summary>
-        /// <param name="ar"></param>
         private static void SendCallback(IAsyncResult ar)
         {
             try

@@ -33,8 +33,7 @@ namespace SterneHalma
             try
             {
                 // Establish the remote endpoint for the socket.
-                IPHostEntry ipHostInfo = Dns.GetHostEntry(IPAddress.Parse(ipaddress));
-                IPAddress ipAddress = ipHostInfo.AddressList[0];
+                IPAddress ipAddress = IPAddress.Parse(ipaddress);
                 IPEndPoint remoteEP = new IPEndPoint(ipAddress, port);
 
                 // Create a TCP/IP socket.

@@ -12,16 +12,21 @@ namespace SterneHalma
 {
     class CreateServer
     {
-        
+
         public static ManualResetEvent allDone = new ManualResetEvent(false);
-        private static IPAddress hostAddress = null;
+        //private variable for the host IPAddress with getters and setters.
+        private static IPAddress hostAddress { get; set; }
+        public static int count {get; set; }
+        
 
         /// <summary>
         /// Empty Constructor for now. May fill it later if needed.
         /// </summary>
         public CreateServer()
         {
-
+            hostAddress = null;
+            Create();
+            count = 0;
         }
 
         /// <summary>
@@ -34,8 +39,6 @@ namespace SterneHalma
 
             //Gets the hosts DNS and endpoint for socket
             IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
-            Console.WriteLine();
-            Console.WriteLine();
             //Writes out the ip address in ipv6 form
             for (int i = 0; i < ipHostInfo.AddressList.Length; i++)
             {
@@ -45,10 +48,11 @@ namespace SterneHalma
                     break;
                 }
             }
+            Console.WriteLine(hostAddress.ToString());
                 IPEndPoint localEndPoint = new IPEndPoint(hostAddress, 11000);
             //Have to write out the IP Address onto the host screen 
 
-            Socket listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            Socket listener = new Socket(hostAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
             try
             {
@@ -59,7 +63,7 @@ namespace SterneHalma
                 {
                     allDone.Reset();
 
-                    Console.WriteLine("Waiting for Connection");     //change to outpu on the screen
+                    Console.WriteLine("Waiting for Connection");     //change to output on the screen
                     listener.BeginAccept(new AsyncCallback(AcceptCallback), listener);
                     allDone.WaitOne();
                 }
@@ -83,32 +87,34 @@ namespace SterneHalma
             state.workSocket = handler;
             handler.BeginReceive(state.buffer, 0, StateObject.BufferSize,
                 0, new AsyncCallback(ReadCallback), state);
+            count++;
         }
 
         public static void ReadCallback(IAsyncResult ar)
         {
             String content = String.Empty;
 
-            StateObject state = (StateObject) ar.AsyncState;
+            StateObject state = (StateObject)ar.AsyncState;
             Socket handler = state.workSocket;
 
             int bytesRead = handler.EndReceive(ar);
-
-            if(bytesRead > 0)
-            {
-                state.sb.Append(Encoding.ASCII.GetString(state.buffer, 0, bytesRead));
-
-                content = state.sb.ToString();
-                if(content.IndexOf("EOF") > -1)
+            
+                if (bytesRead > 0)
                 {
-                    Console.WriteLine("Read {0} bytes from socket. \n Data : {1}", content.Length, content);
-                    Send(handler, content);
+                    state.sb.Append(Encoding.ASCII.GetString(state.buffer, 0, bytesRead));
+
+                    content = state.sb.ToString();
+                    if (content.IndexOf("EOF") > -1)
+                    {
+                        Console.WriteLine("Read {0} bytes from socket. \n Data : {1}", content.Length, content);
+                        Send(handler, content);
+                    }
+                    else
+                    {
+                        handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0, new AsyncCallback(ReadCallback), state);
+                    }
                 }
-                else
-                {
-                    handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0, new AsyncCallback(ReadCallback), state);
-                }
-            }
+            
         }
 
         private static void Send(Socket handler, String data)

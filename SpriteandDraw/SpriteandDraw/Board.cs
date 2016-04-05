@@ -69,12 +69,11 @@ namespace SpriteandDraw {
             string splitter = text;
             string[] separator = { " " };
             string[] split = splitter.Split(separator, StringSplitOptions.RemoveEmptyEntries);
-            
+            if(!split[0].Equals(currentGame.Type))
                 currentGame.Type = split[0];
             System.Diagnostics.Debug.WriteLine("param1 " + Int32.Parse(split[1]) + "param2 " + Int32.Parse(split[2]) + "param3 " + Int32.Parse(split[3]));
             currentGame.UpdateBoardServer(Int32.Parse(split[1]), Int32.Parse(split[2]), Int32.Parse(split[3]));
         }
-
         public void MouseClicked(int x, int y) {
             Rectangle mouseRect = new Rectangle(x, y, 1, 1);
             Rectangle backRect = new Rectangle((int)backb.X, (int)backb.Y, 50, 50);
@@ -93,13 +92,11 @@ namespace SpriteandDraw {
                     currentGame.Type = "ChineseCheckers";
                 }
             }
-            if (mouseRect.Intersects(backRect))
-            { //player clicked back button
+            if (mouseRect.Intersects(backRect)) { //player clicked back button
                 Game1.hosting = false;
                 Game1.currentScreen.Type = "Menu";
-            }
 
             }
-        
+        }        
     }
 }

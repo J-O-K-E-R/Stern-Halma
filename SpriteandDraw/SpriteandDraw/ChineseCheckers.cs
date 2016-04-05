@@ -34,8 +34,6 @@ namespace SpriteandDraw {
         }
 
         public override void Update(GameTime gameTime) {
-            System.Diagnostics.Debug.WriteLine(current.position.X);
-            System.Diagnostics.Debug.WriteLine(current.position.Y);
             MouseState state = Mouse.GetState();
             mposition.X = state.X;
             mposition.Y = state.Y;
@@ -92,12 +90,15 @@ namespace SpriteandDraw {
 
         public override void UpdateBoardServer(int pieceno, int xpos, int ypos)
         {
+
             System.Diagnostics.Debug.WriteLine("updateboardserver called");
             System.Diagnostics.Debug.WriteLine("xpos: " + xpos);
             System.Diagnostics.Debug.WriteLine("ypos: " + ypos);
             current = pieces[pieceno];
-            current.position.X = xpos;
-            current.position.Y = ypos;
+            current._isPressed = true;
+            current.position = new Vector2(xpos, ypos);
+            System.Diagnostics.Debug.WriteLine("x: " + current.position.X);
+            System.Diagnostics.Debug.WriteLine("Y: " + current.position.Y);
         }
 
         public void CreateBoard() {

@@ -21,12 +21,15 @@ namespace SpriteandDraw {
         public static Screen currentScreen;
         public static BitmapFont font;
         public static InputListenerManager inputManager;
+        public static int ScreenWidth, ScreenHeight;
 
         //private double score = 0;
 
         public Game1() {
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferWidth = 1600;  // set this value to the desired width of your window
+            ScreenWidth = 1600;
+            ScreenHeight = 900;
             graphics.PreferredBackBufferHeight = 900;   // set this value to the desired height of your window
             graphics.ApplyChanges();
             Content.RootDirectory = "Content";
@@ -82,7 +85,10 @@ namespace SpriteandDraw {
                 case "Menu":
                     currentScreen = new Menu();
                     break;
-                case "Host":
+                case "PreGame":
+                    currentScreen = new PreGame();
+                    break;
+                case "Board":
                     currentScreen = new Board();
                     break;
                 case "Setup":

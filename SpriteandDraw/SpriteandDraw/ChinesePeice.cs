@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using ProjectName;
 
-namespace ProjectName {
-    public class ChinesePeice {
+namespace SpriteandDraw {
+    public class ChinesePeice : GamePiece {
         // Some variables for this object class, i.e. Attributes
         static Texture2D circlered;
         static Texture2D circleblue;
@@ -16,11 +17,10 @@ namespace ProjectName {
         static Texture2D circleyellow;
         static Texture2D circleblack;
         static Texture2D circlewhite;
-        public Vector2 position;
         private char _type;
-        public bool _isPressed = false;
-        public ChinesePeice() {
 
+        public ChinesePeice() {
+            _isPressed = false;
         }
 
 
@@ -39,7 +39,7 @@ namespace ProjectName {
             circlewhite = content.Load<Texture2D>("circlewhite");
         }
 
-        public void Draw(SpriteBatch spriteBatch) {
+        public override void Draw(SpriteBatch spriteBatch) {
             switch (_type) {
                 case 'r': {
                         spriteBatch.Draw(circlered, position, Color.LightGray);

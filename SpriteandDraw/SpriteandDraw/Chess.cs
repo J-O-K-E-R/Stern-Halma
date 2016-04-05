@@ -13,7 +13,7 @@ namespace SpriteandDraw {
     class Chess : GameType {
         Texture2D rectw, rectb;
         SpriteBatch spriteBatch;
-        ChessPiece[] pieces = new ChessPiece[8];
+        ChessPiece[] pieces = new ChessPiece[32];
         Rectangle[] list = new Rectangle[32];
         GamePiece current = new CheckersPiece();
         MouseState previousMouseState;
@@ -87,6 +87,43 @@ namespace SpriteandDraw {
                     }
                     if (i == 1 && j == 5) {
                         pieces[count] = new ChessPiece(new Vector2(300 + (j * 100), 50), 'l');
+                        pieces[count].pieceNo = count;
+                        count++;
+                    }
+                    if(i == 2) {
+                        pieces[count] = new ChessPiece(new Vector2(300 + (j * 100), 150), 'b');
+                        pieces[count].pieceNo = count;
+                        count++;
+                    }
+                    //
+                    if ((i == 8 && j == 8) || (i == 8 && j == 1)) {
+                        pieces[count] = new ChessPiece(new Vector2(300 + (j * 100), 750), 'c');
+                        pieces[count].pieceNo = count;
+                        count++;
+
+                    }
+                    if ((i == 8 && j == 2) || (i == 8 && j == 7)) {
+                        pieces[count] = new ChessPiece(new Vector2(300 + (j * 100), 750), 'e');
+                        pieces[count].pieceNo = count;
+                        count++;
+                    }
+                    if ((i == 8 && j == 3) || (i == 8 && j == 6)) {
+                        pieces[count] = new ChessPiece(new Vector2(300 + (j * 100), 750), 'g');
+                        pieces[count].pieceNo = count;
+                        count++;
+                    }
+                    if (i == 8 && j == 5) {
+                        pieces[count] = new ChessPiece(new Vector2(300 + (j * 100), 750), 'i');
+                        pieces[count].pieceNo = count;
+                        count++;
+                    }
+                    if (i == 8 && j == 4) {
+                        pieces[count] = new ChessPiece(new Vector2(300 + (j * 100), 750), 'k');
+                        pieces[count].pieceNo = count;
+                        count++;
+                    }
+                    if (i == 7) {
+                        pieces[count] = new ChessPiece(new Vector2(300 + (j * 100), 650), 'a');
                         pieces[count].pieceNo = count;
                         count++;
                     }

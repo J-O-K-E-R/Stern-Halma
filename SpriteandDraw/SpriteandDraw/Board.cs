@@ -12,11 +12,12 @@ namespace SpriteandDraw {
         GameType currentGame;
         MouseState previousMouseState;
         Vector2 mposition;//mouse position
-        Vector2 backb = new Vector2(0, 870);
+        Vector2 backb;
         Button back;
 
         public Board() {
-            back = new Button(backb, "gear", "");
+            backb = new Vector2(0, Game1.ScreenHeight - 30);
+            back = new Button(backb, "back", "");
             currentGame = new ChineseCheckers();
         }
         public override void LoadContent() {
@@ -44,9 +45,9 @@ namespace SpriteandDraw {
             currentGame.Update(gameTime);
         }
         public override void Draw(SpriteBatch spriteBatch) {
-            spriteBatch.Draw(Game1._backgroundTexture, new Rectangle(0, 0, Game1.graphics.GraphicsDevice.Viewport.Width, Game1.graphics.GraphicsDevice.Viewport.Height), Color.DarkSlateGray);
-            back.Draw(spriteBatch);
+            spriteBatch.Draw(Game1._backgroundTexture, new Rectangle(0, 0, Game1.ScreenWidth, Game1.ScreenHeight), Color.DarkSlateGray);
             currentGame.Draw(spriteBatch);
+            back.Draw(spriteBatch);
         }
 
         public void MouseClicked(int x, int y) {

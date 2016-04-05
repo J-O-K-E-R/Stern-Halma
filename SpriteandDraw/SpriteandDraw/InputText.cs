@@ -19,7 +19,7 @@ namespace SpriteandDraw {
         private static Texture2D _pointTexture;
         private SpriteBatch spriteBatch;
         private KeyboardListener keyboardListener;
-        private string tempstring = "";
+        public string tempstring = "";
         private string _typedString = string.Empty;
         private bool _isCursorVisible = true;
         private const float _cursorBlinkDelay = 0.5f;

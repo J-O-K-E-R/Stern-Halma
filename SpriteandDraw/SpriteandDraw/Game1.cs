@@ -17,6 +17,7 @@ namespace SpriteandDraw {
     public class Game1 : Game {
         public static GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        public static Texture2D logo;
         public static Texture2D _backgroundTexture;
         public static Screen currentScreen;
         public static BitmapFont font;
@@ -59,6 +60,7 @@ namespace SpriteandDraw {
             Circle.LoadContent(Content);
             Button.LoadContent(Content);
             ChinesePeice.LoadContent(Content);
+            logo = Content.Load<Texture2D>("Logo");
             _backgroundTexture = Content.Load<Texture2D>("vignette");
             font = Content.Load<BitmapFont>("alphabet");
         }

@@ -17,7 +17,7 @@ namespace SpriteandDraw {
 
         public Board() {
             backb = new Vector2(0, Game1.ScreenHeight - 30);
-            back = new Button(backb, "gear", "");
+            back = new Button(backb, "back", "");
             currentGame = new ChineseCheckers();
         }
         public override void LoadContent() {

@@ -15,8 +15,7 @@ namespace SpriteandDraw {
             (AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
         private const int _PORT = 100;
-        public static Board board = new Board();
-
+        static Board board = new Board();
         public Join() {
         }
         private static void ConnectToServer() {

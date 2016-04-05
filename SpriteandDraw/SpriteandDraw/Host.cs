@@ -19,6 +19,8 @@ namespace SpriteandDraw
         private const int _PORT = 100;
         private static byte[] _buffer = new byte[_BUFFER_SIZE];
         public static IPAddress hostAddress { get; set; }
+        public Board board = new Board();
+        public int playerCount = 0;
 
         public Host()
         {
@@ -39,10 +41,20 @@ namespace SpriteandDraw
             }
             Console.WriteLine("Setting up server...");
             _serverSocket = new Socket(hostAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-            _serverSocket.Bind(new IPEndPoint(hostAddress, _PORT));
-            _serverSocket.Listen(5);
-            _serverSocket.BeginAccept(AcceptCallback, null);
-            Console.WriteLine("Server setup complete");
+            if (!_serverSocket.IsBound)
+            {
+                try
+                {
+                    _serverSocket.Bind(new IPEndPoint(hostAddress, _PORT));
+                    _serverSocket.Listen(5);
+                    _serverSocket.BeginAccept(AcceptCallback, null);
+                    Console.WriteLine("Server setup complete");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.ToString());
+                }
+            } 
         }
 
         /// <summary>
@@ -74,6 +86,7 @@ namespace SpriteandDraw
             }
 
             _clientSockets.Add(socket);
+            playerCount++;
             socket.BeginReceive(_buffer, 0, _BUFFER_SIZE, SocketFlags.None, ReceiveCallback, socket);
             Console.WriteLine("Client connected, waiting for request...");
             _serverSocket.BeginAccept(AcceptCallback, null);
@@ -93,39 +106,53 @@ namespace SpriteandDraw
                 Console.WriteLine("Client forcefully disconnected");
                 current.Close(); // Dont shutdown because the socket may be disposed and its disconnected anyway
                 _clientSockets.Remove(current);
+                playerCount--;
                 return;
             }
 
+            //read in data
             byte[] recBuf = new byte[received];
             Array.Copy(_buffer, recBuf, received);
             string text = Encoding.ASCII.GetString(recBuf);
-            Console.WriteLine("Received Text: " + text);
 
-            if (text.ToLower() == "get time") // Client requested time
-            {
-                Console.WriteLine("Text is a get time request");
-                byte[] data = Encoding.ASCII.GetBytes(DateTime.Now.ToLongTimeString());
-                current.Send(data);
-                Console.WriteLine("Time sent to client");
-            }
-            else if (text.ToLower() == "exit") // Client wants to exit gracefully
-            {
-                // Always Shutdown before closing
-                current.Shutdown(SocketShutdown.Both);
-                current.Close();
-                _clientSockets.Remove(current);
-                Console.WriteLine("Client disconnected");
-                return;
-            }
-            else
-            {
-                Console.WriteLine("Text is an invalid request");
-                byte[] data = Encoding.ASCII.GetBytes("Invalid request");
-                current.Send(data);
-                Console.WriteLine("Warning Sent");
-            }
+            Console.WriteLine("Received Text: " + text);
+            
+            byte[] data = Encoding.ASCII.GetBytes(DateTime.Now.ToLongTimeString());
+
+            board.UpdateBoard(text);
+
+            //echo data back to other clients
+            foreach(Socket clients in _clientSockets)
+                Send(current, text);
+
 
             current.BeginReceive(_buffer, 0, _BUFFER_SIZE, SocketFlags.None, ReceiveCallback, current);
+        }
+
+        public void Send(Socket current, string data)
+        {
+            // Convert the string data to byte data using ASCII encoding.
+            byte[] byteData = Encoding.ASCII.GetBytes(data);
+
+            // Begin sending the data to the remote device.
+            current.BeginSend(byteData, 0, byteData.Length, 0, new AsyncCallback(SendCallback), current);
+        }
+
+        private static void SendCallback(IAsyncResult ar)
+        {
+            try
+            {
+                // Retrieve the socket from the state object.
+                Socket handler = (Socket)ar.AsyncState;
+
+                // Complete sending the data to the remote device.
+                int bytesSent = handler.EndSend(ar);
+                Console.WriteLine("Sent {0} bytes to client.", bytesSent);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
         }
     }
 }

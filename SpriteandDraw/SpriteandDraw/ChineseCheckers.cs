@@ -71,10 +71,19 @@ namespace SpriteandDraw {
                     System.Diagnostics.Debug.WriteLine("pressed peice: " + i);
                     current = pieces[i];
                     current._isPressed = true;
+                    
                     break;
                 }
             }
         }
+
+        public override void UpdateBoardServer(int pieceno, int xpos, int ypos)
+        {
+            current = pieces[pieceno];
+            current.position.X = xpos;
+            current.position.Y = ypos;
+        }
+
         public void CreateBoard() {
             int i, height;
             int[] x = new int[121];

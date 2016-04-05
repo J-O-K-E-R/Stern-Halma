@@ -9,7 +9,7 @@ using ProjectName;
 
 namespace SpriteandDraw {
     public class Board : Screen {
-        GameType currentGame;
+        public static GameType currentGame { get; private set; }
         MouseState previousMouseState;
         Vector2 mposition;//mouse position
         Vector2 backb;
@@ -56,6 +56,16 @@ namespace SpriteandDraw {
             if (mouseRect.Intersects(backRect)) { //player clicked back button
                 Game1.currentScreen.Type = "Menu";
             }
-        }        
+        }
+
+        public void UpdateBoard(string text)
+        {
+            string splitter = text;
+            string[] separator = { " " };
+            string[] split = splitter.Split(separator, StringSplitOptions.RemoveEmptyEntries);
+
+            currentGame.Type = split[0];
+            currentGame.UpdateBoardServer(Int32.Parse(split[1]), Int32.Parse(split[2]), Int32.Parse(split[3]));
+        }
     }
 }

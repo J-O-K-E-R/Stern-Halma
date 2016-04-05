@@ -34,6 +34,8 @@ namespace SpriteandDraw {
         }
 
         public override void Update(GameTime gameTime) {
+            System.Diagnostics.Debug.WriteLine(current.position.X);
+            System.Diagnostics.Debug.WriteLine(current.position.Y);
             MouseState state = Mouse.GetState();
             mposition.X = state.X;
             mposition.Y = state.Y;
@@ -43,10 +45,14 @@ namespace SpriteandDraw {
                 current.position.X = mposition.X - 20;
                 current.position.Y = mposition.Y - 20;
                 string sending = "" + Board.currentGame + " " + current.position.X + " " + current.position.Y;
-                if (Game1.hosting == true)
+                if (Game1.hosting == true) {
+                    System.Diagnostics.Debug.WriteLine("Host sending");
                     Host.Send(sending);
-                else
+                }
+                else {
+                    System.Diagnostics.Debug.WriteLine("Client sending");
                     Join.Send(sending);
+                }
 
             }
             if (state.LeftButton == ButtonState.Pressed && !current._isPressed) {
@@ -86,6 +92,9 @@ namespace SpriteandDraw {
 
         public override void UpdateBoardServer(int pieceno, int xpos, int ypos)
         {
+            System.Diagnostics.Debug.WriteLine("updateboardserver called");
+            System.Diagnostics.Debug.WriteLine("xpos: " + xpos);
+            System.Diagnostics.Debug.WriteLine("ypos: " + ypos);
             current = pieces[pieceno];
             current.position.X = xpos;
             current.position.Y = ypos;

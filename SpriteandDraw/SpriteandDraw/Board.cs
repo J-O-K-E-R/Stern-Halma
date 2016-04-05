@@ -24,7 +24,7 @@ namespace SpriteandDraw {
             chess = new Button(chessb, "blank", "Chess");
             checkers = new Button(checkersb, "blank", "Checkers");
             chinese = new Button(chineseb, "blank", "Sterne-Halma");
-            currentGame = new Checkers();
+            currentGame = new ChineseCheckers();
         }
         public override void LoadContent() {
             Type = "Board";

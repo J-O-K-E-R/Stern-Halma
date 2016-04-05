@@ -12,9 +12,9 @@ namespace SpriteandDraw {
     class ChineseCheckers : GameType {
 
         private List<Circle> board = new List<Circle>();
-        ChinesePeice[] pieces = new ChinesePeice[60];
+        static ChinesePeice[] pieces = new ChinesePeice[60];
         Rectangle[] list = new Rectangle[60];
-        GamePiece current = new ChinesePeice();
+        static GamePiece current = new ChinesePeice();
         MouseState previousMouseState;
         Vector2 mposition;//mouse position
 
@@ -42,13 +42,13 @@ namespace SpriteandDraw {
 
                 current.position.X = mposition.X - 20;
                 current.position.Y = mposition.Y - 20;
-                string sending = "" + Board.currentGame + " " + current.position.X + " " + current.position.Y;
+                string sending = "" + "ChineseCheckers" + " " + current.position.X + " " + current.position.Y;
                 if (Game1.hosting == true) {
-                    System.Diagnostics.Debug.WriteLine("Host sending");
+                    //System.Diagnostics.Debug.WriteLine("Host sending");
                     Host.Send(sending);
                 }
                 else {
-                    System.Diagnostics.Debug.WriteLine("Client sending");
+                    //System.Diagnostics.Debug.WriteLine("Client sending");
                     Join.Send(sending);
                 }
 
@@ -90,13 +90,11 @@ namespace SpriteandDraw {
 
         public override void UpdateBoardServer(int pieceno, int xpos, int ypos)
         {
-
             System.Diagnostics.Debug.WriteLine("updateboardserver called");
             System.Diagnostics.Debug.WriteLine("xpos: " + xpos);
             System.Diagnostics.Debug.WriteLine("ypos: " + ypos);
-            current = pieces[pieceno];
-            current._isPressed = true;
-            current.position = new Vector2(xpos, ypos);
+            pieces[pieceno].position.X = xpos;
+            pieces[pieceno].position.Y = ypos;
             System.Diagnostics.Debug.WriteLine("x: " + current.position.X);
             System.Diagnostics.Debug.WriteLine("Y: " + current.position.Y);
         }

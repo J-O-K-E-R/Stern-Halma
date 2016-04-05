@@ -10,6 +10,7 @@ using ProjectName;
 namespace SpriteandDraw {
     public class Board : Screen {
         public static GameType currentGame;
+        static string _type = "Checkers";
         MouseState previousMouseState;
         Vector2 mposition;//mouse position
         Vector2 backb, chessb, checkersb, chineseb;
@@ -24,7 +25,7 @@ namespace SpriteandDraw {
             chess = new Button(chessb, "blank", "Chess");
             checkers = new Button(checkersb, "blank", "Checkers");
             chinese = new Button(chineseb, "blank", "Sterne-Halma");
-            currentGame = new ChineseCheckers();
+            currentGame = new Checkers();
         }
         public override void LoadContent() {
             Type = "Board";
@@ -69,11 +70,15 @@ namespace SpriteandDraw {
             string splitter = text;
             string[] separator = { " " };
             string[] split = splitter.Split(separator, StringSplitOptions.RemoveEmptyEntries);
-            if(!split[0].Equals(currentGame.Type))
+            if (split[0] != _type) {
+                System.Diagnostics.Debug.WriteLine("Board gametype changed");
                 currentGame.Type = split[0];
+                _type = split[0];
+            }
             System.Diagnostics.Debug.WriteLine("param1 " + Int32.Parse(split[1]) + "param2 " + Int32.Parse(split[2]) + "param3 " + Int32.Parse(split[3]));
             currentGame.UpdateBoardServer(Int32.Parse(split[1]), Int32.Parse(split[2]), Int32.Parse(split[3]));
         }
+
         public void MouseClicked(int x, int y) {
             Rectangle mouseRect = new Rectangle(x, y, 1, 1);
             Rectangle backRect = new Rectangle((int)backb.X, (int)backb.Y, 50, 50);
@@ -84,12 +89,15 @@ namespace SpriteandDraw {
 
                 if (mouseRect.Intersects(chessRect)) { //player clicked back button
                     currentGame.Type = "Chess";
+                    _type = "Chess";
                 }
                 if (mouseRect.Intersects(checkersRect)) { //player clicked back button
                     currentGame.Type = "Checkers";
+                    _type = "Checkers";
                 }
                 if (mouseRect.Intersects(chineseRect)) { //player clicked back button
                     currentGame.Type = "ChineseCheckers";
+                    _type = "ChineseCheckers";
                 }
             }
             if (mouseRect.Intersects(backRect)) { //player clicked back button

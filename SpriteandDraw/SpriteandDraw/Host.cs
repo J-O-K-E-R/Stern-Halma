@@ -22,7 +22,7 @@ namespace SpriteandDraw
         private const int _PORT = 100;
         private static byte[] _buffer = new byte[_BUFFER_SIZE];
         public static IPAddress hostAddress { get; set; }
-        public Board board = new Board();
+        public static Board board = new Board();
         public int playerCount = 0;
         
 

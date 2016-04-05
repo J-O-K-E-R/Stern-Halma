@@ -24,7 +24,7 @@ namespace SpriteandDraw {
             chess = new Button(chessb, "blank", "Chess");
             checkers = new Button(checkersb, "blank", "Checkers");
             chinese = new Button(chineseb, "blank", "Sterne-Halma");
-            currentGame = new Checkers();
+            currentGame = new ChineseCheckers();
         }
         public override void LoadContent() {
             Type = "Board";
@@ -65,11 +65,13 @@ namespace SpriteandDraw {
             
         }
         public void UpdateBoard(string text) {
+            System.Diagnostics.Debug.WriteLine("update boarch called");
             string splitter = text;
             string[] separator = { " " };
             string[] split = splitter.Split(separator, StringSplitOptions.RemoveEmptyEntries);
 
             currentGame.Type = split[0];
+            System.Diagnostics.Debug.WriteLine("param1 " + Int32.Parse(split[1]) + "param2 " + Int32.Parse(split[2]) + "param3 " + Int32.Parse(split[3]));
             currentGame.UpdateBoardServer(Int32.Parse(split[1]), Int32.Parse(split[2]), Int32.Parse(split[3]));
         }
 

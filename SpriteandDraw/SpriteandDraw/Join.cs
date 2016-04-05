@@ -13,12 +13,16 @@ namespace SpriteandDraw
 {
     class Join
     {
-        private static Socket _clientSocket = new Socket
+        public static Socket _clientSocket = new Socket
             (AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
         private const int _PORT = 100;
         public static Board board = new Board();
 
+        public Join()
+        {
+            Menu.isHost = false;
+    }
         private static void ConnectToServer()
         {
             int attempts = 0;
@@ -46,7 +50,6 @@ namespace SpriteandDraw
 
             while (true)
             {
-                SendRequest();
                 ReceiveResponse();
             }
         }
@@ -62,10 +65,10 @@ namespace SpriteandDraw
             Environment.Exit(0);
         }
 
-        private static void SendRequest()
+        public static void Send(string data)
         {
             Console.Write("Send a request: ");
-            string request = Console.ReadLine();
+            string request = data;
             SendString(request);
         }
 

@@ -21,10 +21,12 @@ namespace SpriteandDraw
         public static IPAddress hostAddress { get; set; }
         public Board board = new Board();
         public int playerCount = 0;
+        
 
         public Host()
         {
             hostAddress = null;
+            Menu.isHost = true;
         }
 
         public void Create()
@@ -123,20 +125,23 @@ namespace SpriteandDraw
             Console.WriteLine(text);
 
             //echo data back to other clients
-            foreach(Socket clients in _clientSockets)
-                Send(current, text);
+            Send(text);
 
 
             current.BeginReceive(_buffer, 0, _BUFFER_SIZE, SocketFlags.None, ReceiveCallback, current);
         }
 
-        public void Send(Socket current, string data)
+        public static void Send(string data)
         {
             // Convert the string data to byte data using ASCII encoding.
-            byte[] byteData = Encoding.ASCII.GetBytes(data);
+            foreach (Socket current in _clientSockets)
+            {
+                byte[] byteData = Encoding.ASCII.GetBytes(data);
 
-            // Begin sending the data to the remote device.
-            current.BeginSend(byteData, 0, byteData.Length, 0, new AsyncCallback(SendCallback), current);
+                // Begin sending the data to the remote device.
+
+                current.BeginSend(byteData, 0, byteData.Length, 0, new AsyncCallback(SendCallback), current);
+            }
         }
 
         private static void SendCallback(IAsyncResult ar)

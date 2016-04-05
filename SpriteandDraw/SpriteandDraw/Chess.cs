@@ -28,7 +28,33 @@ namespace SpriteandDraw {
             Type = "Chess";
         }
         public override void Update(GameTime gameTime) {
+            MouseState state = Mouse.GetState();
+            mposition.X = state.X;
+            mposition.Y = state.Y;
 
+            if (previousMouseState.LeftButton == ButtonState.Pressed && state.LeftButton == ButtonState.Pressed) {
+
+                current.position.X = mposition.X - 50;
+                current.position.Y = mposition.Y - 50;
+                string sending = "Chess" + " " + current.pieceNo + " " + current.position.X + " " + current.position.Y;
+                if (Game1.hosting == true) {
+                    //System.Diagnostics.Debug.WriteLine("Host sending");
+                    Host.Send(sending);
+                }
+                else {
+                    //System.Diagnostics.Debug.WriteLine("Client sending");
+                    Join.Send(sending);
+                }
+
+            }
+            if (state.LeftButton == ButtonState.Pressed && !current._isPressed) {
+                MousePressed((int)mposition.X, (int)mposition.Y);
+            }
+            if (previousMouseState.LeftButton == ButtonState.Pressed && state.LeftButton == ButtonState.Released) {
+                current._isPressed = false;
+                current = new CheckersPiece();
+            }
+            previousMouseState = state;
         }
         public override void Draw(SpriteBatch spriteBatch) {
             this.spriteBatch = spriteBatch;
@@ -59,7 +85,21 @@ namespace SpriteandDraw {
                 black[i] = Color.Black;
             rectb.SetData(black);
         }
+        public void MousePressed(int x, int y) {
+            Rectangle mouseRect = new Rectangle(x, y, 1, 1);
+            for (int i = 0; i < pieces.Length; i++) {
+                list[i] = (new Rectangle((int)pieces[i].position.X, (int)pieces[i].position.Y, 100, 100));
+            }
 
+            for (int i = 0; i < list.Length; i++) {
+                if (mouseRect.Intersects(list[i])) {
+                    System.Diagnostics.Debug.WriteLine("pressed peice: " + i);
+                    current = pieces[i];
+                    current._isPressed = true;
+                    break;
+                }
+            }
+        }
 
         public void AddPiece() {
             int count = 0;

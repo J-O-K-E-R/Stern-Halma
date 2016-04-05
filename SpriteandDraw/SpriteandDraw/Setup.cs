@@ -77,6 +77,7 @@ namespace SpriteandDraw {
                 //this is where you connect it
                 //this will switch the screen to the board if successful
                 //test for string for ip
+                Game1.currentScreen.Type = "Board";
                 System.Diagnostics.Debug.WriteLine(ta);
             }
         }

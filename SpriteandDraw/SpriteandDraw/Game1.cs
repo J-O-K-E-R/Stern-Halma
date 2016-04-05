@@ -15,6 +15,7 @@ namespace SpriteandDraw {
     /// This is the main type for your game.
     /// </summary>
     public class Game1 : Game {
+        public static bool hosting = false;
         public static GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         public static Texture2D logo;
@@ -60,6 +61,8 @@ namespace SpriteandDraw {
             Circle.LoadContent(Content);
             Button.LoadContent(Content);
             ChinesePeice.LoadContent(Content);
+            CheckersPiece.LoadContent(Content);
+            ChessPiece.LoadContent(Content);
             logo = Content.Load<Texture2D>("Logo");
             _backgroundTexture = Content.Load<Texture2D>("vignette");
             font = Content.Load<BitmapFont>("alphabet");

@@ -12,7 +12,9 @@ namespace SterneHalma
 {
     class CreateServer
     {
+        
         public static ManualResetEvent allDone = new ManualResetEvent(false);
+        private static IPAddress hostAddress = null;
 
         /// <summary>
         /// Empty Constructor for now. May fill it later if needed.
@@ -32,9 +34,18 @@ namespace SterneHalma
 
             //Gets the hosts DNS and endpoint for socket
             IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
-            //Writes out the ip address in pgp form
-            IPAddress ipAddress = ipHostInfo.AddressList[0];
-            IPEndPoint localEndPoint = new IPEndPoint(ipAddress, 11000);
+            Console.WriteLine();
+            Console.WriteLine();
+            //Writes out the ip address in ipv6 form
+            for (int i = 0; i < ipHostInfo.AddressList.Length; i++)
+            {
+                if (ipHostInfo.AddressList[i].AddressFamily == AddressFamily.InterNetwork)
+                {
+                    hostAddress = ipHostInfo.AddressList[i];
+                    break;
+                }
+            }
+                IPEndPoint localEndPoint = new IPEndPoint(hostAddress, 11000);
             //Have to write out the IP Address onto the host screen 
 
             Socket listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);

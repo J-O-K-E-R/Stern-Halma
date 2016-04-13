@@ -36,7 +36,7 @@ namespace SpriteandDraw {
                     _clientSocket.BeginAccept(AcceptCallback, null);
                 }
                 catch (SocketException) {
-                    Console.Clear();
+                    //Console.Clear();
                 }
             }
         }

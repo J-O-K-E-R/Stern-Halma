@@ -36,11 +36,17 @@ namespace SpriteandDraw {
 
                 current.position.X = mposition.X - 50;
                 current.position.Y = mposition.Y - 50;
-                string sending = " " + "Checkers" + " " + current.pieceNo + " " + current.position.X + " " + current.position.Y;
+                //string sending = " " + "Checkers" + " " + current.pieceNo + " " + current.position.X + " " + current.position.Y;
                 if (Game1.hosting == true)
+                {
+                    string sending = " " + "Checkers" + " " + current.pieceNo + " " + current.position.X + " " + current.position.Y;
                     Host.Send(sending);
-                else
+                }
+                else {
+                    string sending = " " + "Checkers" + " " + current.pieceNo + " " + current.position.X + " " + current.position.Y;
                     Join.Send(sending);
+                    Console.WriteLine("Game1.hosting is " + Game1.hosting.ToString());
+                }
                 
 
             }

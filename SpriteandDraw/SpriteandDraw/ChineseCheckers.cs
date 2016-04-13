@@ -37,22 +37,23 @@ namespace SpriteandDraw {
             MouseState state = Mouse.GetState();
             mposition.X = state.X;
             mposition.Y = state.Y;
-
+            
             if (previousMouseState.LeftButton == ButtonState.Pressed && state.LeftButton == ButtonState.Pressed) {
 
                 current.position.X = mposition.X - 20;
                 current.position.Y = mposition.Y - 20;
                 
                 if (Game1.hosting == true) {
-                    string sending = "ChineseCheckers" + " " + current.pieceNo + " " + current.position.X + " " + current.position.Y;
+                    string sending = "ChineseCheckers" + " " + current.pieceNo + " " + current.position.X + " " + current.position.Y + " Host";
                     //System.Diagnostics.Debug.WriteLine("Host sending");
                     Host.Send(sending);
                 }
                 else {
-                    string sending = "ChineseCheckers" + " " + current.pieceNo + " " + current.position.X + " " + current.position.Y;
+                    string sending = "ChineseCheckers" + " " + current.pieceNo + " " + current.position.X + " " + current.position.Y + " Join";
                     //System.Diagnostics.Debug.WriteLine("Client sending");
                     Join.Send(sending);
                 }
+                
 
             }
             if (state.LeftButton == ButtonState.Pressed && !current._isPressed) {

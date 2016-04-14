@@ -53,7 +53,7 @@ namespace SpriteandDraw {
                         break;
                 }
             }
-            if (split.Length >= 4) {
+            if (split.Length == 5) {
                 currentGame.UpdateBoardServer(Int32.Parse(split[1]), Int32.Parse(split[2]), Int32.Parse(split[3]));
             }
         }

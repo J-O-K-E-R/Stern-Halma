@@ -118,8 +118,20 @@ namespace SpriteandDraw {
             //Console.WriteLine("Client Received Text: " + text);
 
             board.UpdateBoard(text);
+<<<<<<< HEAD
             
             current.BeginReceive(_buffer, 0, _BUFFER_SIZE, SocketFlags.None, ReceiveCallback, current);
+=======
+            try
+            {
+                current.BeginReceive(_buffer, 0, _BUFFER_SIZE, SocketFlags.None, ReceiveCallback, current);
+            }
+            catch(SocketException e)
+            {
+                Console.WriteLine("Exception at Join line 146: " + e.ToString() + " " + e.SocketErrorCode);
+            }
+            //Console.WriteLine(text);
+>>>>>>> master
         }
     }
 }

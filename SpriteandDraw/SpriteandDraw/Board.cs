@@ -9,7 +9,7 @@ using ProjectName;
 
 namespace SpriteandDraw {
     public class Board : Screen {
-        public GameType currentGame;
+        public static GameType currentGame;
         static string _type = "Checkers";
         static string _gametype = "Checkers";
         MouseState previousMouseState;

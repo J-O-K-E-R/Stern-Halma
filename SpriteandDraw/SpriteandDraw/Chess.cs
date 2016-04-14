@@ -94,7 +94,6 @@ namespace SpriteandDraw {
 
             for (int i = 0; i < list.Length; i++) {
                 if (mouseRect.Intersects(list[i])) {
-                    System.Diagnostics.Debug.WriteLine("pressed peice: " + i);
                     current = pieces[i];
                     current._isPressed = true;
                     break;
@@ -174,8 +173,11 @@ namespace SpriteandDraw {
             }
 
         }
-        public override void UpdateBoardServer(int pieceno, int xpos, int ypos) {
 
+        public override void UpdateBoardServer(int pieceno, int xpos, int ypos) {
+            Console.WriteLine("I am being called in chess");
+            pieces[pieceno].position.X = xpos;
+            pieces[pieceno].position.Y = ypos;
         }
     }
 }

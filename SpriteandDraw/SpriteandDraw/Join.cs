@@ -115,7 +115,7 @@ namespace SpriteandDraw {
             Array.Copy(_buffer, recBuf, received);
             string text = Encoding.ASCII.GetString(recBuf);
 
-            //Console.WriteLine("Client Received Text: " + text);
+            Console.WriteLine("Client Received Text: " + text);
 
             board.UpdateBoard(text);
             

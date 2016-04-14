@@ -92,18 +92,19 @@ namespace SpriteandDraw {
 
                 if (mouseRect.Intersects(chessRect)) { //player clicked back button from chess screen
                     currentGame.Type = "Chess";
-                    Host.Send(" " + "Chess");
+                    Host.Send("Chess");
                     _type = "Chess";
                 }
                 if (mouseRect.Intersects(checkersRect)) { //player clicked back button from checkers screen
                     currentGame.Type = "Checkers";
-                    Host.Send(" " + "Checkers");
                     _type = "Checkers";
+                    Host.Send("Checkers");
                 }
                 if (mouseRect.Intersects(chineseRect)) { //player clicked back button from chinese checkers screen
                     currentGame.Type = "ChineseCheckers";
-                    Host.Send(" " + "ChineseCheckers");
+
                     _type = "ChineseCheckers";
+                    Host.Send("ChineseCheckers");
                 }
             }
             if (mouseRect.Intersects(backRect)) { //player clicked back button

@@ -54,7 +54,10 @@ namespace SpriteandDraw {
             return true;
         }
 
-        ///Testing
+        /// <summary>
+        /// Ends the connection request because we are already connected
+        /// </summary>
+        /// <param name="AR"></param>
         public void ConnectCallback(IAsyncResult AR)
         {
             try
@@ -69,7 +72,9 @@ namespace SpriteandDraw {
                 Console.WriteLine(e.ToString());
             }
         }
-
+        /// <summary>
+        /// Closes all the sockets that are currently connected to the client
+        /// </summary>
         public static void CloseAllSockets()
         {
             _clientSocket.Shutdown(SocketShutdown.Both);
@@ -102,6 +107,10 @@ namespace SpriteandDraw {
             }
         }
 
+        /// <summary>
+        /// Sends the callback and makes sure that all data sent has been receieved
+        /// </summary>
+        /// <param name="ar"></param>
         private static void SendCallback(IAsyncResult ar)
         {
                 // Retrieve the socket from the state object.
@@ -111,6 +120,10 @@ namespace SpriteandDraw {
                 int bytesSent = handler.EndSend(ar);
         }
 
+        /// <summary>
+        /// Handles how the system handles the data sent to it.
+        /// </summary>
+        /// <param name="AR"></param>
         private void ReceiveCallback(IAsyncResult AR) {
             //Console.WriteLine("Client Receiving Callback");
             Socket current = (Socket)AR.AsyncState;
@@ -131,6 +144,7 @@ namespace SpriteandDraw {
 
             Console.WriteLine("Client Received Text: " + text);
 
+            ///Updates the board with the text received
             board.UpdateBoard(text);
             
             try

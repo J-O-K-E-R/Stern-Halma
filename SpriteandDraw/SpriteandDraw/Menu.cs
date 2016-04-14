@@ -1,4 +1,6 @@
-﻿using System;
+﻿///Authors: Justin Mclennan and Chun-Yip Tang
+///Last Updated April 13, 2016
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +11,10 @@ using MonoGame.Extended;
 using MonoGame.Extended.BitmapFonts;
 using ProjectName;
 
+/// <summary>
+/// The menu for the game
+/// Shows the buttons of the screen on starting the program
+/// </summary>
 namespace SpriteandDraw {
     public class Menu : Screen {
         Vector2 mposition;//mouse position
@@ -19,6 +25,9 @@ namespace SpriteandDraw {
         Vector2 creditb;
         Button credit, host, join;
 
+        /// <summary>
+        /// Constructor that creates the location and buttons
+        /// </summary>
         public Menu() {
             hostb = new Vector2(butmid, 300);
             joinb = new Vector2(butmid, 375);
@@ -28,10 +37,19 @@ namespace SpriteandDraw {
             credit = new Button(creditb, "blank", "Credits");
 
         }
+
+        /// <summary>
+        /// Basic load content of monogame
+        /// </summary>
         public override void LoadContent() {
             Type = "Menu";
             
         }
+
+        /// <summary>
+        /// Updates the game per game tick
+        /// </summary>
+        /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime) {
 
             // Update our sprites position to the current cursor location
@@ -47,6 +65,11 @@ namespace SpriteandDraw {
             previousMouseState = state;
             base.Update(gameTime);
         }
+
+        /// <summary>
+        /// Draws the button onto the screen as well as the logo
+        /// </summary>
+        /// <param name="spriteBatch"></param>
         public override void Draw(SpriteBatch spriteBatch) {
             spriteBatch.Draw(Game1._backgroundTexture, new Rectangle(0, 0, Game1.graphics.GraphicsDevice.Viewport.Width, Game1.graphics.GraphicsDevice.Viewport.Height), Color.DarkSlateGray);
             host.Draw(spriteBatch);
@@ -55,6 +78,13 @@ namespace SpriteandDraw {
             spriteBatch.Draw(Game1.logo, new Vector2(Game1.ScreenWidth / 2 - 248, 175), null, Color.LightSeaGreen, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
 
         }
+
+        /// <summary>
+        /// Deals with when the mouse is clicked
+        /// In this case, deals with what happens when hostRect is clicked, or joinRect is clicked
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
         public void MouseClicked(int x, int y) {
             Rectangle mouseRect = new Rectangle(x, y, 1, 1);
             Rectangle hostRect = new Rectangle((int)hostb.X, (int)hostb.Y, 150, 50);

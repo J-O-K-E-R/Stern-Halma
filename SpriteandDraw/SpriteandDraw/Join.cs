@@ -144,6 +144,7 @@ namespace SpriteandDraw {
 
             Console.WriteLine("Client Received Text: " + text);
 
+            ///Updates the board with the text received
             board.UpdateBoard(text);
             
             try

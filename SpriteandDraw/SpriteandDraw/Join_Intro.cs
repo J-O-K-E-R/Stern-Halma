@@ -1,4 +1,6 @@
-﻿using System;
+﻿///Authors: Justin Mclennan and Chun-Yip Tang
+///Last Updated April 13, 2016
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,6 +9,9 @@ using MonoGame.Extended.BitmapFonts;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+/// <summary>
+/// Page that appears after the client side user enters the IPAddress
+/// </summary>
 namespace SpriteandDraw {
     class Join_Intro : GameType {
         private static string text = "Wait for host to choose a gamemode";
@@ -19,6 +24,10 @@ namespace SpriteandDraw {
             Type = "JIntro";
         }
 
+        /// <summary>
+        /// Updates the logic of the game
+        /// </summary>
+        /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime) {
             counter++;
             if (counter % 60 == 0) {
@@ -32,6 +41,10 @@ namespace SpriteandDraw {
             }
         }
             
+        /// <summary>
+        /// Draws the string onto the game screen
+        /// </summary>
+        /// <param name="spriteBatch"></param>
         public override void Draw(SpriteBatch spriteBatch) {
 
             spriteBatch.DrawString(Game1.font, text, new Vector2(Game1.ScreenWidth/2 - 200, Game1.ScreenHeight/2), Color.Black);

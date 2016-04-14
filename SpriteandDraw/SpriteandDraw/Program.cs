@@ -1,5 +1,8 @@
 ﻿using System;
 
+/// <summary>
+/// Main entry point provided from Monogame
+/// </summary>
 namespace SpriteandDraw {
 #if WINDOWS || LINUX
     /// <summary>

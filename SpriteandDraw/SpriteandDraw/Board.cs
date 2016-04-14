@@ -40,8 +40,11 @@ namespace SpriteandDraw {
             checkers = new Button(checkersb, "blank", "Checkers");
             //gives the Chinese Checkers or Sterne-Halma button functionality
             chinese = new Button(chineseb, "blank", "Sterne-Halma");
-            //
-            currentGame = new Checkers();
+            //initializes to the checkers board
+            if(Game1.hosting)
+                currentGame = new Host_Intro();
+            else
+                currentGame = new Join_Intro();
         }
 
         /// <summary>
@@ -62,6 +65,12 @@ namespace SpriteandDraw {
                 currentGame.Type = _gametype;
             }
             switch (currentGame.Type) {
+                case "HIntro":
+                    currentGame = new Host_Intro();
+                    break;
+                case "JIntro":
+                    currentGame = new Join_Intro();
+                    break;
                 case "ChineseCheckers":
                     currentGame = new ChineseCheckers();
                     break;
@@ -165,13 +174,10 @@ namespace SpriteandDraw {
                 }
             }
             if (mouseRect.Intersects(backRect)) { //player clicks back button
-                //Game1.hosting = false;
-                //Game1.currentScreen.Type = "Menu";
-                if (Game1.hosting)
-                    Console.WriteLine("Host gametype" + _type);
-                else {
-                    Console.WriteLine("Client gametype" + _type);
-                }
+                Game1.hosting = false;
+                Game1.currentScreen.Type = "Menu";
+                if(Game1.hosting)
+                    Host.CloseAllSockets();
 
             }
         }        

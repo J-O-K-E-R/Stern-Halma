@@ -64,7 +64,7 @@ namespace SpriteandDraw {
         /// Close all connected client (we do not need to shutdown the server socket as its connections
         /// are already closed with the clients)
         /// </summary>
-        private void CloseAllSockets() {
+        public static void CloseAllSockets() {
             foreach (Socket socket in _clientSockets) {
                 socket.Shutdown(SocketShutdown.Both);
                 socket.Close();

@@ -60,6 +60,7 @@ namespace SpriteandDraw {
 
             if (mouseRect.Intersects(backRect)) { //player clicked back button
                 Game1.currentScreen.Type = "Menu";
+                Host.CloseAllSockets();
             }
             if (mouseRect.Intersects(startRect)) { //player clicked back button
                 System.Diagnostics.Debug.WriteLine("Pressed on button");

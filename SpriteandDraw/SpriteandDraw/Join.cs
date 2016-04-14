@@ -64,6 +64,12 @@ namespace SpriteandDraw {
             }
         }
 
+        public static void CloseAllSockets()
+        {
+            _clientSocket.Shutdown(SocketShutdown.Both);
+            _clientSocket.Close();
+        }
+
         /// <summary>
         /// Close socket and exit app
         /// </summary>

@@ -39,11 +39,11 @@ namespace SpriteandDraw {
                 //string sending = " " + "Checkers" + " " + current.pieceNo + " " + current.position.X + " " + current.position.Y;
                 if (Game1.hosting == true)
                 {
-                    string sending = " " + "Checkers" + " " + current.pieceNo + " " + current.position.X + " " + current.position.Y;
+                    string sending = " " + "Checkers" + " " + current.pieceNo + " " + current.position.X + " " + current.position.Y + " ";
                     Host.Send(sending);
                 }
                 else {
-                    string sending = " " + "Checkers" + " " + current.pieceNo + " " + current.position.X + " " + current.position.Y;
+                    string sending = " " + "Checkers" + " " + current.pieceNo + " " + current.position.X + " " + current.position.Y + " ";
                     Join.Send(sending);
                 }
                 

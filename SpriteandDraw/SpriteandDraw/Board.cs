@@ -17,15 +17,28 @@ namespace SpriteandDraw {
         Vector2 backb, chessb, checkersb, chineseb;
         Button back, chess, checkers, chinese;
 
+        /// <summary>
+        /// Constructor
+        /// Initializes all buttons and board
+        /// </summary>
         public Board() {
+            //the back button
             backb = new Vector2(0, Game1.ScreenHeight - 50);
+            //the Chess Button
             chessb = new Vector2(Game1.ScreenWidth - 200, 200);
+            //the Checkers button
             checkersb = new Vector2(Game1.ScreenWidth - 200, 300);
+            //The Chinese Checkers or Sterne-Halma button
             chineseb = new Vector2(Game1.ScreenWidth - 200, 400);
+            //gives the back button functionality
             back = new Button(backb, "back", "");
+            //gives the Chess button functionality
             chess = new Button(chessb, "blank", "Chess");
+            //gives the Checkers button functionality
             checkers = new Button(checkersb, "blank", "Checkers");
+            //gives the Chinese Checkers or Sterne-Halma button functionality
             chinese = new Button(chineseb, "blank", "Sterne-Halma");
+            //
             currentGame = new Checkers();
         }
         public override void LoadContent() {
@@ -54,7 +67,7 @@ namespace SpriteandDraw {
                         break;
                 }
             }
-            if (split.Length == 5) {
+            if (split.Length >= 4) {
                 currentGame.UpdateBoardServer(Int32.Parse(split[1]), Int32.Parse(split[2]), Int32.Parse(split[3]));
             }
         }

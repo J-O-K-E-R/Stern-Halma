@@ -45,12 +45,12 @@ namespace SpriteandDraw {
 
                 if (Game1.hosting == true)
                 {
-                    string sending = "ChineseCheckers" + " " + current.pieceNo + " " + current.position.X + " " + current.position.Y;
+                    string sending = "ChineseCheckers" + " " + current.pieceNo + " " + current.position.X + " " + current.position.Y + " ";
                     //System.Diagnostics.Debug.WriteLine("Host sending");
                     Host.Send(sending);
                 }
                 else {
-                    string sending = "ChineseCheckers" + " " + current.pieceNo + " " + current.position.X + " " + current.position.Y;
+                    string sending = "ChineseCheckers" + " " + current.pieceNo + " " + current.position.X + " " + current.position.Y + " ";
                     //System.Diagnostics.Debug.WriteLine("Client sending");
                     Join.Send(sending);
                 }

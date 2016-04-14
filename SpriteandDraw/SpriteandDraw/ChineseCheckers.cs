@@ -12,9 +12,9 @@ namespace SpriteandDraw {
     class ChineseCheckers : GameType {
 
         private List<Circle> board = new List<Circle>();
-        ChinesePeice[] pieces = new ChinesePeice[60];
-        Rectangle[] list = new Rectangle[60];
-        GamePiece current = new ChinesePeice();
+        static ChinesePeice[] pieces = new ChinesePeice[60];
+        static Rectangle[] list = new Rectangle[60];
+        static GamePiece current = new ChinesePeice();
         MouseState previousMouseState;
         Vector2 mposition;//mouse position
 
@@ -38,19 +38,19 @@ namespace SpriteandDraw {
             mposition.X = state.X;
             mposition.Y = state.Y;
             
-            if (previousMouseState.LeftButton == ButtonState.Pressed && state.LeftButton == ButtonState.Pressed) {
+            if (previousMouseState.LeftButton == ButtonState.Pressed && state.LeftButton == ButtonState.Pressed && current._isPressed) {
 
                 current.position.X = mposition.X - 20;
                 current.position.Y = mposition.Y - 20;
 
                 if (Game1.hosting == true)
                 {
-                    string sending = "ChineseCheckers" + " " + current.pieceNo + " " + current.position.X + " " + current.position.Y + " ";
+                    string sending = " " + "ChineseCheckers" + " " + current.pieceNo + " " + current.position.X + " " + current.position.Y + " ";
                     //System.Diagnostics.Debug.WriteLine("Host sending");
                     Host.Send(sending);
                 }
                 else {
-                    string sending = "ChineseCheckers" + " " + current.pieceNo + " " + current.position.X + " " + current.position.Y + " ";
+                    string sending = " " + "ChineseCheckers" + " " + current.pieceNo + " " + current.position.X + " " + current.position.Y + " ";
                     //System.Diagnostics.Debug.WriteLine("Client sending");
                     Join.Send(sending);
                 }
@@ -82,7 +82,6 @@ namespace SpriteandDraw {
 
             for (int i = 0; i < list.Length; i++) {
                 if (mouseRect.Intersects(list[i])) {
-                    System.Diagnostics.Debug.WriteLine("pressed peice: " + i);
                     current = pieces[i];
                     current._isPressed = true;
                     break;

@@ -15,7 +15,6 @@ namespace SpriteandDraw {
         Vector2 mposition;//mouse position
         Vector2 backb, chessb, checkersb, chineseb;
         Button back, chess, checkers, chinese;
-        private bool gameChanger = false;
 
         public Board() {
             backb = new Vector2(0, Game1.ScreenHeight - 50);
@@ -67,9 +66,9 @@ namespace SpriteandDraw {
             
         }
         public void UpdateBoard(string text) {
-            //System.Diagnostics.Debug.WriteLine("update board called");
             if (text.Equals(""))
                 return;
+            Console.WriteLine(text);
             string splitter = text;
             string[] separator = { " " };
             string[] split = splitter.Split(separator, StringSplitOptions.RemoveEmptyEntries);
@@ -77,19 +76,9 @@ namespace SpriteandDraw {
                 System.Diagnostics.Debug.WriteLine("Board gametype changed");
                 currentGame.Type = split[0];
                 _type = split[0];
-                Console.WriteLine("NOT SENT YET: " + _type + " " + currentGame.Type);
-                gameChanger = true;
             }
-            
             if (split.Length >= 4) {
-                try
-                {
-                    currentGame.UpdateBoardServer(Int32.Parse(split[1]), Int32.Parse(split[2]), Int32.Parse(split[3]));
-                }
-                catch (FormatException e)
-                {
-                    Console.WriteLine("Clicked too fast, throw away this bad string: " + e.ToString());
-                }
+                currentGame.UpdateBoardServer(Int32.Parse(split[1]), Int32.Parse(split[2]), Int32.Parse(split[3]));
             }     
         }
 
@@ -103,19 +92,18 @@ namespace SpriteandDraw {
 
                 if (mouseRect.Intersects(chessRect)) { //player clicked back button from chess screen
                     currentGame.Type = "Chess";
+                    Host.Send(" " + "Chess");
                     _type = "Chess";
-                    Host.Send(_type);
                 }
                 if (mouseRect.Intersects(checkersRect)) { //player clicked back button from checkers screen
                     currentGame.Type = "Checkers";
+                    Host.Send(" " + "Checkers");
                     _type = "Checkers";
-                    Host.Send(_type);
                 }
                 if (mouseRect.Intersects(chineseRect)) { //player clicked back button from chinese checkers screen
                     currentGame.Type = "ChineseCheckers";
-
+                    Host.Send(" " + "ChineseCheckers");
                     _type = "ChineseCheckers";
-                    Host.Send(_type);
                 }
             }
             if (mouseRect.Intersects(backRect)) { //player clicked back button

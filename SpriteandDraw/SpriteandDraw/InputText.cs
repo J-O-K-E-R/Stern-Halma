@@ -24,6 +24,8 @@ namespace SpriteandDraw {
         private bool _isCursorVisible = true;
         private const float _cursorBlinkDelay = 0.5f;
         private float _cursorBlinkDelta = _cursorBlinkDelay;
+        public static bool connected = true;
+        Join joining = new Join();
 
         public int width, height;
         public bool _cursor = false;
@@ -54,7 +56,12 @@ namespace SpriteandDraw {
                     _typedString = _typedString.Substring(0, _typedString.Length - 1);
                 }
                 else if (args.Key == Keys.Enter) {
-                    _typedString = string.Empty;
+                    if (joining.ConnectToServer(_typedString)) {
+                        Game1.currentScreen.Type = "Board";
+                    }
+                    else {
+                        connected = false;
+                    }
                 }
                 else if (_typedString.Length < 16 && _cursor) {
                     _typedString += args.Character?.ToString() ?? "";
@@ -88,6 +95,8 @@ namespace SpriteandDraw {
                 if (_isCursorVisible)
                     spriteBatch.DrawString(Game1.font, "|", new Vector2(stringRectangle.Width + coor.X + 3, coor.Y + 2), Color.Black);
             }
+            if(!connected)
+                spriteBatch.DrawString(Game1.font, "Cannot Connect...", new Vector2(coor.X + width + 10 , coor.Y ), Color.Black);
         }
         //Draws the border of the rectangle for text
         public static void DrawRectangle(SpriteBatch spriteBatch, Rectangle rectangle, Color color, int lineWidth) {

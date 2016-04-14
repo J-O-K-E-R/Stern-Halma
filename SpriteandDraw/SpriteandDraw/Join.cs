@@ -22,17 +22,15 @@ namespace SpriteandDraw {
 
         public Join() {
         }
-        public void ConnectToServer(string ipAddress) {
-            IPAddress.TryParse(ipAddress, out searchAddress);
-            int attempts = 0;
+
+        public bool ConnectToServer(string ipAddress) {
+            if (!IPAddress.TryParse("142.232.148.160", out searchAddress))
+                return false;
 
             try {
-                attempts++;
-                //Console.WriteLine("Client side Connection attempt " + attempts);
+
                 if (!_clientSocket.Connected) {
                     _clientSocket.BeginConnect(new IPEndPoint(searchAddress, _PORT), new AsyncCallback(ConnectCallback), _clientSocket);
-
-                    
                 }
             }
             catch (SocketException e) {
@@ -40,10 +38,14 @@ namespace SpriteandDraw {
                 Console.Write("Client Side " + e.ToString());
 
                 Console.Write("Client Side " + e.ToString() + " " + e.SocketErrorCode);
+
+                return false;
             }
             catch (Exception e) {
                 Console.Write("Client Side ConnectTo Server Exception e " + e.ToString());
+                return false;
             }
+            return true;
         }
 
         ///Testing

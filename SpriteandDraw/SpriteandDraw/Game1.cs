@@ -105,6 +105,9 @@ namespace SpriteandDraw {
                 case "Setup":
                     currentScreen = new Setup();
                     break;
+                case "Credit":
+                    currentScreen = new Credits();
+                    break;
             }
             currentScreen.Update(gameTime);
             base.Update(gameTime);

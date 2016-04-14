@@ -66,6 +66,7 @@
     <Compile Include="ChinesePeice.cs" />
     <Compile Include="Circle.cs" />
     <Compile Include="Button.cs" />
+    <Compile Include="Credits.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="GamePiece.cs" />
     <Compile Include="GameType.cs" />

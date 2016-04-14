@@ -15,15 +15,27 @@ namespace SpriteandDraw {
         static Texture2D pawn, pawnb, rook, rookb, bishop, bishopb, knight, knightb, queen, queenb, king, kingb;
         private char _type;
 
+        /// <summary>
+        /// constructor saying that a chess piece is not pressed the moment it is created
+        /// </summary>
         public ChessPiece() {
             _isPressed = false;
         }
 
+        /// <summary>
+        /// Overload constructor to give the chess piece a type or player color and a starting position
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="_type"></param>
         public ChessPiece(Vector2 position, char _type) {
             this.position = position;
             this._type = _type;
         }
 
+        /// <summary>
+        /// basic draw to draw the pieces onto the board
+        /// </summary>
+        /// <param name="spriteBatch"></param>
         public override void Draw(SpriteBatch spriteBatch) {
             switch (_type) {
                 case 'a': {
@@ -77,6 +89,9 @@ namespace SpriteandDraw {
             }
         }
 
+        /// <summary>
+        /// Automatic method to load content in monogame
+        /// </summary>
         public static void LoadContent(ContentManager content) {
             pawn = content.Load<Texture2D>("pawn");
             pawnb = content.Load<Texture2D>("pawnB");

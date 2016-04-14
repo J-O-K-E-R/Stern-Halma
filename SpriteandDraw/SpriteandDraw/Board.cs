@@ -16,30 +16,34 @@ namespace SpriteandDraw {
         static string _gametype;
         MouseState previousMouseState;
         Vector2 mposition;//mouse position
-        Vector2 backb, chessb, checkersb, chineseb;
-        Button back, chess, checkers, chinese;
+        Vector2 backb, chessb, checkersb, chineseb, resetb;
+        Button back, chess, checkers, chinese, reset;
 
         /// <summary>
         /// Constructor
         /// Initializes all buttons and board
         /// </summary>
         public Board() {
-            //the back button
+            //the back button vector
             backb = new Vector2(0, Game1.ScreenHeight - 50);
-            //the Chess Button
+            //the Chess Button vector
             chessb = new Vector2(Game1.ScreenWidth - 200, 200);
-            //the Checkers button
+            //the Checkers button vector
             checkersb = new Vector2(Game1.ScreenWidth - 200, 300);
-            //The Chinese Checkers or Sterne-Halma button
+            //The Chinese Checkers or Sterne-Halma button vector
             chineseb = new Vector2(Game1.ScreenWidth - 200, 400);
-            //gives the back button functionality
+            //The reset button vector
+            resetb = new Vector2(Game1.ScreenWidth - 200, 500);
+            //creates the back button
             back = new Button(backb, "back", "");
-            //gives the Chess button functionality
+            //creates the chess button
             chess = new Button(chessb, "blank", "Chess");
-            //gives the Checkers button functionality
+            //creates the checkers button
             checkers = new Button(checkersb, "blank", "Checkers");
-            //gives the Chinese Checkers or Sterne-Halma button functionality
+            //creates the chinese checkers button
             chinese = new Button(chineseb, "blank", "Sterne-Halma");
+            //creates the reset button
+            reset = new Button(resetb, "blank", "Reset");
             //initializes to the checkers board
             if (Game1.hosting) {
                 currentGame = new Host_Intro();
@@ -67,27 +71,48 @@ namespace SpriteandDraw {
         public override void Update(GameTime gameTime) {
             //tests for if the user has chosen to change the board type and changes it
             if (!_gametype.Equals(_type)) {
-                _gametype = _type;
-                currentGame.Type = _gametype;
+                currentGame.Type = _type;
             }
             switch (currentGame.Type) {
                 case "HIntro":
                     currentGame = new Host_Intro();
+                    _gametype = "HIntro";
                     break;
                 case "JIntro":
                     currentGame = new Join_Intro();
+                    _gametype = "JIntro";
                     break;
                 case "ChineseCheckers":
                     currentGame = new ChineseCheckers();
+                    _gametype = "ChineseCheckers";
                     break;
                 case "Checkers":
                     currentGame = new Checkers();
+                    _gametype = "Checkers";
                     break;
                 case "Chess":
                     currentGame = new Chess();
+                    _gametype = "Chess";
+                    break;
+                case "Reset":
+                    switch (_gametype) {
+                        case "ChineseCheckers":
+                            currentGame = new ChineseCheckers();
+                            _gametype = "ChineseCheckers";
+                            break;
+                        case "Checkers":
+                            currentGame = new Checkers();
+                            _gametype = "Checkers";
+                            break;
+                        case "Chess":
+                            currentGame = new Chess();
+                            _gametype = "Chess";
+                            break;
+                    }
                     break;
 
             }
+            _type = _gametype;
             //gets the current state of the mouse
             MouseState state = Mouse.GetState();
             mposition.X = state.X;
@@ -113,6 +138,7 @@ namespace SpriteandDraw {
                 chess.Draw(spriteBatch);
                 checkers.Draw(spriteBatch);
                 chinese.Draw(spriteBatch);
+                reset.Draw(spriteBatch);
             }
 
         }
@@ -130,17 +156,6 @@ namespace SpriteandDraw {
             string[] split = splitter.Split(separator, StringSplitOptions.RemoveEmptyEntries);
             if (!split[0].ToString().Equals(_type)) {
                 _type = split[0].ToString();
-                switch (_type) {
-                    case "ChineseCheckers":
-                        currentGame.Type = "ChineseCheckers";
-                        break;
-                    case "Checkers":
-                        currentGame.Type = "Checkers";
-                        break;
-                    case "Chess":
-                        currentGame.Type = "Chess";
-                        break;
-                }
             }
             if (split.Length == 4) {
                 currentGame.UpdateBoardServer(Int32.Parse(split[1]), Int32.Parse(split[2]), Int32.Parse(split[3]));
@@ -161,11 +176,12 @@ namespace SpriteandDraw {
                 Rectangle chessRect = new Rectangle((int)chessb.X, (int)chessb.Y, 150, 50);
                 Rectangle checkersRect = new Rectangle((int)checkersb.X, (int)checkersb.Y, 150, 50);
                 Rectangle chineseRect = new Rectangle((int)chineseb.X, (int)chineseb.Y, 150, 50);
+                Rectangle resetRect = new Rectangle((int)resetb.X, (int)resetb.Y, 150, 50);
                 if (mouseRect.Intersects(chessRect)) { //player clicks Chess
 
                     Host.Send(" " + "Chess");
                     if (_type != "Chess") {
-                        currentGame.Type = "Chess";
+                        //currentGame.Type = "Chess";
                         _type = "Chess";
                     }
                 }
@@ -173,7 +189,7 @@ namespace SpriteandDraw {
 
                     Host.Send(" " + "Checkers");
                     if (_type != "Checkers") {
-                        currentGame.Type = "Checkers";
+                        //currentGame.Type = "Checkers";
                         _type = "Checkers";
                     }
                 }
@@ -181,8 +197,14 @@ namespace SpriteandDraw {
 
                     Host.Send(" " + "ChineseCheckers");
                     if (_type != "ChineseCheckers") {
-                        currentGame.Type = "ChineseCheckers";
+                        //currentGame.Type = "ChineseCheckers";
                         _type = "ChineseCheckers";
+                    }
+                }
+                if (mouseRect.Intersects(resetRect)) { //player clicks reset button
+                    Host.Send(" " + "Reset");
+                    if (_type != "Reset") {
+                        _type = "Reset";
                     }
                 }
             }
@@ -191,7 +213,6 @@ namespace SpriteandDraw {
                 Game1.currentScreen.Type = "Menu";
                 if (Game1.hosting)
                     Host.CloseAllSockets();
-
             }
         }
     }

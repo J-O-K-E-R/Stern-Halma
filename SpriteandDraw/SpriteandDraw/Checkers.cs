@@ -80,7 +80,6 @@ namespace SpriteandDraw {
         {
             pieces[pieceno].position.X = xpos;
             pieces[pieceno].position.Y = ypos;
-            //current = pieces[pieceno];
         }
 
         public void CreateBoard() {

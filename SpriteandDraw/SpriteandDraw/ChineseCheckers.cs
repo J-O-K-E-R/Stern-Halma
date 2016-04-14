@@ -92,13 +92,8 @@ namespace SpriteandDraw {
 
         public override void UpdateBoardServer(int pieceno, int xpos, int ypos)
         {
-            System.Diagnostics.Debug.WriteLine("updateboardserver called");
-            System.Diagnostics.Debug.WriteLine("xpos: " + xpos);
-            System.Diagnostics.Debug.WriteLine("ypos: " + ypos);
             pieces[pieceno].position.X = xpos;
             pieces[pieceno].position.Y = ypos;
-            System.Diagnostics.Debug.WriteLine("x: " + current.position.X);
-            System.Diagnostics.Debug.WriteLine("Y: " + current.position.Y);
         }
 
         public void CreateBoard() {

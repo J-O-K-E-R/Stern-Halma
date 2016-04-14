@@ -31,6 +31,33 @@ namespace SpriteandDraw {
             Type = "Board";
         }
 
+        public void UpdateBoard(string text) {
+            if (text.Equals(""))
+                return;
+            //Console.WriteLine(text);
+            string splitter = text;
+            string[] separator = { " " };
+            string[] split = splitter.Split(separator, StringSplitOptions.RemoveEmptyEntries);
+            if (!split[0].ToString().Equals(_type)) {
+                _type = split[0].ToString();
+                System.Diagnostics.Debug.WriteLine("Board gametype changed to " + split[0].ToString());
+                switch (_type) {
+                    case "ChineseCheckers":
+                        currentGame.Type = "ChineseCheckers";
+                        break;
+                    case "Checkers":
+                        currentGame.Type = "Checkers";
+                        break;
+                    case "Chess":
+                        currentGame.Type = "Chess";
+                        break;
+                }
+            }
+            if (split.Length >= 4) {
+                currentGame.UpdateBoardServer(Int32.Parse(split[1]), Int32.Parse(split[2]), Int32.Parse(split[3]));
+            }
+        }
+
         public override void Update(GameTime gameTime) {
             switch (currentGame.Type) {
                 case "ChineseCheckers":
@@ -65,22 +92,7 @@ namespace SpriteandDraw {
             }
             
         }
-        public void UpdateBoard(string text) {
-            if (text.Equals(""))
-                return;
-            //Console.WriteLine(text);
-            string splitter = text;
-            string[] separator = {" "};
-            string[] split = splitter.Split(separator, StringSplitOptions.RemoveEmptyEntries);
-            if (!split[0].ToString().Equals(currentGame.Type)) {
-                System.Diagnostics.Debug.WriteLine("Board gametype changed to" + split[0].ToString());
-                currentGame.Type = split[0].ToString();
-                //_type = split[0];
-            }
-            if (split.Length >= 4) {
-                currentGame.UpdateBoardServer(Int32.Parse(split[1]), Int32.Parse(split[2]), Int32.Parse(split[3]));
-            }     
-        }
+        
 
         public void MouseClicked(int x, int y) {
             Rectangle mouseRect = new Rectangle(x, y, 1, 1);
@@ -91,24 +103,29 @@ namespace SpriteandDraw {
                 Rectangle chineseRect = new Rectangle((int)chineseb.X, (int)chineseb.Y, 150, 50);
 
                 if (mouseRect.Intersects(chessRect)) { //player clicks chess
-                    currentGame.Type = "Chess";
+                    
                     Host.Send(" " + "Chess");
-                    //_type = "Chess";
+                    currentGame.Type = "Chess";
                 }
                 if (mouseRect.Intersects(checkersRect)) { //player clicks Checkers
-                    currentGame.Type = "Checkers";
+                    
                     Host.Send(" " + "Checkers");
-                    //_type = "Checkers";
+                    currentGame.Type = "Checkers";
                 }
                 if (mouseRect.Intersects(chineseRect)) { //player clicks CCheckers
-                    currentGame.Type = "ChineseCheckers";
+                    
                     Host.Send(" " + "ChineseCheckers");
-                    //_type = "ChineseCheckers";
+                    currentGame.Type = "ChineseCheckers";
                 }
             }
             if (mouseRect.Intersects(backRect)) { //player clicks back button
-                Game1.hosting = false;
-                Game1.currentScreen.Type = "Menu";
+                //Game1.hosting = false;
+                //Game1.currentScreen.Type = "Menu";
+                if (Game1.hosting)
+                    Console.WriteLine("Host gametype" + _type);
+                else {
+                    Console.WriteLine("Client gametype" + _type);
+                }
 
             }
         }        

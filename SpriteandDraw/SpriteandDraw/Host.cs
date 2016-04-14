@@ -114,7 +114,7 @@ namespace SpriteandDraw {
         public static void Send(string data) {
             // Convert the string data to byte data using ASCII encoding.
             try {
-                //Console.WriteLine("Sending from Host: " + data);
+                Console.WriteLine("Sending from Host: " + data);
                 byte[] byteData = Encoding.ASCII.GetBytes(data);
                 foreach (Socket current in _clientSockets) {
                     // Begin sending the data to the remote device.

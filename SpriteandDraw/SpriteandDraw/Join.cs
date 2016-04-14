@@ -104,7 +104,7 @@ namespace SpriteandDraw {
         }
 
 
-        private void AcceptCallback(IAsyncResult AR) {
+        /*private void AcceptCallback(IAsyncResult AR) {
             Socket socket;
             Console.WriteLine("Entered AcceptCallback");
             try {
@@ -118,7 +118,7 @@ namespace SpriteandDraw {
             Console.WriteLine("Client beginning receive");
             socket.BeginReceive(_buffer, 0, _BUFFER_SIZE, SocketFlags.None, ReceiveCallback, socket);
             //_clientSocket.BeginAccept(AcceptCallback, _clientSocket);
-        }
+        }*/
 
         private void ReceiveCallback(IAsyncResult AR) {
             Console.WriteLine("Client Receiving Callback");

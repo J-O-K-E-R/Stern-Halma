@@ -64,8 +64,6 @@ namespace SpriteandDraw {
                 
                 current._isPressed = false;
                 current = new ChinesePeice();
-                Console.WriteLine();
-                Console.WriteLine("Blank");
             }
             previousMouseState = state;
         }

@@ -38,7 +38,7 @@ namespace SpriteandDraw {
             mposition.X = state.X;
             mposition.Y = state.Y;
             
-            if (previousMouseState.LeftButton == ButtonState.Pressed && state.LeftButton == ButtonState.Pressed) {
+            if (previousMouseState.LeftButton == ButtonState.Pressed && state.LeftButton == ButtonState.Pressed && current._isPressed) {
 
                 current.position.X = mposition.X - 20;
                 current.position.Y = mposition.Y - 20;

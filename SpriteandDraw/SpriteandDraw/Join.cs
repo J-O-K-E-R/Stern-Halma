@@ -24,10 +24,11 @@ namespace SpriteandDraw {
         }
 
         public bool ConnectToServer(string ipAddress) {
-            if (!IPAddress.TryParse(ipAddress, out searchAddress))
+            if (!IPAddress.TryParse("142.232.148.160", out searchAddress))
                 return false;
 
             try {
+
                 if (!_clientSocket.Connected) {
                     _clientSocket.BeginConnect(new IPEndPoint(searchAddress, _PORT), new AsyncCallback(ConnectCallback), _clientSocket);
                 }

@@ -11,6 +11,7 @@ namespace SpriteandDraw {
     public class Board : Screen {
         public GameType currentGame;
         static string _type = "Checkers";
+        static string _gametype = "Checkers";
         MouseState previousMouseState;
         Vector2 mposition;//mouse position
         Vector2 backb, chessb, checkersb, chineseb;
@@ -59,6 +60,10 @@ namespace SpriteandDraw {
         }
 
         public override void Update(GameTime gameTime) {
+            if (!_gametype.Equals(_type)) {
+                _gametype = _type;
+                currentGame.Type = _gametype;
+            }
             switch (currentGame.Type) {
                 case "ChineseCheckers":
                     currentGame = new ChineseCheckers();

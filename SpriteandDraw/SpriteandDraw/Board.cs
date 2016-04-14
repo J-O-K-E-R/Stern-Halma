@@ -76,34 +76,43 @@ namespace SpriteandDraw {
             switch (currentGame.Type) {
                 case "HIntro":
                     currentGame = new Host_Intro();
+                    _gametype = "HIntro";
                     break;
                 case "JIntro":
                     currentGame = new Join_Intro();
+                    _gametype = "JIntro";
                     break;
                 case "ChineseCheckers":
                     currentGame = new ChineseCheckers();
+                    _gametype = "ChineseCheckers";
                     break;
                 case "Checkers":
                     currentGame = new Checkers();
+                    _gametype = "Checkers";
                     break;
                 case "Chess":
                     currentGame = new Chess();
+                    _gametype = "Chess";
                     break;
                 case "Reset":
                     switch (_gametype) {
                         case "ChineseCheckers":
                             currentGame = new ChineseCheckers();
+                            _gametype = "ChineseCheckers";
                             break;
                         case "Checkers":
                             currentGame = new Checkers();
+                            _gametype = "Checkers";
                             break;
                         case "Chess":
                             currentGame = new Chess();
+                            _gametype = "Chess";
                             break;
                     }
                     break;
+
             }
-            _gametype = _type;
+            _type = _gametype;
             //gets the current state of the mouse
             MouseState state = Mouse.GetState();
             mposition.X = state.X;
@@ -172,7 +181,7 @@ namespace SpriteandDraw {
 
                     Host.Send(" " + "Chess");
                     if (_type != "Chess") {
-                        currentGame.Type = "Chess";
+                        //currentGame.Type = "Chess";
                         _type = "Chess";
                     }
                 }
@@ -180,7 +189,7 @@ namespace SpriteandDraw {
 
                     Host.Send(" " + "Checkers");
                     if (_type != "Checkers") {
-                        currentGame.Type = "Checkers";
+                        //currentGame.Type = "Checkers";
                         _type = "Checkers";
                     }
                 }
@@ -188,7 +197,7 @@ namespace SpriteandDraw {
 
                     Host.Send(" " + "ChineseCheckers");
                     if (_type != "ChineseCheckers") {
-                        currentGame.Type = "ChineseCheckers";
+                        //currentGame.Type = "ChineseCheckers";
                         _type = "ChineseCheckers";
                     }
                 }

@@ -74,7 +74,6 @@ namespace SpriteandDraw {
 
             for (int i = 0; i < list.Length; i++) {
                 if (mouseRect.Intersects(list[i])) {
-                    Console.WriteLine("pressed " + i);
                     current = pieces[i];
                     current._isPressed = true;
                     break;

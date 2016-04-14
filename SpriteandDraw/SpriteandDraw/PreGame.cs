@@ -90,7 +90,6 @@ namespace SpriteandDraw {
                 Host.CloseAllSockets();
             }
             if (mouseRect.Intersects(startRect)) { //player clicked back button
-                System.Diagnostics.Debug.WriteLine("Pressed on button");
                 Game1.hosting = true;
                 Game1.currentScreen.Type = "Board";
 

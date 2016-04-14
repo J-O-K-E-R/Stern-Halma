@@ -11,6 +11,7 @@ using ProjectName;
 
 namespace SpriteandDraw {
     class Checkers : GameType {
+        GameType currentGame;
         Texture2D rectr, rectb;
         SpriteBatch spriteBatch;
         static CheckersPiece[] pieces = new CheckersPiece[24];
@@ -31,7 +32,6 @@ namespace SpriteandDraw {
             MouseState state = Mouse.GetState();
             mposition.X = state.X;
             mposition.Y = state.Y;
-
             if (previousMouseState.LeftButton == ButtonState.Pressed && state.LeftButton == ButtonState.Pressed && current._isPressed) {
 
                 current.position.X = mposition.X - 50;

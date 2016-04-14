@@ -10,12 +10,11 @@ using ProjectName;
 namespace SpriteandDraw {
     public class Board : Screen {
         public GameType currentGame;
-        static string _type = "Checkers";
+        static string _type;
         MouseState previousMouseState;
         Vector2 mposition;//mouse position
         Vector2 backb, chessb, checkersb, chineseb;
         Button back, chess, checkers, chinese;
-
         public Board() {
             backb = new Vector2(0, Game1.ScreenHeight - 50);
             chessb = new Vector2(Game1.ScreenWidth - 200, 200);

@@ -89,13 +89,16 @@ namespace SpriteandDraw {
             Rectangle mouseRect = new Rectangle(x, y, 1, 1);
             Rectangle hostRect = new Rectangle((int)hostb.X, (int)hostb.Y, 150, 50);
             Rectangle joinRect = new Rectangle((int)joinb.X, (int)joinb.Y, 150, 50);
+            Rectangle creditRect = new Rectangle((int)creditb.X, (int)creditb.Y, 150, 50);
 
             if (mouseRect.Intersects(hostRect)) { //player clicked play button
                 Game1.currentScreen.Type = "PreGame";
             }
-
             if (mouseRect.Intersects(joinRect)) { //player clicked play button
                 Game1.currentScreen.Type = "Setup";
+            }
+            if (mouseRect.Intersects(creditRect)) { //player clicked play button
+                Game1.currentScreen.Type = "Credit";
             }
         }
     }

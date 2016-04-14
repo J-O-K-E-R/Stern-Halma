@@ -37,14 +37,14 @@ namespace SpriteandDraw {
                     break;
                 }
             }
-            Console.WriteLine("Setting up server...");
+           // Console.WriteLine("Setting up server...");
             _serverSocket = new Socket(hostAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
             if (!_serverSocket.IsBound) {
                 try {
                     _serverSocket.Bind(new IPEndPoint(hostAddress, _PORT));
                     _serverSocket.Listen(5000);
                     _serverSocket.BeginAccept(AcceptCallback, _serverSocket);
-                    Console.WriteLine("Server setup complete");
+                    //Console.WriteLine("Server setup complete");
                 }
                 catch (Exception e) {
                     Console.WriteLine(e.ToString());
@@ -79,7 +79,7 @@ namespace SpriteandDraw {
             _clientSockets.Add(socket);
             playerCount++;
             socket.BeginReceive(_buffer, 0, _BUFFER_SIZE, SocketFlags.None, ReceiveCallback, socket);
-            Console.WriteLine("Client connected, waiting for request...");
+            //Console.WriteLine("Client connected, waiting for request...");
             if(playerCount < 5)
                 _serverSocket.BeginAccept(AcceptCallback, _serverSocket);
         }
@@ -92,7 +92,7 @@ namespace SpriteandDraw {
                 received = current.EndReceive(AR);
             }
             catch (SocketException) {
-                Console.WriteLine("Client forcefully disconnected");
+                //Console.WriteLine("Client forcefully disconnected");
                 current.Close(); // Dont shutdown because the socket may be disposed and its disconnected anyway
                 _clientSockets.Remove(current);
                 playerCount--;
@@ -103,43 +103,23 @@ namespace SpriteandDraw {
             byte[] recBuf = new byte[received];
             Array.Copy(_buffer, recBuf, received);
             string text = Encoding.ASCII.GetString(recBuf);
-
-            ///////////////////////////////////Console.WriteLine("Host Received Text: " + text);
-
             board.UpdateBoard(text);
-            //Console.WriteLine(text);
 
             //echo data back to other clients
-            Console.WriteLine("Echoing data back to clients");
+            //Console.WriteLine("Echoing data back to clients");
             Send(text);
             current.BeginReceive(_buffer, 0, _BUFFER_SIZE, SocketFlags.None, ReceiveCallback, current);
         }
 
-        /*public static void SendToAllOtherSockets(byte[] data)
-        {
-            try {
-                foreach (Socket current in _clientSockets)
-                {
-                    Console.WriteLine("Send To All Other Sockets");
-                    current.BeginSend(data, 0, data.Length, 0, new AsyncCallback(SendCallback), current);
-                }
-            }
-            catch(SocketException)
-            {
-                Console.WriteLine("SocketException");
-            }
-        }*/
-
         public static void Send(string data) {
             // Convert the string data to byte data using ASCII encoding.
             try {
-                Console.WriteLine("Sending from Host: " + data);
+                //Console.WriteLine("Sending from Host: " + data);
                 byte[] byteData = Encoding.ASCII.GetBytes(data);
                 foreach (Socket current in _clientSockets) {
                     // Begin sending the data to the remote device.
-                    Console.WriteLine("Sending to current socket");
                     current.BeginSend(byteData, 0, byteData.Length, 0, new AsyncCallback(SendCallback), current);
-                    Console.WriteLine("Sent to current");
+                    //Console.WriteLine("Sent to current");
                 }
             }
             catch (SocketException e) {
@@ -155,10 +135,7 @@ namespace SpriteandDraw {
 
                 // Complete sending the data to the remote device.
                 int bytesSent = handler.EndSend(ar);
-                Console.WriteLine("SendCallback received");
-                //System.Diagnostics.Debug.WriteLine("True or False: " + Game1.hosting);
-                //Console.WriteLine(Game1.hosting.ToString());
-                ////////////////////////////////////////////////////Console.WriteLine("Sent {0} bytes to client.", bytesSent);
+                //Console.WriteLine("SendCallback received");
             }
             catch (Exception e) {
                 Console.WriteLine(e.ToString());

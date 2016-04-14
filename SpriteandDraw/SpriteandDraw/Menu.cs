@@ -62,12 +62,10 @@ namespace SpriteandDraw {
 
             if (mouseRect.Intersects(hostRect)) { //player clicked play button
                 Game1.currentScreen.Type = "PreGame";
-                System.Diagnostics.Debug.WriteLine("Pressed on button");
             }
 
             if (mouseRect.Intersects(joinRect)) { //player clicked play button
                 Game1.currentScreen.Type = "Setup";
-                System.Diagnostics.Debug.WriteLine("Pressed on button");
             }
         }
     }

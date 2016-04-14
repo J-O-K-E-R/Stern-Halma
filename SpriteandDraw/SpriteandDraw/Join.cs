@@ -23,40 +23,27 @@ namespace SpriteandDraw {
         public Join() {
         }
         public void ConnectToServer(string ipAddress) {
-            searchAddress = IPAddress.Parse("192.168.18.2");
+            IPAddress.TryParse(ipAddress, out searchAddress);
             int attempts = 0;
 
-            //while (!_clientSocket.Connected) {
-                try {
-                    attempts++;
-                    Console.WriteLine("Client side Connection attempt " + attempts);
-                    if (!_clientSocket.Connected)
-                    {
+            try {
+                attempts++;
+                //Console.WriteLine("Client side Connection attempt " + attempts);
+                if (!_clientSocket.Connected) {
                     _clientSocket.BeginConnect(new IPEndPoint(searchAddress, _PORT), new AsyncCallback(ConnectCallback), _clientSocket);
 
-                        /*_clientSocket.Connect(searchAddress, _PORT);
-                        _clientSocket.Listen(6);
-                        ////////////////////////////////////////////////////Console.WriteLine("Works up to clientSocket.Listen(5000)");
-                        _clientSocket.BeginAccept(AcceptCallback, null);*/
-                    }
+                    
                 }
-<<<<<<< HEAD
-                catch (SocketException) {
-                    //Console.Clear();
-=======
-                catch (SocketException e) {
-<<<<<<< HEAD
-                    Console.Write("Client Side " + e.ToString());
->>>>>>> master
-=======
-                    Console.Write("Client Side " + e.ToString() + " " + e.SocketErrorCode);
->>>>>>> master
-                }
-                catch(Exception e)
-                {
-                    Console.Write("Client Side ConnectTo Server Exception e " + e.ToString());
-                }
-            //}
+            }
+            catch (SocketException e) {
+
+                Console.Write("Client Side " + e.ToString());
+
+                Console.Write("Client Side " + e.ToString() + " " + e.SocketErrorCode);
+            }
+            catch (Exception e) {
+                Console.Write("Client Side ConnectTo Server Exception e " + e.ToString());
+            }
         }
 
         ///Testing
@@ -66,7 +53,7 @@ namespace SpriteandDraw {
             {
                 Socket client = (Socket) AR.AsyncState;
                 client.EndConnect(AR);
-                Console.WriteLine("Client now connected");
+                //Console.WriteLine("Client now connected");
                 client.BeginReceive(_buffer, 0, _BUFFER_SIZE, SocketFlags.None, ReceiveCallback, client);
             }
             catch(Exception e)
@@ -91,10 +78,9 @@ namespace SpriteandDraw {
         public static void Send(string text) {
             try
             {
-                Console.WriteLine("Sending from Client: " + text);
+                //Console.WriteLine("Sending from Client: " + text);
                 byte[] buffer = Encoding.ASCII.GetBytes(text);
                 _clientSocket.BeginSend(buffer, 0, buffer.Length, 0, new AsyncCallback(SendCallback), _clientSocket);
-                ///////////////////////////////////////////////////////////////////////////System.Diagnostics.Debug.WriteLine("Send to host ");
             }
             catch(SocketException e)
             {
@@ -109,28 +95,10 @@ namespace SpriteandDraw {
 
                 // Complete sending the data to the remote device.
                 int bytesSent = handler.EndSend(ar);
-                ///////////////////////////////////////////////////////////////////////////Console.WriteLine("Sent {0} bytes to host.", bytesSent);
         }
 
-
-        /*private void AcceptCallback(IAsyncResult AR) {
-            Socket socket;
-            Console.WriteLine("Entered AcceptCallback");
-            try {
-                socket = _clientSocket.EndAccept(AR);
-            }
-            catch (ObjectDisposedException) // I cannot seem to avoid this (on exit when properly closing sockets)
-            {
-                Console.WriteLine("AcceptCallback Exception: ObjectDisposedException");
-                return;
-            }
-            Console.WriteLine("Client beginning receive");
-            socket.BeginReceive(_buffer, 0, _BUFFER_SIZE, SocketFlags.None, ReceiveCallback, socket);
-            //_clientSocket.BeginAccept(AcceptCallback, _clientSocket);
-        }*/
-
         private void ReceiveCallback(IAsyncResult AR) {
-            Console.WriteLine("Client Receiving Callback");
+            //Console.WriteLine("Client Receiving Callback");
             Socket current = (Socket)AR.AsyncState;
             int received = 0;
             try
@@ -141,39 +109,17 @@ namespace SpriteandDraw {
             {
                 Console.Write("SocketException at Join.ReceiveCallback");
             }
-            Console.WriteLine("Client EndReceive");
+            //Console.WriteLine("Client EndReceive");
             //read in data
             byte[] recBuf = new byte[received];
             Array.Copy(_buffer, recBuf, received);
             string text = Encoding.ASCII.GetString(recBuf);
-            ////////////////////////////////////////////////Console.WriteLine("client " + text);
-            Console.WriteLine("Client Received Text: " + text);
+
+            //Console.WriteLine("Client Received Text: " + text);
 
             board.UpdateBoard(text);
             
             current.BeginReceive(_buffer, 0, _BUFFER_SIZE, SocketFlags.None, ReceiveCallback, current);
-            //Console.WriteLine(text);
         }
-
-
-
-
-
-        //private static void RequestLoop() {
-
-        //    while (true) {
-        //        ReceiveResponse();
-        //    }
-        //}
-        //private static void ReceiveResponse() {
-        //    var buffer = new byte[2048];
-        //    int received = _clientSocket.Receive(buffer, SocketFlags.None);
-        //    if (received == 0) return;
-        //    byte[] data = new byte[received];
-        //    Array.Copy(buffer, data, received);
-        //    string text = Encoding.ASCII.GetString(data);
-        //    System.Diagnostics.Debug.WriteLine("Client Update ");
-        //    board.UpdateBoard(text);
-        //}
     }
 }

@@ -34,7 +34,7 @@ namespace SpriteandDraw {
             
         public override void Draw(SpriteBatch spriteBatch) {
 
-            spriteBatch.DrawString(Game1.font, text, new Vector2(Game1.ScreenWidth/2, Game1.ScreenHeight/2), Color.Black);
+            spriteBatch.DrawString(Game1.font, text, new Vector2(Game1.ScreenWidth/2 - 200, Game1.ScreenHeight/2), Color.Black);
         }
     }
 }

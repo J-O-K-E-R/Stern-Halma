@@ -1,4 +1,6 @@
-﻿using System;
+﻿///Authors: Justin Mclennan and Chun-Yip Tang
+///Last Updated April 13, 2016
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +13,9 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+/// <summary>
+/// Text box for entering the IP. Just the textbox, not the page
+/// </summary>
 namespace SpriteandDraw {
     class InputText {
         private Texture2D rect;
@@ -31,6 +36,13 @@ namespace SpriteandDraw {
         public bool _cursor = false;
         public Vector2 coor;
 
+        /// <summary>
+        /// Sets the basic position of the textbox
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="w"></param>
+        /// <param name="h"></param>
         public InputText(int x, int y, int w, int h) {
             width = w;
             height = h;
@@ -46,6 +58,10 @@ namespace SpriteandDraw {
             rect.SetData(data);
             Input();
         }
+
+        /// <summary>
+        /// takes in the input from the user
+        /// </summary>
         public void Input() {
             var mouseListener = Game1.inputManager.AddListener(new MouseListenerSettings());
             keyboardListener = Game1.inputManager.AddListener(new KeyboardListenerSettings());
@@ -68,6 +84,11 @@ namespace SpriteandDraw {
                 }
             };
         }
+
+        /// <summary>
+        /// updates it so that the text can be seen as the user types it in
+        /// </summary>
+        /// <param name="gameTime"></param>
         public void Update(GameTime gameTime) {
 
             _cursorBlinkDelta -= (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -80,6 +101,11 @@ namespace SpriteandDraw {
 
             Game1.inputManager.Update(gameTime);
         }
+
+        /// <summary>
+        /// draws the textbox and updates the image of it
+        /// </summary>
+        /// <param name="batch"></param>
         public void Draw(SpriteBatch batch) {
             spriteBatch = batch;//creates a batch usable all over class
             if (_cursor)
@@ -98,7 +124,14 @@ namespace SpriteandDraw {
             if(!connected)
                 spriteBatch.DrawString(Game1.font, "Cannot Connect...", new Vector2(coor.X + width + 10 , coor.Y ), Color.Black);
         }
-        //Draws the border of the rectangle for text
+
+            /// <summary>
+            /// draws the border for the rectangle for the text
+            /// </summary>
+            /// <param name="spriteBatch"></param>
+            /// <param name="rectangle"></param>
+            /// <param name="color"></param>
+            /// <param name="lineWidth"></param>
         public static void DrawRectangle(SpriteBatch spriteBatch, Rectangle rectangle, Color color, int lineWidth) {
             if (_pointTexture == null) {
                 _pointTexture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);

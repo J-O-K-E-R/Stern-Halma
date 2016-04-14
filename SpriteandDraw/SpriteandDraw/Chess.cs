@@ -32,16 +32,17 @@ namespace SpriteandDraw {
             mposition.X = state.X;
             mposition.Y = state.Y;
             
-            if (previousMouseState.LeftButton == ButtonState.Pressed && state.LeftButton == ButtonState.Pressed) {
+            if (previousMouseState.LeftButton == ButtonState.Pressed && state.LeftButton == ButtonState.Pressed && current._isPressed) {
 
                 current.position.X = mposition.X - 50;
                 current.position.Y = mposition.Y - 50;
-                string sending = "Chess" + " " + current.pieceNo + " " + current.position.X + " " + current.position.Y;
                 if (Game1.hosting == true) {
+                    string sending = "Chess" + " " + current.pieceNo + " " + current.position.X + " " + current.position.Y + " ";
                     //System.Diagnostics.Debug.WriteLine("Host sending");
                     Host.Send(sending);
                 }
                 else {
+                    string sending = "Chess" + " " + current.pieceNo + " " + current.position.X + " " + current.position.Y + " ";
                     //System.Diagnostics.Debug.WriteLine("Client sending");
                     Join.Send(sending);
                 }
@@ -93,7 +94,6 @@ namespace SpriteandDraw {
 
             for (int i = 0; i < list.Length; i++) {
                 if (mouseRect.Intersects(list[i])) {
-                    System.Diagnostics.Debug.WriteLine("pressed peice: " + i);
                     current = pieces[i];
                     current._isPressed = true;
                     break;
@@ -173,8 +173,11 @@ namespace SpriteandDraw {
             }
 
         }
-        public override void UpdateBoardServer(int pieceno, int xpos, int ypos) {
 
+        public override void UpdateBoardServer(int pieceno, int xpos, int ypos) {
+            Console.WriteLine("I am being called in chess");
+            pieces[pieceno].position.X = xpos;
+            pieces[pieceno].position.Y = ypos;
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿///Authors: Justin Mclennan and Chun-Yip Tang
+///Last Updated April 13, 2016
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +11,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 
+/// <summary>
+/// Creates the Client side of the client server asynchronous socket
+/// </summary>
 namespace SpriteandDraw {
     class Join {
         public static Socket _clientSocket = new Socket
@@ -20,9 +25,11 @@ namespace SpriteandDraw {
         private const int _PORT = 100;
         static Board board = new Board();
 
-        public Join() {
-        }
-
+        /// <summary>
+        /// Connects to the server and sets up with ipaddress
+        /// </summary>
+        /// <param name="ipAddress"></param>
+        /// <returns></returns>
         public bool ConnectToServer(string ipAddress) {
             if (!IPAddress.TryParse(ipAddress, out searchAddress))
                 return false;

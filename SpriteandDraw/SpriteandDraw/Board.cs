@@ -1,4 +1,6 @@
-﻿using System;
+﻿///Authors: Justin Mclennan and Chun-Yip Tang
+///Last Updated April 13, 2016
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -41,11 +43,20 @@ namespace SpriteandDraw {
             //
             currentGame = new Checkers();
         }
+
+        /// <summary>
+        /// Abstract Method from extended GameType class that assigns the Type to be "Board"
+        /// </summary>
         public override void LoadContent() {
             Type = "Board";
         }
 
-lic override void Update(GameTime gameTime) {
+        /// <summary>
+        /// Automatic Update method that does things per tick
+        /// </summary>
+        /// <param name="gameTime"></param>
+        public override void Update(GameTime gameTime) {
+            //tests for if the user has chosen to change the board type and changes it
             if (!_gametype.Equals(_type)) {
                 _gametype = _type;
                 currentGame.Type = _gametype;
@@ -62,16 +73,23 @@ lic override void Update(GameTime gameTime) {
                     break;
 
             }
+            //gets the current state of the mouse
             MouseState state = Mouse.GetState();
             mposition.X = state.X;
             mposition.Y = state.Y;
             
+            //if the mouse was clicked
             if (previousMouseState.LeftButton == ButtonState.Pressed && state.LeftButton == ButtonState.Released) {
                 MouseClicked((int)mposition.X, (int)mposition.Y);
             }
             previousMouseState = state;
             currentGame.Update(gameTime);
         }
+        /// <summary>
+        /// Basic Draw method from Monogames
+        /// We use it to draw the background and call the boards to be drawn
+        /// </summary>
+        /// <param name="spriteBatch"></param>
         public override void Draw(SpriteBatch spriteBatch) {
             spriteBatch.Draw(Game1._backgroundTexture, new Rectangle(0, 0, Game1.ScreenWidth, Game1.ScreenHeight), Color.DarkSlateGray);
             currentGame.Draw(spriteBatch);
@@ -83,6 +101,12 @@ lic override void Update(GameTime gameTime) {
             }
             
         }
+
+        /// <summary>
+        /// updates the board when called on from either Join class or Host class
+        /// Used to update the board when the other user has moved a piece
+        /// </summary>
+        /// <param name="text"></param>
         public void UpdateBoard(string text) {
             if (text.Equals(""))
                 return;
@@ -109,6 +133,13 @@ lic override void Update(GameTime gameTime) {
             }
         }
 
+        /// <summary>
+        /// Tells what a mouse click will do
+        /// Have to implement with intersects and locations
+        /// This one specifically deals with what happens when a change game button is pressed
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
         public void MouseClicked(int x, int y) {
             Rectangle mouseRect = new Rectangle(x, y, 1, 1);
             Rectangle backRect = new Rectangle((int)backb.X, (int)backb.Y, 50, 50);

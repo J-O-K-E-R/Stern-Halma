@@ -1,4 +1,6 @@
-﻿using System;
+﻿///Authors: Justin Mclennan and Chun-Yip Tang
+///Last Updated April 13, 2016
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,17 +10,27 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using ProjectName;
 
+/// <summary>
+/// Used to define what a chinese checkers or sterne-halma piece is
+/// </summary>
 namespace SpriteandDraw {
     public class ChinesePeice : GamePiece {
         // Some variables for this object class, i.e. Attributes
         static Texture2D circlered, circleblue, circlegreen, circleyellow, circleblack, circlewhite;
         private char _type;
 
+         /// <summary>
+         /// constructor saying that a chinese piece is not pressed the moment it is created
+         /// </summary>
         public ChinesePeice() {
             _isPressed = false;
         }
 
-
+        /// <summary>
+        /// Overload constructor to give the chinese piece a type or player color and a starting position
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="_type"></param>
         public ChinesePeice(Vector2 position, char _type) {
             this.position = position;
             this._type = _type;
@@ -34,6 +46,10 @@ namespace SpriteandDraw {
             circlewhite = content.Load<Texture2D>("circlewhite");
         }
 
+        /// <summary>
+        /// basic draw to draw the pieces onto the board
+        /// </summary>
+        /// <param name="spriteBatch"></param>
         public override void Draw(SpriteBatch spriteBatch) {
             switch (_type) {
                 case 'r': {

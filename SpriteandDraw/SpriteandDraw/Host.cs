@@ -1,4 +1,6 @@
-﻿using System;
+﻿///Authors: Justin Mclennan and Chun-Yip Tang
+///Last Updated April 13, 2016
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +12,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
-
+/// <summary>
+/// Base class to create an asynchronus server socket
+/// </summary>
 namespace SpriteandDraw {
     class Host {
 
@@ -23,28 +27,32 @@ namespace SpriteandDraw {
         public static Board board = new Board();
         public int playerCount = 0;
 
-
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public Host() {
             hostAddress = null;
         }
 
+        /// <summary>
+        /// Starts creating the server
+        /// </summary>
         public void Create() {
             IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
-            //Writes out the ip address in ipv6 form
+            //Writes out the ip address in ipv form
             for (int i = 0; i < ipHostInfo.AddressList.Length; i++) {
                 if (ipHostInfo.AddressList[i].AddressFamily == AddressFamily.InterNetwork) {
                     hostAddress = ipHostInfo.AddressList[i];
                     break;
                 }
             }
-           // Console.WriteLine("Setting up server...");
+            //cretes the socket as a TCP connection that takes ipv4 addresses
             _serverSocket = new Socket(hostAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
             if (!_serverSocket.IsBound) {
                 try {
                     _serverSocket.Bind(new IPEndPoint(hostAddress, _PORT));
                     _serverSocket.Listen(100);
                     _serverSocket.BeginAccept(AcceptCallback, _serverSocket);
-                    //Console.WriteLine("Server setup complete");
                 }
                 catch (Exception e) {
                     Console.WriteLine(e.ToString());
@@ -65,6 +73,10 @@ namespace SpriteandDraw {
             _serverSocket.Close();
         }
 
+        /// <summary>
+        /// Acknowledges that a client socket has pinged back
+        /// </summary>
+        /// <param name="AR"></param>
         private void AcceptCallback(IAsyncResult AR) {
             Socket socket;
 
@@ -75,7 +87,7 @@ namespace SpriteandDraw {
             {
                 return;
             }
-
+            //Adds the socket to a list of client sockets that the server will be handling
             _clientSockets.Add(socket);
             playerCount++;
             socket.BeginReceive(_buffer, 0, _BUFFER_SIZE, SocketFlags.None, ReceiveCallback, socket);
@@ -84,6 +96,10 @@ namespace SpriteandDraw {
                 _serverSocket.BeginAccept(AcceptCallback, _serverSocket);
         }
 
+        /// <summary>
+        /// Handles how the data is received and read back into the server
+        /// </summary>
+        /// <param name="AR"></param>
         private void ReceiveCallback(IAsyncResult AR) {
             Socket current = (Socket)AR.AsyncState;
             int received = 0;
@@ -92,7 +108,6 @@ namespace SpriteandDraw {
                 received = current.EndReceive(AR);
             }
             catch (SocketException) {
-                //Console.WriteLine("Client forcefully disconnected");
                 current.Close(); // Dont shutdown because the socket may be disposed and its disconnected anyway
                 _clientSockets.Remove(current);
                 playerCount--;
@@ -112,6 +127,10 @@ namespace SpriteandDraw {
             current.BeginReceive(_buffer, 0, _BUFFER_SIZE, SocketFlags.None, ReceiveCallback, current);
         }
 
+        /// <summary>
+        /// Sends the data to each client currently connected to the server
+        /// </summary>
+        /// <param name="data"></param>
         public static void Send(string data) {
             // Convert the string data to byte data using ASCII encoding.
             try {
@@ -129,6 +148,10 @@ namespace SpriteandDraw {
 
         }
 
+        /// <summary>
+        /// Tells the server when it is right to stop sending the data
+        /// </summary>
+        /// <param name="ar"></param>
         private static void SendCallback(IAsyncResult ar) {
             try {
                 // Retrieve the socket from the state object.

@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿///Authors: Justin Mclennan and Chun-Yip Tang
+///Last Updated April 13, 2016 
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
@@ -9,6 +11,9 @@ using MonoGame.Extended.BitmapFonts;
 using MonoGame.Extended.InputListeners;
 using ProjectName;
 
+/// <summary>
+/// Main entry point for the program/game
+/// </summary>
 namespace SpriteandDraw {
 
     /// <summary>
@@ -24,9 +29,10 @@ namespace SpriteandDraw {
         public static BitmapFont font;
         public static InputListenerManager inputManager;
         public static int ScreenWidth, ScreenHeight;
-
-        //private double score = 0;
-
+        
+        /// <summary>
+        /// constructor
+        /// </summary>
         public Game1() {
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferWidth = 1600;  // set this value to the desired width of your window

@@ -7,7 +7,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using ProjectName;
-
+/// <summary>
+/// Creates a chinese checkers or sterne-halma game
+/// </summary>
 namespace SpriteandDraw {
     class ChineseCheckers : GameType {
 
@@ -17,14 +19,25 @@ namespace SpriteandDraw {
         static GamePiece current = new ChinesePeice();
         MouseState previousMouseState;
         Vector2 mposition;//mouse position
-
+        /// <summary>
+        /// Constructor that creates the board and adds the pieces
+        /// </summary>
         public ChineseCheckers() {
             CreateBoard();
             AddPeices();
         }
+
+        /// <summary>
+        /// base method in monogame to load textures
+        /// </summary>
         public override void LoadContent() {
             Type = "ChineseCheckers";
         }
+
+        /// <summary>
+        /// Automatic update of draw to draw everthing on the board
+        /// </summary>
+        /// <param name="spriteBatch"></param>
         public override void Draw(SpriteBatch spriteBatch) {
             spriteBatch.Draw(Game1._backgroundTexture, new Rectangle(0, 0, Game1.graphics.GraphicsDevice.Viewport.Width, Game1.graphics.GraphicsDevice.Viewport.Height), Color.DarkSlateGray);
             foreach (Circle circle in board)
@@ -33,6 +46,10 @@ namespace SpriteandDraw {
                 peice.Draw(spriteBatch);
         }
 
+        /// <summary>
+        /// Updates based on gametime and refreshes the board
+        /// </summary>
+        /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime) {
             MouseState state = Mouse.GetState();
             mposition.X = state.X;
@@ -68,12 +85,20 @@ namespace SpriteandDraw {
             previousMouseState = state;
         }
 
+        /// <summary>
+        /// What happens when the mouse is clicked 
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
         public void MouseClicked(int x, int y) {
             Rectangle mouseRect = new Rectangle(x, y, 1, 1);
-            
-
-
         }
+
+        /// <summary>
+        /// What happens when the mouse is pressed onto a piece
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
         public void MousePressed(int x, int y) {
             Rectangle mouseRect = new Rectangle(x, y, 1, 1);
             for (int i = 0; i < pieces.Length; i++) {
@@ -88,13 +113,21 @@ namespace SpriteandDraw {
                 }
             }
         }
-
+         /// <summary>
+         /// Updates the board based on the client server
+         /// </summary>
+         /// <param name="pieceno"></param>
+         /// <param name="xpos"></param>
+         /// <param name="ypos"></param>
         public override void UpdateBoardServer(int pieceno, int xpos, int ypos)
         {
             pieces[pieceno].position.X = xpos;
             pieces[pieceno].position.Y = ypos;
         }
 
+        /// <summary>
+        /// creates the baord. There are many pieces that do not fit together uniformly, so the easiest way is to hard code them in with lots of for loops
+        /// </summary>
         public void CreateBoard() {
             int i, height;
             int[] x = new int[121];
@@ -284,6 +317,10 @@ namespace SpriteandDraw {
             for (i = 0; i < y.Length; i++)
                 board.Add(new Circle(new Vector2(x[i], y[i])));
         }
+
+        /// <summary>
+        /// Adds the pieces to the board
+        /// </summary>
         public void AddPeices() {
             int i, width;
             int[] x = new int[60];

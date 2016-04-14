@@ -36,7 +36,9 @@ namespace SpriteandDraw {
             this._type = _type;
         }
 
-        // Some XNA specific methods
+        /// <summary>
+        /// Automatic method to load content in monogame
+        /// </summary>
         public static void LoadContent(ContentManager content) {
             circlered = content.Load<Texture2D>("circlered");
             circleblue = content.Load<Texture2D>("circleblue");

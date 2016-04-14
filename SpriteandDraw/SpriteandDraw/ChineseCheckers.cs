@@ -18,21 +18,24 @@ namespace SpriteandDraw {
         MouseState previousMouseState;
         Vector2 mposition;//mouse position
 
+        /// <summary>
+        /// Constructor that creates the board and adds the pieces to the board
+        /// </summary>
         public ChineseCheckers() {
             CreateBoard();
             AddPeices();
         }
+        /// <summary>
+        /// Automatic method to load content in monogame
+        /// </summary>
         public override void LoadContent() {
             Type = "ChineseCheckers";
         }
-        public override void Draw(SpriteBatch spriteBatch) {
-            spriteBatch.Draw(Game1._backgroundTexture, new Rectangle(0, 0, Game1.graphics.GraphicsDevice.Viewport.Width, Game1.graphics.GraphicsDevice.Viewport.Height), Color.DarkSlateGray);
-            foreach (Circle circle in board)
-                circle.Draw(spriteBatch);
-            foreach (ChinesePeice peice in pieces)
-                peice.Draw(spriteBatch);
-        }
 
+        /// <summary>
+        /// updates the game based on gametime
+        /// </summary>
+        /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime) {
             MouseState state = Mouse.GetState();
             mposition.X = state.X;
@@ -66,6 +69,23 @@ namespace SpriteandDraw {
             previousMouseState = state;
         }
 
+        /// <summary>
+        /// Automatic method to draw all the pieces on the board 
+        /// </summary>
+        /// <param name="spriteBatch"></param>
+        public override void Draw(SpriteBatch spriteBatch) {
+            spriteBatch.Draw(Game1._backgroundTexture, new Rectangle(0, 0, Game1.graphics.GraphicsDevice.Viewport.Width, Game1.graphics.GraphicsDevice.Viewport.Height), Color.DarkSlateGray);
+            foreach (Circle circle in board)
+                circle.Draw(spriteBatch);
+            foreach (ChinesePeice peice in pieces)
+                peice.Draw(spriteBatch);
+        }
+
+        /// <summary>
+        /// What happens on mouse press
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
         public void MousePressed(int x, int y) {
             Rectangle mouseRect = new Rectangle(x, y, 1, 1);
             for (int i = 0; i < pieces.Length; i++) {
@@ -80,12 +100,20 @@ namespace SpriteandDraw {
                 }
             }
         }
-
+        /// <summary>
+        /// Updates the board from the client server
+        /// </summary>
+        /// <param name="pieceno"></param>
+        /// <param name="xpos"></param>
+        /// <param name="ypos"></param>
         public override void UpdateBoardServer(int pieceno, int xpos, int ypos) {
             pieces[pieceno].position.X = xpos;
             pieces[pieceno].position.Y = ypos;
         }
 
+        /// <summary>
+        /// Creates a new Checkers board
+        /// </summary>
         public void CreateBoard() {
             int i, height;
             int[] x = new int[121];
@@ -275,6 +303,9 @@ namespace SpriteandDraw {
             for (i = 0; i < y.Length; i++)
                 board[i]= new Circle(new Vector2(x[i], y[i]));
         }
+        /// <summary>
+        /// Adds the pieces to the board
+        /// </summary>
         public void AddPeices() {
             int i, width;
             int[] x = new int[60];

@@ -20,15 +20,23 @@ namespace SpriteandDraw {
         GamePiece current = new CheckersPiece();
         MouseState previousMouseState;
         Vector2 mposition;//mouse position
-
+        /// <summary>
+        /// Constructor that creates the board and adds the pieces to the board
+        /// </summary>
         public Chess() {
             CreateBoard();
             AddPiece();
         }
-
+        /// <summary>
+        /// Automatic method to load content in monogame
+        /// </summary>
         public override void LoadContent() {
             Type = "Chess";
         }
+        /// <summary>
+        /// updates the game based on gametime
+        /// </summary>
+        /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime) {
             MouseState state = Mouse.GetState();
             mposition.X = state.X;
@@ -59,6 +67,10 @@ namespace SpriteandDraw {
             }
             previousMouseState = state;
         }
+        /// <summary>
+        /// Automatic method to draw all the pieces on the board 
+        /// </summary>
+        /// <param name="spriteBatch"></param>
         public override void Draw(SpriteBatch spriteBatch) {
             this.spriteBatch = spriteBatch;
             spriteBatch.Draw(Game1._backgroundTexture, new Rectangle(0, 0, Game1.graphics.GraphicsDevice.Viewport.Width, Game1.graphics.GraphicsDevice.Viewport.Height), Color.DarkSlateGray);
@@ -75,6 +87,9 @@ namespace SpriteandDraw {
                 pieces[i].Draw(spriteBatch);
 
         }
+        /// <summary>
+        /// Creates a new Checkers board
+        /// </summary>
         public void CreateBoard() {
             Color[] white = new Color[100 * 100];
             rectw = new Texture2D(Game1.graphics.GraphicsDevice, 100, 100);
@@ -102,7 +117,9 @@ namespace SpriteandDraw {
                 }
             }
         }
-
+        /// <summary>
+        /// Adds the pieces to the board
+        /// </summary>
         public void AddPiece() {
             int count = 0;
             for (int i = 1; i <= 8; i++) {
@@ -175,7 +192,12 @@ namespace SpriteandDraw {
             }
 
         }
-
+        /// <summary>
+        /// Updates the board from the client server
+        /// </summary>
+        /// <param name="pieceno"></param>
+        /// <param name="xpos"></param>
+        /// <param name="ypos"></param>
         public override void UpdateBoardServer(int pieceno, int xpos, int ypos) {
             pieces[pieceno].position.X = xpos;
             pieces[pieceno].position.Y = ypos;

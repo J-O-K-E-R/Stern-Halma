@@ -175,7 +175,6 @@ namespace SpriteandDraw {
         }
 
         public override void UpdateBoardServer(int pieceno, int xpos, int ypos) {
-            Console.WriteLine("I am being called in chess");
             pieces[pieceno].position.X = xpos;
             pieces[pieceno].position.Y = ypos;
         }

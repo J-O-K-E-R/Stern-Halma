@@ -12,8 +12,8 @@ using ProjectName;
 namespace SpriteandDraw {
     public class Board : Screen {
         public static GameType currentGame;
-        static string _type = "Checkers";
-        static string _gametype = "Checkers";
+        static string _type;
+        static string _gametype;
         MouseState previousMouseState;
         Vector2 mposition;//mouse position
         Vector2 backb, chessb, checkersb, chineseb;
@@ -40,8 +40,17 @@ namespace SpriteandDraw {
             checkers = new Button(checkersb, "blank", "Checkers");
             //gives the Chinese Checkers or Sterne-Halma button functionality
             chinese = new Button(chineseb, "blank", "Sterne-Halma");
-            //
-            currentGame = new Checkers();
+            //initializes to the checkers board
+            if (Game1.hosting) {
+                currentGame = new Host_Intro();
+                _type = "HIntro";
+                _gametype = "HIntro";
+            }
+            else {
+                currentGame = new Join_Intro();
+                _type = "JIntro";
+                _gametype = "JIntro";
+            }
         }
 
         /// <summary>
@@ -62,6 +71,12 @@ namespace SpriteandDraw {
                 currentGame.Type = _gametype;
             }
             switch (currentGame.Type) {
+                case "HIntro":
+                    currentGame = new Host_Intro();
+                    break;
+                case "JIntro":
+                    currentGame = new Join_Intro();
+                    break;
                 case "ChineseCheckers":
                     currentGame = new ChineseCheckers();
                     break;
@@ -77,7 +92,7 @@ namespace SpriteandDraw {
             MouseState state = Mouse.GetState();
             mposition.X = state.X;
             mposition.Y = state.Y;
-            
+
             //if the mouse was clicked
             if (previousMouseState.LeftButton == ButtonState.Pressed && state.LeftButton == ButtonState.Released) {
                 MouseClicked((int)mposition.X, (int)mposition.Y);
@@ -99,7 +114,7 @@ namespace SpriteandDraw {
                 checkers.Draw(spriteBatch);
                 chinese.Draw(spriteBatch);
             }
-            
+
         }
 
         /// <summary>
@@ -110,7 +125,6 @@ namespace SpriteandDraw {
         public void UpdateBoard(string text) {
             if (text.Equals(""))
                 return;
-            //Console.WriteLine(text);
             string splitter = text;
             string[] separator = { " " };
             string[] split = splitter.Split(separator, StringSplitOptions.RemoveEmptyEntries);
@@ -147,33 +161,38 @@ namespace SpriteandDraw {
                 Rectangle chessRect = new Rectangle((int)chessb.X, (int)chessb.Y, 150, 50);
                 Rectangle checkersRect = new Rectangle((int)checkersb.X, (int)checkersb.Y, 150, 50);
                 Rectangle chineseRect = new Rectangle((int)chineseb.X, (int)chineseb.Y, 150, 50);
-
                 if (mouseRect.Intersects(chessRect)) { //player clicks Chess
-                    
+
                     Host.Send(" " + "Chess");
-                    currentGame.Type = "Chess";
+                    if (_type != "Chess") {
+                        currentGame.Type = "Chess";
+                        _type = "Chess";
+                    }
                 }
                 if (mouseRect.Intersects(checkersRect)) { //player clicks Checkers
-                    
+
                     Host.Send(" " + "Checkers");
-                    currentGame.Type = "Checkers";
+                    if (_type != "Checkers") {
+                        currentGame.Type = "Checkers";
+                        _type = "Checkers";
+                    }
                 }
                 if (mouseRect.Intersects(chineseRect)) { //player clicks CCheckers
-                    
+
                     Host.Send(" " + "ChineseCheckers");
-                    currentGame.Type = "ChineseCheckers";
+                    if (_type != "ChineseCheckers") {
+                        currentGame.Type = "ChineseCheckers";
+                        _type = "ChineseCheckers";
+                    }
                 }
             }
             if (mouseRect.Intersects(backRect)) { //player clicks back button
-                //Game1.hosting = false;
-                //Game1.currentScreen.Type = "Menu";
+                Game1.hosting = false;
+                Game1.currentScreen.Type = "Menu";
                 if (Game1.hosting)
-                    Console.WriteLine("Host gametype" + _type);
-                else {
-                    Console.WriteLine("Client gametype" + _type);
-                }
+                    Host.CloseAllSockets();
 
             }
-        }        
+        }
     }
 }

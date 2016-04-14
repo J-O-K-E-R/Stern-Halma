@@ -70,8 +70,10 @@
     <Compile Include="GamePiece.cs" />
     <Compile Include="GameType.cs" />
     <Compile Include="Host.cs" />
+    <Compile Include="Host_Intro.cs" />
     <Compile Include="InputText.cs" />
     <Compile Include="Join.cs" />
+    <Compile Include="Join_Intro.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="PreGame.cs" />
     <Compile Include="Program.cs" />

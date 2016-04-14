@@ -121,17 +121,17 @@ namespace SpriteandDraw {
                 if (_isCursorVisible)
                     spriteBatch.DrawString(Game1.font, "|", new Vector2(stringRectangle.Width + coor.X + 3, coor.Y + 2), Color.Black);
             }
-            if(!connected)
-                spriteBatch.DrawString(Game1.font, "Cannot Connect...", new Vector2(coor.X + width + 10 , coor.Y ), Color.Black);
+            if (!connected)
+                spriteBatch.DrawString(Game1.font, "Cannot Connect...", new Vector2(coor.X + width + 10, coor.Y), Color.Black);
         }
 
-            /// <summary>
-            /// draws the border for the rectangle for the text
-            /// </summary>
-            /// <param name="spriteBatch"></param>
-            /// <param name="rectangle"></param>
-            /// <param name="color"></param>
-            /// <param name="lineWidth"></param>
+        /// <summary>
+        /// draws the border for the rectangle for the text
+        /// </summary>
+        /// <param name="spriteBatch"></param>
+        /// <param name="rectangle"></param>
+        /// <param name="color"></param>
+        /// <param name="lineWidth"></param>
         public static void DrawRectangle(SpriteBatch spriteBatch, Rectangle rectangle, Color color, int lineWidth) {
             if (_pointTexture == null) {
                 _pointTexture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);

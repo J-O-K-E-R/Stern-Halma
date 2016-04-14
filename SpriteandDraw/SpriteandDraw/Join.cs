@@ -23,27 +23,47 @@ namespace SpriteandDraw {
         public Join() {
         }
         public void ConnectToServer(string ipAddress) {
-
             searchAddress = IPAddress.Parse("192.168.18.2");
             int attempts = 0;
 
-           // while (!_clientSocket.Connected) {
+            //while (!_clientSocket.Connected) {
                 try {
                     attempts++;
                     Console.WriteLine("Client side Connection attempt " + attempts);
-                    _clientSocket.Connect(searchAddress, _PORT);
-                    _clientSocket.Listen(5000);
-                    ////////////////////////////////////////////////////Console.WriteLine("Works up to clientSocket.Listen(5000)");
-                    _clientSocket.BeginAccept(AcceptCallback, null);
+                    if (!_clientSocket.Connected)
+                    {
+                    _clientSocket.BeginConnect(new IPEndPoint(searchAddress, _PORT), new AsyncCallback(ConnectCallback), _clientSocket);
+
+                        /*_clientSocket.Connect(searchAddress, _PORT);
+                        _clientSocket.Listen(6);
+                        ////////////////////////////////////////////////////Console.WriteLine("Works up to clientSocket.Listen(5000)");
+                        _clientSocket.BeginAccept(AcceptCallback, null);*/
+                    }
                 }
                 catch (SocketException e) {
-                    Console.Write("Client Side " + e.ToString());
+                    Console.Write("Client Side " + e.ToString() + " " + e.SocketErrorCode);
                 }
                 catch(Exception e)
                 {
                     Console.Write("Client Side ConnectTo Server Exception e " + e.ToString());
                 }
-          //  }
+            //}
+        }
+
+        ///Testing
+        public void ConnectCallback(IAsyncResult AR)
+        {
+            try
+            {
+                Socket client = (Socket) AR.AsyncState;
+                client.EndConnect(AR);
+                Console.WriteLine("Client now connected");
+                client.BeginReceive(_buffer, 0, _BUFFER_SIZE, SocketFlags.None, ReceiveCallback, client);
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
         }
 
         /// <summary>
@@ -92,11 +112,12 @@ namespace SpriteandDraw {
             }
             catch (ObjectDisposedException) // I cannot seem to avoid this (on exit when properly closing sockets)
             {
+                Console.WriteLine("AcceptCallback Exception: ObjectDisposedException");
                 return;
             }
             Console.WriteLine("Client beginning receive");
             socket.BeginReceive(_buffer, 0, _BUFFER_SIZE, SocketFlags.None, ReceiveCallback, socket);
-            _clientSocket.BeginAccept(AcceptCallback, null);
+            //_clientSocket.BeginAccept(AcceptCallback, _clientSocket);
         }
 
         private void ReceiveCallback(IAsyncResult AR) {

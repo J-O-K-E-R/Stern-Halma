@@ -42,7 +42,7 @@ namespace SpriteandDraw {
             if (!_serverSocket.IsBound) {
                 try {
                     _serverSocket.Bind(new IPEndPoint(hostAddress, _PORT));
-                    _serverSocket.Listen(5000);
+                    _serverSocket.Listen(10);
                     _serverSocket.BeginAccept(AcceptCallback, _serverSocket);
                     //Console.WriteLine("Server setup complete");
                 }

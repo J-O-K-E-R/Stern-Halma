@@ -66,7 +66,6 @@ namespace SpriteandDraw {
             
         }
         public void UpdateBoard(string text) {
-            //System.Diagnostics.Debug.WriteLine("update board called");
             if (text.Equals(""))
                 return;
             Console.WriteLine(text);

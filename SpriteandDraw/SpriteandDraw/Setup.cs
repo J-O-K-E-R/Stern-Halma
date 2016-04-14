@@ -80,9 +80,13 @@ namespace SpriteandDraw {
                 //this is where you connect it
                 //this will switch the screen to the board if successful
                 //test for string for ip
-                joining.ConnectToServer(ta);
-                Game1.currentScreen.Type = "Board";
-                System.Diagnostics.Debug.WriteLine(ta);
+                if (joining.ConnectToServer(ta)) {
+                    Game1.currentScreen.Type = "Board";
+                }
+                else {
+                    InputText.connected = false;
+                }
+                
             }
         }
     }

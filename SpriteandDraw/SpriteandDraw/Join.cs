@@ -40,8 +40,17 @@ namespace SpriteandDraw {
                         _clientSocket.BeginAccept(AcceptCallback, null);*/
                     }
                 }
+<<<<<<< HEAD
+                catch (SocketException) {
+                    //Console.Clear();
+=======
                 catch (SocketException e) {
+<<<<<<< HEAD
+                    Console.Write("Client Side " + e.ToString());
+>>>>>>> master
+=======
                     Console.Write("Client Side " + e.ToString() + " " + e.SocketErrorCode);
+>>>>>>> master
                 }
                 catch(Exception e)
                 {

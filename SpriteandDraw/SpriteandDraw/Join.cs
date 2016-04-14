@@ -121,7 +121,6 @@ namespace SpriteandDraw {
             byte[] recBuf = new byte[received];
             Array.Copy(_buffer, recBuf, received);
             string text = Encoding.ASCII.GetString(recBuf);
-            text.PadRight(1);
 
             Console.WriteLine("Client Received Text: " + text);
 

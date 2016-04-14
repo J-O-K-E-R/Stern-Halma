@@ -37,17 +37,14 @@ namespace SpriteandDraw {
                 current.position.X = mposition.X - 50;
                 current.position.Y = mposition.Y - 50;
                 //string sending = " " + "Checkers" + " " + current.pieceNo + " " + current.position.X + " " + current.position.Y;
-                if (Game1.hosting == true)
-                {
-                    string sending = " " + "Checkers" + " " + current.pieceNo + " " + current.position.X + " " + current.position.Y;
+                if (Game1.hosting == true) {
+                    string sending = " " + "Checkers" + " " + current.pieceNo + " " + current.position.X + " " + current.position.Y + " ";
                     Host.Send(sending);
                 }
                 else {
-                    string sending = " " + "Checkers" + " " + current.pieceNo + " " + current.position.X + " " + current.position.Y;
+                    string sending = " " + "Checkers" + " " + current.pieceNo + " " + current.position.X + " " + current.position.Y + " ";
                     Join.Send(sending);
                 }
-                
-
             }
             if (state.LeftButton == ButtonState.Pressed && !current._isPressed) {
                 MousePressed((int)mposition.X, (int)mposition.Y);
@@ -76,8 +73,7 @@ namespace SpriteandDraw {
 
         }
 
-        public override void UpdateBoardServer(int pieceno, int xpos, int ypos)
-        {
+        public override void UpdateBoardServer(int pieceno, int xpos, int ypos) {
             pieces[pieceno].position.X = xpos;
             pieces[pieceno].position.Y = ypos;
         }

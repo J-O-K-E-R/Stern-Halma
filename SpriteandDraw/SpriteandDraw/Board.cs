@@ -32,33 +32,6 @@ namespace SpriteandDraw {
             Type = "Board";
         }
 
-        public void UpdateBoard(string text) {
-            if (text.Equals(""))
-                return;
-            //Console.WriteLine(text);
-            string splitter = text;
-            string[] separator = { " " };
-            string[] split = splitter.Split(separator, StringSplitOptions.RemoveEmptyEntries);
-            if (!split[0].ToString().Equals(_type)) {
-                _type = split[0].ToString();
-                System.Diagnostics.Debug.WriteLine("Board gametype changed to " + split[0].ToString());
-                switch (_type) {
-                    case "ChineseCheckers":
-                        currentGame.Type = "ChineseCheckers";
-                        break;
-                    case "Checkers":
-                        currentGame.Type = "Checkers";
-                        break;
-                    case "Chess":
-                        currentGame.Type = "Chess";
-                        break;
-                }
-            }
-            if (split.Length == 5) {
-                currentGame.UpdateBoardServer(Int32.Parse(split[1]), Int32.Parse(split[2]), Int32.Parse(split[3]));
-            }
-        }
-
         public override void Update(GameTime gameTime) {
             if (!_gametype.Equals(_type)) {
                 _gametype = _type;
@@ -79,7 +52,7 @@ namespace SpriteandDraw {
             MouseState state = Mouse.GetState();
             mposition.X = state.X;
             mposition.Y = state.Y;
-            
+
             if (previousMouseState.LeftButton == ButtonState.Pressed && state.LeftButton == ButtonState.Released) {
                 MouseClicked((int)mposition.X, (int)mposition.Y);
             }
@@ -95,9 +68,33 @@ namespace SpriteandDraw {
                 checkers.Draw(spriteBatch);
                 chinese.Draw(spriteBatch);
             }
-            
+
         }
-        
+        public void UpdateBoard(string text) {
+            if (text.Equals(""))
+                return;
+            //Console.WriteLine(text);
+            string splitter = text;
+            string[] separator = { " " };
+            string[] split = splitter.Split(separator, StringSplitOptions.RemoveEmptyEntries);
+            if (!split[0].ToString().Equals(_type)) {
+                _type = split[0].ToString();
+                switch (_type) {
+                    case "ChineseCheckers":
+                        currentGame.Type = "ChineseCheckers";
+                        break;
+                    case "Checkers":
+                        currentGame.Type = "Checkers";
+                        break;
+                    case "Chess":
+                        currentGame.Type = "Chess";
+                        break;
+                }
+            }
+            if (split.Length == 4) {
+                currentGame.UpdateBoardServer(Int32.Parse(split[1]), Int32.Parse(split[2]), Int32.Parse(split[3]));
+            }
+        }
 
         public void MouseClicked(int x, int y) {
             Rectangle mouseRect = new Rectangle(x, y, 1, 1);
@@ -107,18 +104,18 @@ namespace SpriteandDraw {
                 Rectangle checkersRect = new Rectangle((int)checkersb.X, (int)checkersb.Y, 150, 50);
                 Rectangle chineseRect = new Rectangle((int)chineseb.X, (int)chineseb.Y, 150, 50);
 
-                if (mouseRect.Intersects(chessRect)) { //player clicks chess
-                    
+                if (mouseRect.Intersects(chessRect)) { //player clicks Chess
+
                     Host.Send(" " + "Chess");
                     currentGame.Type = "Chess";
                 }
                 if (mouseRect.Intersects(checkersRect)) { //player clicks Checkers
-                    
+
                     Host.Send(" " + "Checkers");
                     currentGame.Type = "Checkers";
                 }
                 if (mouseRect.Intersects(chineseRect)) { //player clicks CCheckers
-                    
+
                     Host.Send(" " + "ChineseCheckers");
                     currentGame.Type = "ChineseCheckers";
                 }
@@ -133,6 +130,6 @@ namespace SpriteandDraw {
                 }
 
             }
-        }        
+        }
     }
 }

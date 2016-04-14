@@ -1,6 +1,4 @@
-﻿///Authors: Justin Mclennan and Chun-Yip Tang
-///Last Updated April 13, 2016
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,9 +8,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using ProjectName;
-/// <summary>
-/// Creates a chess game
-/// </summary>
+
 namespace SpriteandDraw {
     class Chess : GameType {
         Texture2D rectw, rectb;
@@ -23,24 +19,14 @@ namespace SpriteandDraw {
         MouseState previousMouseState;
         Vector2 mposition;//mouse position
 
-        /// <summary>
-        ///  Constructor that creates the board and adds the pieces to the board
-        /// </summary>
         public Chess() {
             CreateBoard();
             AddPiece();
         }
-        /// <summary>
-        /// Automatic method to load content in monogame
-        /// </summary>
+
         public override void LoadContent() {
             Type = "Chess";
         }
-
-        /// <summary>
-        /// updates the game based on gametime
-        /// </summary>
-        /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime) {
             MouseState state = Mouse.GetState();
             mposition.X = state.X;
@@ -71,12 +57,6 @@ namespace SpriteandDraw {
             }
             previousMouseState = state;
         }
-
-
-        /// <summary>
-        /// Draws the board and the pieces onto the board
-        /// </summary>
-        /// <param name="spriteBatch"></param>
         public override void Draw(SpriteBatch spriteBatch) {
             this.spriteBatch = spriteBatch;
             spriteBatch.Draw(Game1._backgroundTexture, new Rectangle(0, 0, Game1.graphics.GraphicsDevice.Viewport.Width, Game1.graphics.GraphicsDevice.Viewport.Height), Color.DarkSlateGray);
@@ -93,10 +73,6 @@ namespace SpriteandDraw {
                 pieces[i].Draw(spriteBatch);
 
         }
-
-        /// <summary>
-        /// Creates the board
-        /// </summary>
         public void CreateBoard() {
             Color[] white = new Color[100 * 100];
             rectw = new Texture2D(Game1.graphics.GraphicsDevice, 100, 100);
@@ -110,12 +86,6 @@ namespace SpriteandDraw {
                 black[i] = Color.Black;
             rectb.SetData(black);
         }
-
-        /// <summary>
-        /// What happens when the mouse is pressed onto a piece
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
         public void MousePressed(int x, int y) {
             Rectangle mouseRect = new Rectangle(x, y, 1, 1);
             for (int i = 0; i < pieces.Length; i++) {
@@ -124,7 +94,6 @@ namespace SpriteandDraw {
 
             for (int i = 0; i < list.Length; i++) {
                 if (mouseRect.Intersects(list[i])) {
-                    System.Diagnostics.Debug.WriteLine("pressed peice: " + i);
                     current = pieces[i];
                     current._isPressed = true;
                     break;
@@ -132,9 +101,6 @@ namespace SpriteandDraw {
             }
         }
 
-        /// <summary>
-        /// Adds the piece to the board
-        /// </summary>
         public void AddPiece() {
             int count = 0;
             for (int i = 1; i <= 8; i++) {
@@ -206,6 +172,12 @@ namespace SpriteandDraw {
                 }
             }
 
+        }
+
+        public override void UpdateBoardServer(int pieceno, int xpos, int ypos) {
+            Console.WriteLine("I am being called in chess");
+            pieces[pieceno].position.X = xpos;
+            pieces[pieceno].position.Y = ypos;
         }
     }
 }

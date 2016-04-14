@@ -7,37 +7,24 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using ProjectName;
-/// <summary>
-/// Creates a chinese checkers or sterne-halma game
-/// </summary>
+
 namespace SpriteandDraw {
     class ChineseCheckers : GameType {
 
-        private List<Circle> board = new List<Circle>();
+        Circle[] board = new Circle[121];
         static ChinesePeice[] pieces = new ChinesePeice[60];
         static Rectangle[] list = new Rectangle[60];
         static GamePiece current = new ChinesePeice();
         MouseState previousMouseState;
         Vector2 mposition;//mouse position
-        /// <summary>
-        /// Constructor that creates the board and adds the pieces
-        /// </summary>
+
         public ChineseCheckers() {
             CreateBoard();
             AddPeices();
         }
-
-        /// <summary>
-        /// base method in monogame to load textures
-        /// </summary>
         public override void LoadContent() {
             Type = "ChineseCheckers";
         }
-
-        /// <summary>
-        /// Automatic update of draw to draw everthing on the board
-        /// </summary>
-        /// <param name="spriteBatch"></param>
         public override void Draw(SpriteBatch spriteBatch) {
             spriteBatch.Draw(Game1._backgroundTexture, new Rectangle(0, 0, Game1.graphics.GraphicsDevice.Viewport.Width, Game1.graphics.GraphicsDevice.Viewport.Height), Color.DarkSlateGray);
             foreach (Circle circle in board)
@@ -46,22 +33,17 @@ namespace SpriteandDraw {
                 peice.Draw(spriteBatch);
         }
 
-        /// <summary>
-        /// Updates based on gametime and refreshes the board
-        /// </summary>
-        /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime) {
             MouseState state = Mouse.GetState();
             mposition.X = state.X;
             mposition.Y = state.Y;
-            
+
             if (previousMouseState.LeftButton == ButtonState.Pressed && state.LeftButton == ButtonState.Pressed && current._isPressed) {
 
                 current.position.X = mposition.X - 20;
                 current.position.Y = mposition.Y - 20;
 
-                if (Game1.hosting == true)
-                {
+                if (Game1.hosting == true) {
                     string sending = " " + "ChineseCheckers" + " " + current.pieceNo + " " + current.position.X + " " + current.position.Y + " ";
                     //System.Diagnostics.Debug.WriteLine("Host sending");
                     Host.Send(sending);
@@ -77,28 +59,13 @@ namespace SpriteandDraw {
                 MousePressed((int)mposition.X, (int)mposition.Y);
             }
             if (previousMouseState.LeftButton == ButtonState.Pressed && state.LeftButton == ButtonState.Released) {
-                MouseClicked((int)mposition.X, (int)mposition.Y);
-                
+
                 current._isPressed = false;
                 current = new ChinesePeice();
             }
             previousMouseState = state;
         }
 
-        /// <summary>
-        /// What happens when the mouse is clicked 
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        public void MouseClicked(int x, int y) {
-            Rectangle mouseRect = new Rectangle(x, y, 1, 1);
-        }
-
-        /// <summary>
-        /// What happens when the mouse is pressed onto a piece
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
         public void MousePressed(int x, int y) {
             Rectangle mouseRect = new Rectangle(x, y, 1, 1);
             for (int i = 0; i < pieces.Length; i++) {
@@ -107,27 +74,19 @@ namespace SpriteandDraw {
 
             for (int i = 0; i < list.Length; i++) {
                 if (mouseRect.Intersects(list[i])) {
+                    Console.WriteLine("pressed " + i);
                     current = pieces[i];
                     current._isPressed = true;
                     break;
                 }
             }
         }
-         /// <summary>
-         /// Updates the board based on the client server
-         /// </summary>
-         /// <param name="pieceno"></param>
-         /// <param name="xpos"></param>
-         /// <param name="ypos"></param>
-        public override void UpdateBoardServer(int pieceno, int xpos, int ypos)
-        {
+
+        public override void UpdateBoardServer(int pieceno, int xpos, int ypos) {
             pieces[pieceno].position.X = xpos;
             pieces[pieceno].position.Y = ypos;
         }
 
-        /// <summary>
-        /// creates the baord. There are many pieces that do not fit together uniformly, so the easiest way is to hard code them in with lots of for loops
-        /// </summary>
         public void CreateBoard() {
             int i, height;
             int[] x = new int[121];
@@ -315,12 +274,8 @@ namespace SpriteandDraw {
             y[120] = 610;
 
             for (i = 0; i < y.Length; i++)
-                board.Add(new Circle(new Vector2(x[i], y[i])));
+                board[i]= new Circle(new Vector2(x[i], y[i]));
         }
-
-        /// <summary>
-        /// Adds the pieces to the board
-        /// </summary>
         public void AddPeices() {
             int i, width;
             int[] x = new int[60];
@@ -346,8 +301,10 @@ namespace SpriteandDraw {
             }
             x[9] = 546;
             y[9] = 410;
-            for (i = 0; i < 10; i++)
+            for (i = 0; i < 10; i++) {
                 pieces[i] = (new ChinesePeice(new Vector2(x[i], y[i]), 'y'));
+                pieces[i].pieceNo = i;
+            }
             //adding the bottom left peices
             width = 483;
             for (i = 10; i <= 13; i++) {
@@ -369,8 +326,10 @@ namespace SpriteandDraw {
             }
             x[19] = 546;
             y[19] = 490;
-            for (i = 10; i < 20; i++)
+            for (i = 10; i < 20; i++) {
                 pieces[i] = (new ChinesePeice(new Vector2(x[i], y[i]), 'g'));
+                pieces[i].pieceNo = i;
+            }
             //add the top right
             width = 987;
             for (i = 20; i <= 23; i++) {
@@ -392,8 +351,10 @@ namespace SpriteandDraw {
             }
             x[29] = 924;
             y[29] = 410;
-            for (i = 20; i < 30; i++)
+            for (i = 20; i < 30; i++) {
                 pieces[i] = (new ChinesePeice(new Vector2(x[i], y[i]), 'v'));
+                pieces[i].pieceNo = i;
+            }
             //add the bottom right
             width = 987;
             for (i = 30; i <= 33; i++) {
@@ -415,8 +376,10 @@ namespace SpriteandDraw {
             }
             x[39] = 924;
             y[39] = 490;
-            for (i = 30; i < 40; i++)
+            for (i = 30; i < 40; i++) {
                 pieces[i] = (new ChinesePeice(new Vector2(x[i], y[i]), 'w'));
+                pieces[i].pieceNo = i;
+            }
             //add the top middle
             width = 672;
             for (i = 40; i <= 43; i++) {
@@ -438,8 +401,10 @@ namespace SpriteandDraw {
             }
             x[49] = 735;
             y[49] = 130;
-            for (i = 40; i < 50; i++)
+            for (i = 40; i < 50; i++) {
                 pieces[i] = (new ChinesePeice(new Vector2(x[i], y[i]), 'b'));
+                pieces[i].pieceNo = i;
+            }
             //add the bottom middle
             width = 672;
             for (i = 50; i <= 53; i++) {
@@ -461,8 +426,10 @@ namespace SpriteandDraw {
             }
             x[59] = 735;
             y[59] = 770;
-            for (i = 50; i < 60; i++)
+            for (i = 50; i < 60; i++) {
                 pieces[i] = (new ChinesePeice(new Vector2(x[i], y[i]), 'r'));
+                pieces[i].pieceNo = i;
+            }
         }
     }
 }
